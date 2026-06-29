@@ -7,7 +7,8 @@ import {
 } from '@expo-google-fonts/host-grotesk';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { theme } from './styles/theme';
+
+import { theme } from '@/ui/styles/theme';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
