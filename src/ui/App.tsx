@@ -1,3 +1,4 @@
+import { Welcome } from '@/ui/screens/welcome';
 import {
   HostGrotesk_300Light,
   HostGrotesk_400Regular,
@@ -5,10 +6,7 @@ import {
   HostGrotesk_600SemiBold,
   useFonts,
 } from '@expo-google-fonts/host-grotesk';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
-import { theme } from '@/ui/styles/theme';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -23,23 +21,10 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={{
-        fontFamily: theme.fontFamily.sans.semiBold,
-        fontSize: theme.fontSize.base,
-      }}>
-        Open up App.tsx to start working on your app!
-      </Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <SafeAreaProvider>
+        <Welcome />
+      </SafeAreaProvider >
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.gray[400],
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
