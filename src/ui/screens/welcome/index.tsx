@@ -1,10 +1,20 @@
 
 import welcomeBg from '@/ui/assets/welcome-bg/welcome.png';
+import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { Logo } from '@/ui/components/Logo';
 import { styles } from '@/ui/screens/welcome/styles';
-import { ImageBackground } from 'react-native';
+import { theme } from '@/ui/styles/theme';
+import { BlurView } from 'expo-blur';
+import { ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+const blurIntensity = Platform.select({
+  ios: 30,
+  android: 60,
+  web: 40,
+  default: 40,
+});
 
 export function Welcome() {
 
@@ -15,8 +25,40 @@ export function Welcome() {
       style={styles.container}
     >
       <SafeAreaView style={styles.content}>
-        <Logo />
-        <ButtonApp>Criar Conta</ButtonApp>
+        <Logo width={186} height={60} />
+        <View>
+          <BlurView
+            intensity={blurIntensity}
+            tint='dark'
+            style={styles.ctaContainer}
+          >
+            <AppText
+              size='4xl'
+              weight='medium'
+              color={theme.colors.white}
+              style={styles.heading}
+            >
+              Controle sua dieta de forma simples
+            </AppText>
+            <View style={styles.ctaContent}>
+              <View style={{ width: '100%' }}>
+                <ButtonApp style={{ borderRadius: 50 }}>
+                  Criar Conta
+                </ButtonApp>
+              </View>
+              <View style={styles.signInContainer}>
+                <AppText color={theme.colors.white} >
+                  Já tem conta?
+                </AppText>
+                <TouchableOpacity>
+                  <AppText color={theme.colors.lime[500]} weight='semiBold'>
+                    Acessar conta
+                  </AppText>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </BlurView>
+        </View>
       </SafeAreaView>
     </ImageBackground>
   );

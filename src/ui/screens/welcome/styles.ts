@@ -13,4 +13,27 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 16,
   },
+  ctaContainer: {
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    overflow: 'hidden',
+    marginHorizontal: 16,
+    padding: 32,
+    borderRadius: 20,
+    gap: 24,
+  },
+  heading: {
+    textAlign: 'center',
+    letterSpacing: -0.32,
+    lineHeight: 32,
+  },
+  ctaContent: {
+    gap: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  signInContainer: {
+    flexDirection: 'row',
+    gap: 2,
+  },
+
 });
