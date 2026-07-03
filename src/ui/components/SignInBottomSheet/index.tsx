@@ -1,10 +1,12 @@
 import { AppText } from '@/ui/components/AppText';
+import { ButtonApp } from '@/ui/components/Button';
+import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/components/SignInBottomSheet/styles';
 import { useSignInBottomSheet } from '@/ui/components/SignInBottomSheet/useSignInBottomSheet';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 
 interface ISignInBottomSheetProps {
   ref: React.Ref<ISignInBottomSheet>;
@@ -27,9 +29,14 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
           >
             Entre em sua conta
           </AppText>
-          <View>
-            <InputApp placeholder='E-mail' onBlur={() => Alert.alert('Teste')} />
-            <InputApp placeholder='Senha' />
+          <View style={{ gap: 32 }}>
+            <FormGroup label='E-mail'>
+              <InputApp placeholder='E-mail' />
+            </FormGroup>
+            <FormGroup label='Senha'>
+              <InputApp placeholder='Senha' />
+            </FormGroup>
+            <ButtonApp>Entrar</ButtonApp>
           </View>
         </BottomSheetView>
       </BottomSheetModal>
