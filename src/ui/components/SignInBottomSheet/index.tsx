@@ -5,7 +5,7 @@ import { InputApp } from '@/ui/components/Input';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/components/SignInBottomSheet/styles';
 import { useSignInBottomSheet } from '@/ui/components/SignInBottomSheet/useSignInBottomSheet';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetModalProvider, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { View } from 'react-native';
 
 interface ISignInBottomSheetProps {
@@ -31,10 +31,10 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
           </AppText>
           <View style={{ gap: 32 }}>
             <FormGroup label='E-mail'>
-              <InputApp placeholder='E-mail' />
+              <InputApp placeholder='E-mail' Component={BottomSheetTextInput} />
             </FormGroup>
             <FormGroup label='Senha'>
-              <InputApp placeholder='Senha' />
+              <InputApp placeholder='Senha' Component={BottomSheetTextInput} />
             </FormGroup>
             <ButtonApp>Entrar</ButtonApp>
           </View>

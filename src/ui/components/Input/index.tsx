@@ -5,12 +5,14 @@ import { BlurEvent, FocusEvent, TextInput, TextInputProps } from 'react-native';
 
 type InputAppProps = Omit<TextInputProps, 'readOnly'> & InputVariant & {
   error?: boolean;
+  Component?: React.ComponentType<TextInputProps>;
 };
 
 export function InputApp({
   intent,
   disabled,
   error,
+  Component = TextInput,
   style,
   onFocus,
   onBlur,
@@ -41,7 +43,7 @@ export function InputApp({
   }
 
   return (
-    <TextInput
+    <Component
       placeholderTextColor={theme.colors.gray[700]}
       style={[
         input({ intent: getInputStatus(), disabled }),
