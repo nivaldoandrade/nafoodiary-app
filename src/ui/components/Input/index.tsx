@@ -6,6 +6,7 @@ import { BlurEvent, FocusEvent, TextInput, TextInputProps } from 'react-native';
 type InputAppProps = Omit<TextInputProps, 'readOnly'> & InputVariant & {
   error?: boolean;
   Component?: React.ComponentType<TextInputProps>;
+  ref?: React.RefObject<TextInput | null>;
 };
 
 export function InputApp({

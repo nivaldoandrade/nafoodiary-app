@@ -1,6 +1,7 @@
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useImperativeHandle, useRef } from 'react';
+import { Alert, Platform, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IUseSignInBottomSheet {
@@ -10,6 +11,7 @@ interface IUseSignInBottomSheet {
 export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
   const { bottom } = useSafeAreaInsets();
 
+  const passwordInputRef = useRef<TextInput>(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   useImperativeHandle(ref, () => {
@@ -20,5 +22,17 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     };
   }, []);
 
-  return { bottom, bottomSheetModalRef };
+  function handleSubmit() {
+    if (Platform.OS === 'web') {
+      alert('Acessando a conta...');
+    }
+    Alert.alert('Acessando a conta...');
+  }
+
+  return {
+    bottom,
+    bottomSheetModalRef,
+    passwordInputRef,
+    handleSubmit,
+  };
 }
