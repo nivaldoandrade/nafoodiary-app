@@ -1,4 +1,6 @@
-import { Welcome } from '@/ui/screens/welcome';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { AuthStack } from '@/app/navigation/AuthStack';
 import {
   HostGrotesk_300Light,
   HostGrotesk_400Regular,
@@ -24,7 +26,9 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <GestureHandlerRootView>
-        <Welcome />
+        <NavigationContainer>
+          <AuthStack />
+        </NavigationContainer>
       </GestureHandlerRootView>
     </SafeAreaProvider >
   );

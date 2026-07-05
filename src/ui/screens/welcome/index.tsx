@@ -1,4 +1,5 @@
 
+import type { AuthStackNavigatorProps } from '@/app/navigation/AuthStack';
 import welcomeBg from '@/ui/assets/welcome-bg/welcome.png';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
@@ -7,6 +8,7 @@ import { SignInBottomSheet } from '@/ui/components/SignInBottomSheet';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/screens/welcome/styles';
 import { theme } from '@/ui/styles/theme';
+import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { useRef } from 'react';
 import { ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
@@ -20,7 +22,7 @@ const blurIntensity = Platform.select({
 });
 
 export function Welcome() {
-
+  const navigation = useNavigation<AuthStackNavigatorProps>();
   const signInModalRef = useRef<ISignInBottomSheet>(null);
 
   const handleSignInModalOpen = () => {
@@ -52,7 +54,10 @@ export function Welcome() {
               </AppText>
               <View style={styles.ctaContent}>
                 <View style={{ width: '100%' }}>
-                  <ButtonApp style={{ borderRadius: 50 }}>
+                  <ButtonApp
+                    onPress={() => navigation.navigate('Onboarding')}
+                    style={{ borderRadius: 50 }}
+                  >
                     Criar Conta
                   </ButtonApp>
                 </View>
