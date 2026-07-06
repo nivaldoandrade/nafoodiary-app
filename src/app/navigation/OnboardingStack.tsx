@@ -1,0 +1,49 @@
+import { ActivityLevelStep } from '@/ui/screens/onboarding/steps/ActivityLevelStep';
+import { BirthDateStep } from '@/ui/screens/onboarding/steps/BirthDateStep';
+import { CreateAccountStep } from '@/ui/screens/onboarding/steps/CreateAccountStep';
+import { GenderStep } from '@/ui/screens/onboarding/steps/GenderStep';
+import { GoalStep } from '@/ui/screens/onboarding/steps/GoalStep';
+import { HeightStep } from '@/ui/screens/onboarding/steps/HeightStep';
+import { WeightStep } from '@/ui/screens/onboarding/steps/WeightStep';
+import {
+  createNativeStackNavigator,
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+
+export type OnboardingParamList = {
+  GoalStep: undefined;
+  GenderStep: undefined;
+  BirthDateStep: undefined;
+  HeightStep: undefined;
+  WeightStep: undefined;
+  ActivityLevelStep: undefined;
+  CreateAccountStep: undefined;
+}
+
+const Stack = createNativeStackNavigator<OnboardingParamList>();
+
+export type OnboardingStackNavigationProps = NativeStackNavigationProp<OnboardingParamList>;
+
+export type OnboardingStackScreenProps<T extends keyof OnboardingParamList> =
+  NativeStackScreenProps<OnboardingParamList, T>;
+
+export function OnboardingStack() {
+
+  return (
+    <Stack.Navigator
+      initialRouteName='GoalStep'
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="GoalStep" component={GoalStep} />
+      <Stack.Screen name="GenderStep" component={GenderStep} />
+      <Stack.Screen name="BirthDateStep" component={BirthDateStep} />
+      <Stack.Screen name="HeightStep" component={HeightStep} />
+      <Stack.Screen name="WeightStep" component={WeightStep} />
+      <Stack.Screen name="ActivityLevelStep" component={ActivityLevelStep} />
+      <Stack.Screen name="CreateAccountStep" component={CreateAccountStep} />
+    </Stack.Navigator>
+  );
+}
