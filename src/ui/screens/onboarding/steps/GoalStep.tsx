@@ -1,11 +1,16 @@
-import { OnboardingStackScreenProps } from '@/app/navigation/OnboardingStack';
-import { AppText } from '@/ui/components/AppText';
-import { ButtonApp } from '@/ui/components/Button';
 import { View } from 'react-native';
 
-type GoalStepProps = OnboardingStackScreenProps<'GoalStep'>;
+import { AppText } from '@/ui/components/AppText';
+import { ButtonApp } from '@/ui/components/Button';
+import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 
-export function GoalStep({ navigation }: GoalStepProps) {
+export function GoalStep() {
+
+  const {
+    currentStepIndex,
+    nextStep,
+    previousStep,
+  } = useOnboarding();
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -13,12 +18,13 @@ export function GoalStep({ navigation }: GoalStepProps) {
         GoalStep
       </AppText>
       <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
-        <ButtonApp onPress={() => navigation.goBack()}>
-          Back
+        <ButtonApp onPress={previousStep}>
+          Previous
         </ButtonApp>
-        <ButtonApp onPress={() => navigation.navigate('GenderStep')}>
+        <ButtonApp onPress={nextStep}>
           Next
         </ButtonApp>
+        <AppText>{currentStepIndex}</AppText>
       </View>
     </View>
   );

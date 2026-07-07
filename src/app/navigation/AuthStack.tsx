@@ -1,11 +1,13 @@
 
+import { OnboardingParamList } from '@/app/navigation/OnboardingStack';
 import { Onboarding } from '@/ui/screens/onboarding';
 import { Welcome } from '@/ui/screens/welcome';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type AuthStackParamList = {
   Welcome: undefined;
-  Onboarding: undefined;
+  Onboarding: NavigatorScreenParams<OnboardingParamList> | undefined;
 }
 
 const Stack = createNativeStackNavigator<AuthStackParamList>();

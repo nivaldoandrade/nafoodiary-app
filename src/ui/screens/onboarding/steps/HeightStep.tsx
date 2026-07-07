@@ -1,13 +1,31 @@
-import { AppText } from '@/ui/components/AppText';
 import { View } from 'react-native';
 
-export function HeightStep() {
+import { AppText } from '@/ui/components/AppText';
+import { ButtonApp } from '@/ui/components/Button';
+import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
+
+export function WeightStep() {
+
+  const {
+    currentStepIndex,
+    nextStep,
+    previousStep,
+  } = useOnboarding();
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <AppText size="4xl">
-        HeightStep
+        WeightStep
       </AppText>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 16 }}>
+        <ButtonApp onPress={previousStep}>
+          Previous
+        </ButtonApp>
+        <ButtonApp onPress={nextStep}>
+          Next
+        </ButtonApp>
+        <AppText>{currentStepIndex}</AppText>
+      </View>
     </View>
   );
 }
