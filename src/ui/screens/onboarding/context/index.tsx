@@ -7,6 +7,7 @@ import { createContext, useCallback, useState, type ReactNode } from 'react';
 interface IOnboardingContextProps {
   initialStep: keyof OnboardingParamList;
   currentStepIndex: number;
+  totalStep: number;
   nextStep: () => void;
   previousStep: () => void;
 }
@@ -55,6 +56,7 @@ export function OnboardingProvider({ children }: IOnboardingProviderProps) {
       nextStep,
       previousStep,
       initialStep: orderedSteps[0],
+      totalStep: orderedSteps.length,
     }}>
       {children}
     </ OnboardingContext>

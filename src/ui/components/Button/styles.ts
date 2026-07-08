@@ -22,6 +22,9 @@ export const button = cva({
       secondary: {
         backgroundColor: theme.colors.gray[300],
       },
+      ghost: {
+        backgroundColor: 'transparent',
+      },
     },
     size: {
       default: {
