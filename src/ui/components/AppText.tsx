@@ -1,7 +1,7 @@
 import { theme } from '@/ui/styles/theme';
 import { Text, TextProps } from 'react-native';
 
-interface IAppTextProps extends TextProps {
+export interface IAppTextProps extends TextProps {
   family?: keyof typeof theme.fontFamily;
   weight?: keyof typeof theme.fontFamily.sans;
   size?: keyof typeof theme.fontSize;

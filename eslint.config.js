@@ -26,6 +26,7 @@ module.exports = defineConfig([
       curly: ['error', 'all'],
       'no-duplicate-imports': 'error',
       'no-console': 'warn',
+      'comma-dangle': 'off'
       '@typescript-eslint/naming-convention': [
         'error',
         {
