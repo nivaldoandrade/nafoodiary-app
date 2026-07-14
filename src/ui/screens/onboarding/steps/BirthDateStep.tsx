@@ -34,13 +34,18 @@ export function BirthDateStep() {
     }
   }
 
-  function openWebPicker() {
+  function openPicker() {
     if (Platform.OS !== 'web' || !inputRef.current) {
       setShowMobilePicker(true);
       return;
     }
 
-    if (typeof inputRef.current.showPicker === 'function') {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+
+    const isIOSSafari = isIOS && isSafari;
+
+    if (typeof inputRef.current.showPicker === 'function' && !isIOSSafari) {
       inputRef.current.showPicker();
       return;
     }
@@ -57,7 +62,7 @@ export function BirthDateStep() {
       </StepHeader>
       <StepContent position='center'>
         {Platform.OS !== 'ios' && (
-          <TouchableOpacity onPress={openWebPicker}>
+          <TouchableOpacity onPress={openPicker}>
             <AppText weight='semiBold' size='4xl' color={theme.colors.gray[700]}>
               {formatDateForInput(selectedDate)}
             </AppText>
@@ -73,6 +78,7 @@ export function BirthDateStep() {
             role='textbox'
             style={{
               position: 'absolute',
+              pointerEvents: 'none',
               opacity: 0,
             }}
           />
@@ -101,4 +107,3 @@ function formatDateForInput(value: Date) {
   return new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' })
     .format(value);
 }
-
