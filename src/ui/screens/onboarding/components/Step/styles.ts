@@ -23,6 +23,10 @@ export const styles = StyleSheet.create({
     marginBottom: 34,
     justifyContent: 'flex-end',
   },
+  contentCenter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   footer: {
     alignItems: 'flex-end',
   },

@@ -28,9 +28,21 @@ function StepSubTitle({ style, ...props }: IAppTextProps) {
   );
 }
 
-function StepContent({ style, ...props }: ViewProps) {
+interface IStepContent extends ViewProps {
+  position?: 'center' | 'end';
+}
+
+function StepContent({
+  position = 'end',
+  style,
+  ...props
+}: IStepContent) {
   return (
-    <View style={[styles.content, style]} {...props} />
+    <View style={[
+      styles.content,
+      position === 'center' && styles.contentCenter,
+      style,
+    ]} {...props} />
   );
 }
 

@@ -10,7 +10,13 @@ module.exports = defineConfig([
     rules: {
       quotes: ['error', 'single'],
       semi: ['error', 'always'],
-      'comma-dangle': ['error', 'always-multiline'],
+      'comma-dangle': ['error', {
+        'arrays': 'always-multiline',
+        'objects': 'always-multiline',
+        'imports': 'always-multiline',
+        'exports': 'only-multiline',
+        'functions': 'always-multiline',
+      }],
       'object-curly-spacing': ['error', 'always'],
       'array-bracket-spacing': ['error', 'never'],
       'space-before-function-paren': ['error', {
@@ -26,7 +32,6 @@ module.exports = defineConfig([
       curly: ['error', 'all'],
       'no-duplicate-imports': 'error',
       'no-console': 'warn',
-      'comma-dangle': 'off'
       '@typescript-eslint/naming-convention': [
         'error',
         {
