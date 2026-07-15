@@ -4,8 +4,8 @@ import { BirthDateStep } from '@/ui/screens/onboarding/steps/BirthDateStep';
 import { CreateAccountStep } from '@/ui/screens/onboarding/steps/CreateAccountStep';
 import { GenderStep } from '@/ui/screens/onboarding/steps/GenderStep';
 import { GoalStep } from '@/ui/screens/onboarding/steps/GoalStep';
-import { WeightStep } from '@/ui/screens/onboarding/steps/HeightStep';
-import { HeightStep } from '@/ui/screens/onboarding/steps/WeightStep';
+import { HeightStep } from '@/ui/screens/onboarding/steps/HeightStep';
+import { WeightStep } from '@/ui/screens/onboarding/steps/WeightStep';
 
 import {
   createNativeStackNavigator,
