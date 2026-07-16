@@ -9,6 +9,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/host-grotesk';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
@@ -27,7 +28,9 @@ export default function App() {
     <SafeAreaProvider>
       <GestureHandlerRootView>
         <NavigationContainer>
-          <AuthStack />
+          <KeyboardProvider>
+            <AuthStack />
+          </KeyboardProvider>
         </NavigationContainer>
       </GestureHandlerRootView>
     </SafeAreaProvider >

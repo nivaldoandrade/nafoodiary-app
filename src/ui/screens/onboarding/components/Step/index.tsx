@@ -5,8 +5,15 @@ import { View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function Step({ style, ...props }: ViewProps) {
+
+  const { bottom } = useSafeAreaInsets();
+
   return (
-    <View style={[styles.container, style]} {...props} />
+    <View style={[
+      styles.container,
+      { paddingBottom: bottom },
+      style,
+    ]} {...props} />
   );
 }
 
@@ -47,15 +54,10 @@ function StepContent({
 }
 
 function StepFooter({ style, ...props }: ViewProps) {
-  const { bottom } = useSafeAreaInsets();
 
   return (
     <View
-      style={[
-        styles.footer,
-        { marginBottom: bottom },
-        style,
-      ]}
+      style={[styles.footer, style]}
       {...props}
     />
   );
