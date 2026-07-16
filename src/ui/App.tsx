@@ -26,13 +26,13 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView>
-        <NavigationContainer>
-          <KeyboardProvider>
+      <KeyboardProvider statusBarTranslucent={true} navigationBarTranslucent={true}>
+        <GestureHandlerRootView>
+          <NavigationContainer>
             <AuthStack />
-          </KeyboardProvider>
-        </NavigationContainer>
-      </GestureHandlerRootView>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      </KeyboardProvider>
     </SafeAreaProvider >
   );
 }
