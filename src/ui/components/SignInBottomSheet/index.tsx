@@ -6,6 +6,7 @@ import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBot
 import { styles } from '@/ui/components/SignInBottomSheet/styles';
 import { useSignInBottomSheet } from '@/ui/components/SignInBottomSheet/useSignInBottomSheet';
 import { BottomSheetModal, BottomSheetModalProvider, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
+import { Controller } from 'react-hook-form';
 import { View } from 'react-native';
 
 interface ISignInBottomSheetProps {
@@ -18,6 +19,7 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
     bottomSheetModalRef,
     passwordInputRef,
     handleSubmit,
+    control,
   } = useSignInBottomSheet({ ref });
 
   return (
@@ -35,31 +37,50 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
             Entre em sua conta
           </AppText>
           <View style={{ gap: 32 }}>
-            <FormGroup label='E-mail'>
-              <InputApp
-                placeholder='E-mail'
-                Component={BottomSheetTextInput}
-                inputMode='email'
-                autoComplete='email'
-                autoCorrect={false}
-                autoCapitalize='none'
-                returnKeyType='next'
-                onSubmitEditing={() => passwordInputRef.current?.focus()}
-              />
-            </FormGroup>
-            <FormGroup label='Senha'>
-              <InputApp
-                ref={passwordInputRef}
-                placeholder='Senha'
-                Component={BottomSheetTextInput}
-                autoCorrect={false}
-                autoComplete='current-password'
-                autoCapitalize='none'
-                secureTextEntry
-                returnKeyType='done'
-                onSubmitEditing={handleSubmit}
-              />
-            </FormGroup>
+            <Controller
+              name='email'
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <FormGroup label='E-mail' error={fieldState.error?.message}>
+                  <InputApp
+                    placeholder='E-mail'
+                    Component={BottomSheetTextInput}
+                    inputMode='email'
+                    autoComplete='email'
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    returnKeyType='next'
+                    onSubmitEditing={() => passwordInputRef.current?.focus()}
+                    value={field.value}
+                    onChangeText={field.onChange}
+                    onBlur={field.onBlur}
+                  />
+                </FormGroup>
+              )}
+            />
+            <Controller
+              name='password'
+              control={control}
+              rules={{ required: true }}
+              render={({ field, fieldState }) => (
+                <FormGroup label='Senha' error={fieldState.error?.message}>
+                  <InputApp
+                    ref={passwordInputRef}
+                    placeholder='Senha'
+                    Component={BottomSheetTextInput}
+                    autoCorrect={false}
+                    autoComplete='current-password'
+                    autoCapitalize='none'
+                    secureTextEntry
+                    returnKeyType='done'
+                    onSubmitEditing={handleSubmit}
+                    value={field.value}
+                    onChangeText={field.onChange}
+                  />
+                </FormGroup>
+              )}
+            />
             <ButtonApp onPress={handleSubmit}>
               Entrar
             </ButtonApp>

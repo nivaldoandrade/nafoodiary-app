@@ -1,6 +1,9 @@
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
+import { signInSchema } from '@/ui/components/SignInBottomSheet/schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useImperativeHandle, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { Alert, Platform, TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -10,6 +13,10 @@ interface IUseSignInBottomSheet {
 
 export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
   const { bottom } = useSafeAreaInsets();
+
+  const { control, handleSubmit: RHFHandleSubmit } = useForm({
+    resolver: zodResolver(signInSchema),
+  });
 
   const passwordInputRef = useRef<TextInput>(null);
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -22,17 +29,19 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     };
   }, []);
 
-  function handleSubmit() {
+  const handleSubmit = RHFHandleSubmit((data) => {
+    const message = `Email: ${data.email} - Senha: ${data.password}`;
     if (Platform.OS === 'web') {
-      alert('Acessando a conta...');
+      alert(message);
     }
-    Alert.alert('Acessando a conta...');
-  }
+    Alert.alert(message);
+  });
 
   return {
     bottom,
     bottomSheetModalRef,
     passwordInputRef,
     handleSubmit,
+    control,
   };
 }
