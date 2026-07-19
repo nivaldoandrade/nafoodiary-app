@@ -4,11 +4,25 @@ import { ButtonApp } from '@/ui/components/Button';
 import { RadioGroup, RadioGroupItem, RadioGroupItemIcon, RadioGroupItemLabel } from '@/ui/components/RadioGroup';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
+import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
 import { ArrowRightIcon } from 'lucide-react-native';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export function GenderStep() {
-
   const { nextStep } = useOnboarding();
+  const { control, watch, trigger } = useFormContext<OnboardingSchema>();
+
+  const selectedGender = watch('profile.gender');
+
+  async function handleCheckAndNextStep() {
+    const isValid = await trigger('profile.gender');
+
+    if (!isValid) {
+      return;
+    }
+
+    nextStep();
+  }
 
   return (
     <Step>
@@ -17,19 +31,29 @@ export function GenderStep() {
         <StepSubTitle>Seu gênero influencia no tipo da dieta</StepSubTitle>
       </StepHeader>
       <StepContent>
-        <RadioGroup isHorizontal>
-          <RadioGroupItem value={Gender.MALE}>
-            <RadioGroupItemIcon>👱‍♂️</RadioGroupItemIcon>
-            <RadioGroupItemLabel>Masculino</RadioGroupItemLabel>
-          </RadioGroupItem>
-          <RadioGroupItem value={Gender.FEMALE}>
-            <RadioGroupItemIcon>👩</RadioGroupItemIcon>
-            <RadioGroupItemLabel>Feminino</RadioGroupItemLabel>
-          </RadioGroupItem>
-        </RadioGroup>
+        <Controller
+          name='profile.gender'
+          control={control}
+          render={({ field }) => (
+            <RadioGroup value={field.value} onChange={field.onChange} isHorizontal>
+              <RadioGroupItem value={Gender.MALE}>
+                <RadioGroupItemIcon>👱‍♂️</RadioGroupItemIcon>
+                <RadioGroupItemLabel>Masculino</RadioGroupItemLabel>
+              </RadioGroupItem>
+              <RadioGroupItem value={Gender.FEMALE}>
+                <RadioGroupItemIcon>👩</RadioGroupItemIcon>
+                <RadioGroupItemLabel>Feminino</RadioGroupItemLabel>
+              </RadioGroupItem>
+            </RadioGroup>
+          )}
+        />
       </StepContent>
       <StepFooter >
-        <ButtonApp size='icon' onPress={nextStep}>
+        <ButtonApp
+          disabled={!selectedGender}
+          size='icon'
+          onPress={handleCheckAndNextStep}
+        >
           <ArrowRightIcon />
         </ButtonApp>
       </StepFooter>
