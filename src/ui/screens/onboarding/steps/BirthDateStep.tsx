@@ -2,57 +2,26 @@
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
-import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
+import { useBirthDateStep } from '@/ui/screens/onboarding/steps/hooks/useBirthDateStep';
 import { theme } from '@/ui/styles/theme';
-import DateTimePicker, { DateTimePickerChangeEvent } from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { ArrowRightIcon } from 'lucide-react-native';
-import { useRef, useState, type ChangeEvent } from 'react';
-import { Platform, TouchableOpacity } from 'react-native';
+import { Controller } from 'react-hook-form';
+import { Platform, TouchableOpacity, View } from 'react-native';
 
 export function BirthDateStep() {
-  const [selectedDate, setDate] = useState<Date>(new Date());
-  const [showMobilePicker, setShowMobilePicker] = useState(true);
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const { nextStep } = useOnboarding();
-
-  function onMobileChange(_event: DateTimePickerChangeEvent, newSelectedDate: Date) {
-    if (newSelectedDate) {
-      setDate(newSelectedDate);
-    }
-
-    if (Platform.OS === 'android') {
-      setShowMobilePicker(false);
-    }
-  }
-
-  function onWebChange(e: ChangeEvent<HTMLInputElement>) {
-    const pickedDate = new Date(e.target.value);
-
-    if (!isNaN(pickedDate.getTime())) {
-      setDate(pickedDate);
-    }
-  }
-
-  function openPicker() {
-    if (Platform.OS !== 'web' || !inputRef.current) {
-      setShowMobilePicker(true);
-      return;
-    }
-
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
-
-    const isIOSSafari = isIOS && isSafari;
-
-    if (typeof inputRef.current.showPicker === 'function' && !isIOSSafari) {
-      inputRef.current.showPicker();
-      return;
-    }
-
-    inputRef.current.focus();
-    inputRef.current.click();
-  }
+  const {
+    showMobilePicker,
+    inputRef,
+    control,
+    errors,
+    openPicker,
+    onMobileChange,
+    onWebChange,
+    handleCheckAndNextStep,
+    toDateInputValue,
+  } = useBirthDateStep();
 
   return (
     <Step>
@@ -61,41 +30,72 @@ export function BirthDateStep() {
         <StepSubTitle>Cada faixa etária responde de forma única</StepSubTitle>
       </StepHeader>
       <StepContent position='center'>
-        {Platform.OS !== 'ios' && (
-          <TouchableOpacity onPress={openPicker}>
-            <AppText weight='semiBold' size='4xl' color={theme.colors.gray[700]}>
-              {formatDateForInput(selectedDate)}
-            </AppText>
-          </TouchableOpacity>
-        )}
+        <Controller
+          name='profile.birthDate'
+          control={control}
+          render={({ field, fieldState }) => (
+            <View>
+              {Platform.OS !== 'ios' && (
+                <TouchableOpacity onPress={openPicker}>
+                  <AppText
+                    weight='semiBold'
+                    size='4xl'
+                    color={theme.colors.gray[700]}
+                    style={{ textAlign: 'center' }}
+                  >
+                    {formatDateForInput(field.value)}
+                  </AppText>
+                </TouchableOpacity>
+              )}
 
-        {Platform.OS === 'web' && (
-          <input
-            ref={inputRef}
-            type='date'
-            value={selectedDate.toISOString().split('T')[0]}
-            onChange={onWebChange}
-            role='textbox'
-            style={{
-              position: 'absolute',
-              pointerEvents: 'none',
-              opacity: 0,
-            }}
-          />
-        )}
+              {Platform.OS === 'web' && (
+                <>
+                  <input
+                    ref={inputRef}
+                    type='date'
+                    value={toDateInputValue(field.value ?? new Date())}
+                    onChange={onWebChange}
+                    role='textbox'
+                    max={toDateInputValue(new Date())}
+                    style={{
+                      position: 'absolute',
+                      width: '100%',
+                      top: 10,
+                      pointerEvents: 'none',
+                      opacity: 0,
+                    }}
+                  />
+                  {fieldState.error && (
+                    <AppText
+                      weight='semiBold'
+                      color={theme.colors.support.red}
+                      style={{ textAlign: 'center' }}
+                    >
+                      {fieldState.error.message}
+                    </AppText>
+                  )}
+                </>
+              )}
 
-        {(showMobilePicker && Platform.OS !== 'web') && (
-          <DateTimePicker
-            value={new Date(selectedDate)}
-            mode='date'
-            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
-            onValueChange={onMobileChange}
-          />
-        )}
-
+              {(showMobilePicker && Platform.OS !== 'web') && (
+                <DateTimePicker
+                  value={field.value}
+                  mode='date'
+                  display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+                  onValueChange={onMobileChange}
+                  maximumDate={new Date()}
+                />
+              )}
+            </View>
+          )}
+        />
       </StepContent>
       <StepFooter >
-        <ButtonApp size='icon' onPress={nextStep}>
+        <ButtonApp
+          disabled={!!errors.profile?.birthDate}
+          size='icon'
+          onPress={handleCheckAndNextStep}
+        >
           <ArrowRightIcon />
         </ButtonApp>
       </StepFooter>
@@ -104,6 +104,6 @@ export function BirthDateStep() {
 }
 
 function formatDateForInput(value: Date) {
-  return new Intl.DateTimeFormat('pt-BR', { timeZone: 'UTC' })
-    .format(value);
+  return new Intl.DateTimeFormat('pt-BR').format(value);
 }
+
