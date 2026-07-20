@@ -6,10 +6,10 @@ import * as z from 'zod';
 export const onboardingSchema = z.object({
   profile: z.object({
     name: z.string(),
-    goal: z.enum(Goal, { error: 'Selecione pelo menos 1 opção' }),
+    goal: z.enum(Goal, { error: 'Selecione pelo menos 1 opção.' }),
     gender: z.enum(Gender),
-    height: z.string().min(1),
-    weight: z.string().min(1),
+    height: z.string().min(1, 'Informe a sua altura.'),
+    weight: z.string().min(1, 'Informe o seu peso.'),
     activityLevel: z.enum(ActivityLevel),
     birthDate: z.date(),
   }),

@@ -4,14 +4,27 @@ import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
+import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
 import { formatWeight } from '@/ui/utils/formatMeasurement';
 import { ArrowRightIcon } from 'lucide-react-native';
-import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 export function WeightStep() {
-  const [weight, setWeight] = useState<string>();
-
   const { nextStep } = useOnboarding();
+
+  const { control, trigger, watch, clearErrors } = useFormContext<OnboardingSchema>();
+
+  const selectedWeight = watch('profile.weight');
+
+  async function handleCheckAndNextStep() {
+    const isValid = await trigger('profile.weight');
+
+    if (!isValid) {
+      return;
+    }
+
+    nextStep();
+  }
 
   return (
     <Step>
@@ -20,20 +33,37 @@ export function WeightStep() {
         <StepSubTitle>Você pode inserir uma estimativa</StepSubTitle>
       </StepHeader>
       <StepContent position='center'>
-        <FormGroup label='Peso (kg)' style={{ width: '100%' }} >
-          <InputApp
-            autoFocus
-            placeholder='89'
-            inputMode='decimal'
-            onChangeText={(v) => setWeight(formatWeight(v))}
-            value={weight}
-            returnKeyType='next'
-            onSubmitEditing={nextStep}
-          />
-        </FormGroup>
+        <Controller
+          name='profile.weight'
+          control={control}
+          render={({ field, fieldState }) => (
+            <FormGroup
+              label='Peso (kg)'
+              style={{ width: '100%' }}
+              error={fieldState.error?.message}
+            >
+              <InputApp
+                autoFocus
+                placeholder='89'
+                inputMode='decimal'
+                onChangeText={(v) => {
+                  clearErrors('profile.weight');
+                  field.onChange(formatWeight(v));
+                }}
+                value={field.value}
+                returnKeyType='next'
+                onSubmitEditing={handleCheckAndNextStep}
+              />
+            </FormGroup>
+          )}
+        />
       </StepContent>
       <StepFooter >
-        <ButtonApp size='icon' onPress={nextStep}>
+        <ButtonApp
+          disabled={!selectedWeight}
+          size='icon'
+          onPress={handleCheckAndNextStep}
+        >
           <ArrowRightIcon />
         </ButtonApp>
       </StepFooter>
