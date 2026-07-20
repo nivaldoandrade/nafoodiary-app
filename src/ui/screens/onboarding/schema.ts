@@ -5,7 +5,9 @@ import * as z from 'zod';
 
 export const onboardingSchema = z.object({
   profile: z.object({
-    name: z.string(),
+    name: z.string()
+      .min(1, 'Informe o seu nome.')
+      .max(20, 'No máximo 20 caracteres'),
     goal: z.enum(Goal, { error: 'Selecione pelo menos 1 opção.' }),
     gender: z.enum(Gender),
     height: z.string().min(1, 'Informe a sua altura.'),
@@ -14,10 +16,16 @@ export const onboardingSchema = z.object({
     birthDate: z.date(),
   }),
   account: z.object({
-    email: z.email(),
-    password: z.string().min(1),
-    confirmPassword: z.string(),
-  }),
+    email: z.email('Informe o seu email.'),
+    password: z.string().min(8, 'Pelo menos 8 caracteres.'),
+    confirmPassword: z.string().min(8, 'Confirme sua senha.'),
+  }).refine(({ password, confirmPassword }) =>
+    password === confirmPassword,
+    {
+      error: 'As senhas não correspondem.',
+      path: ['confirmPassword'],
+    },
+  ),
 });
 
 export type OnboardingSchema = z.infer<typeof onboardingSchema>;
