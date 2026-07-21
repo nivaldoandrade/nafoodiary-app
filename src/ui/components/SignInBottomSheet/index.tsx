@@ -20,6 +20,9 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
     passwordInputRef,
     handleSubmit,
     control,
+    isSubmitting,
+    isValid,
+    clearErrors,
   } = useSignInBottomSheet({ ref });
 
   return (
@@ -52,9 +55,13 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
                     autoCapitalize='none'
                     returnKeyType='next'
                     onSubmitEditing={() => passwordInputRef.current?.focus()}
-                    value={field.value}
-                    onChangeText={field.onChange}
                     onBlur={field.onBlur}
+                    disabled={isSubmitting}
+                    value={field.value}
+                    onChangeText={(v) => {
+                      field.onChange(v);
+                      clearErrors('root.api');
+                    }}
                   />
                 </FormGroup>
               )}
@@ -63,8 +70,11 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
               name='password'
               control={control}
               rules={{ required: true }}
-              render={({ field, fieldState }) => (
-                <FormGroup label='Senha' error={fieldState.error?.message}>
+              render={({ field, fieldState, formState }) => (
+                <FormGroup label='Senha' error={
+                  fieldState.error?.message ||
+                  formState.errors.root?.api.message
+                }>
                   <InputApp
                     ref={passwordInputRef}
                     placeholder='Senha'
@@ -75,13 +85,21 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
                     secureTextEntry
                     returnKeyType='done'
                     onSubmitEditing={handleSubmit}
+                    disabled={isSubmitting}
                     value={field.value}
-                    onChangeText={field.onChange}
+                    onChangeText={(v) => {
+                      field.onChange(v);
+                      clearErrors('root.api');
+                    }}
                   />
                 </FormGroup>
               )}
             />
-            <ButtonApp onPress={handleSubmit}>
+            <ButtonApp
+              isLoading={isSubmitting}
+              disabled={!isValid}
+              onPress={handleSubmit}
+            >
               Entrar
             </ButtonApp>
           </View>

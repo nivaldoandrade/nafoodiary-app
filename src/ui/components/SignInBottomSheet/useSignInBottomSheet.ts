@@ -1,10 +1,14 @@
+import { getErrorMessage } from '@/app/errors/apiErrors';
+import { AuthService } from '@/app/services/AuthService';
+import { ApiError } from '@/app/types/ApiError';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { signInSchema } from '@/ui/components/SignInBottomSheet/schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { isAxiosError } from 'axios';
 import { useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
-import { Alert, Platform, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IUseSignInBottomSheet {
@@ -14,7 +18,13 @@ interface IUseSignInBottomSheet {
 export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
   const { bottom } = useSafeAreaInsets();
 
-  const { control, handleSubmit: RHFHandleSubmit } = useForm({
+  const {
+    control,
+    handleSubmit: RHFHandleSubmit,
+    setError,
+    clearErrors,
+    formState: { isSubmitting, isValid },
+  } = useForm({
     resolver: zodResolver(signInSchema),
   });
 
@@ -29,12 +39,18 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     };
   }, []);
 
-  const handleSubmit = RHFHandleSubmit((data) => {
-    const message = `Email: ${data.email} - Senha: ${data.password}`;
-    if (Platform.OS === 'web') {
-      alert(message);
+  const handleSubmit = RHFHandleSubmit(async (data) => {
+    try {
+      const response = await AuthService.signIn(data);
+
+      console.log(response);
+    } catch (error) {
+      if (isAxiosError<ApiError>(error)) {
+        const code = error.response?.data.error.code;
+        const message = getErrorMessage(code);
+        setError('root.api', { message });
+      }
     }
-    Alert.alert(message);
   });
 
   return {
@@ -43,5 +59,8 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     passwordInputRef,
     handleSubmit,
     control,
+    isSubmitting,
+    isValid,
+    clearErrors,
   };
 }
