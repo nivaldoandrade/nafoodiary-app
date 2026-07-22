@@ -10,10 +10,10 @@ export const onboardingSchema = z.object({
       .max(20, 'No máximo 20 caracteres'),
     goal: z.enum(Goal, { error: 'Selecione pelo menos 1 opção.' }),
     gender: z.enum(Gender),
-    height: z.string().min(1, 'Informe a sua altura.'),
-    weight: z.string().min(1, 'Informe o seu peso.'),
+    height: z.string().min(1, 'Informe a sua altura.').transform((v) => Number(v)),
+    weight: z.string().min(1, 'Informe o seu peso.').transform((v) => Number(v)),
     activityLevel: z.enum(ActivityLevel),
-    birthDate: z.date(),
+    birthDate: z.date().transform((v) => v.toISOString().split('T')[0]),
   }),
   account: z.object({
     email: z.email('Informe o seu email.'),
@@ -28,4 +28,6 @@ export const onboardingSchema = z.object({
   ),
 });
 
-export type OnboardingSchema = z.infer<typeof onboardingSchema>;
+export type OnboardingSchema = z.input<typeof onboardingSchema>;
+
+export type OnboardingSchemaOutput = z.output<typeof onboardingSchema>;

@@ -30,6 +30,7 @@ export const button = cva({
       default: {
         paddingVertical: 14,
         paddingHorizontal: 24,
+        minHeight: 52,
       },
       icon: {
         width: 48,

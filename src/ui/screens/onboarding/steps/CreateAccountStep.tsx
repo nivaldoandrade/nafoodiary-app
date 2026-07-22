@@ -1,31 +1,49 @@
 
+import { ApiError, ErrorCode, getErrorMessage } from '@/app/errors/apiErrors';
+import { AuthService } from '@/app/services/AuthService';
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
-import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
+import { OnboardingSchema, OnboardingSchemaOutput } from '@/ui/screens/onboarding/schema';
+import { isAxiosError } from 'axios';
 import { useRef } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Alert, Platform, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 export function CreateAccountStep() {
 
   const {
     control,
+    setError,
     handleSubmit: RHFHandleSubmit,
     formState: { isValid, isSubmitting },
-  } = useFormContext<OnboardingSchema>();
+  } = useFormContext<OnboardingSchema, unknown, OnboardingSchemaOutput>();
 
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
   const passwordConfirmInputRef = useRef<TextInput>(null);
 
   const handleSubmit = RHFHandleSubmit(async (data) => {
-    if (Platform.OS === 'web') {
-      alert('Acessando a conta...');
+    try {
+
+      const response = await AuthService.signUp(data);
+      console.log(response);
+
+    } catch (error) {
+      if (isAxiosError<ApiError>(error)) {
+
+        const code = error.response?.data.error.code as ErrorCode | undefined;
+        const message = getErrorMessage(code);
+
+        if (code === 'EMAIL_ALREADY_IN_USE') {
+          setError('account.email', { type: 'api', message });
+        } else {
+          setError('root.api', { message });
+        }
+      }
     }
-    Alert.alert('Acessando a conta...');
-    console.log(data);
+
   });
 
   return (
@@ -98,8 +116,11 @@ export function CreateAccountStep() {
           <Controller
             name='account.confirmPassword'
             control={control}
-            render={({ field, fieldState }) => (
-              <FormGroup label='Confirmar Senha' error={fieldState.error?.message}>
+            render={({ field, fieldState, formState }) => (
+              <FormGroup label='Confirmar Senha' error={
+                fieldState.error?.message ||
+                formState.errors.root?.api.message
+              }>
                 <InputApp
                   ref={passwordConfirmInputRef}
                   secureTextEntry
@@ -120,7 +141,8 @@ export function CreateAccountStep() {
       <StepFooter >
         <View style={{ width: '100%' }}>
           <ButtonApp
-            disabled={!isValid || isSubmitting}
+            isLoading={isSubmitting}
+            disabled={!isValid}
             onPress={handleSubmit}
           >
             Criar Conta
