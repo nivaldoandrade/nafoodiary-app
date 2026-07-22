@@ -56,5 +56,8 @@ module.exports = defineConfig([
     plugins: {
       '@typescript-eslint': tsEslintPlugin,
     },
+    rules: {
+      '@typescript-eslint/no-redeclare': 'off',
+    },
   },
 ]);
