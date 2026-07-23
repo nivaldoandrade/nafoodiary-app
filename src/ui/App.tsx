@@ -1,6 +1,6 @@
-import { NavigationContainer } from '@react-navigation/native';
 
-import { AuthStack } from '@/app/navigation/AuthStack';
+import { AuthProvider } from '@/app/contexts/AuthContext';
+import { Navigation } from '@/app/navigation';
 import {
   HostGrotesk_300Light,
   HostGrotesk_400Regular,
@@ -28,9 +28,9 @@ export default function App() {
     <SafeAreaProvider>
       <KeyboardProvider statusBarTranslucent={true} navigationBarTranslucent={true}>
         <GestureHandlerRootView>
-          <NavigationContainer>
-            <AuthStack />
-          </NavigationContainer>
+          <AuthProvider>
+            <Navigation />
+          </AuthProvider>
         </GestureHandlerRootView>
       </KeyboardProvider>
     </SafeAreaProvider >
