@@ -26,7 +26,7 @@ export class AuthService extends Service {
   }
 }
 
-namespace AuthService {
+export namespace AuthService {
 
   export type SignIn = {
     params: {

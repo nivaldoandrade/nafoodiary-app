@@ -1,6 +1,5 @@
-import { getErrorMessage } from '@/app/errors/apiErrors';
-import { AuthService } from '@/app/services/AuthService';
-import { ApiError } from '@/app/types/ApiError';
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
+import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { signInSchema } from '@/ui/components/SignInBottomSheet/schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -17,6 +16,8 @@ interface IUseSignInBottomSheet {
 
 export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
   const { bottom } = useSafeAreaInsets();
+
+  const { signIn } = useAuth();
 
   const {
     control,
@@ -41,9 +42,7 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
 
   const handleSubmit = RHFHandleSubmit(async (data) => {
     try {
-      const response = await AuthService.signIn(data);
-
-      console.log(response);
+      await signIn(data);
     } catch (error) {
       if (isAxiosError<ApiError>(error)) {
         const code = error.response?.data.error.code;

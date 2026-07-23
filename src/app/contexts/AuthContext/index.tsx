@@ -1,8 +1,9 @@
+import { AuthService } from '@/app/services/AuthService';
 import { createContext, useCallback, useState } from 'react';
 
 interface IAuthContext {
   isSignedIn: boolean;
-  signIn: () => void;
+  signIn: (params: AuthService.SignIn['params']) => Promise<void>;
   signOut: () => void;
 }
 
@@ -16,7 +17,9 @@ export function AuthProvider({ children }: IAuthProvider) {
 
   const [isSignedIn, setIsSignedIn] = useState(false);
 
-  const signIn = useCallback(() => {
+  const signIn = useCallback(async (payload: AuthService.SignIn['params']) => {
+    const response = await AuthService.signIn(payload);
+    console.log(response);
     setIsSignedIn(true);
   }, []);
 
