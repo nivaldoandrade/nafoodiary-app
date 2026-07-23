@@ -1,7 +1,9 @@
-import { createContext, useState } from 'react';
+import { createContext, useCallback, useState } from 'react';
 
 interface IAuthContext {
   isSignedIn: boolean;
+  signIn: () => void;
+  signOut: () => void;
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -12,10 +14,18 @@ interface IAuthProvider {
 
 export function AuthProvider({ children }: IAuthProvider) {
 
-  const [isSignedIn] = useState(false);
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  const signIn = useCallback(() => {
+    setIsSignedIn(true);
+  }, []);
+
+  const signOut = useCallback(() => {
+    setIsSignedIn(false);
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ isSignedIn }}>
+    <AuthContext.Provider value={{ isSignedIn, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
