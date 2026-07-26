@@ -3,7 +3,8 @@ import { AuthTokenManager } from '@/app/libs/AuthTokenManager';
 import { queryClient } from '@/app/libs/queryClient';
 import { AuthService } from '@/app/services/AuthService';
 import { Service } from '@/app/services/Service';
-import { createContext, useCallback, useLayoutEffect, useReducer } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 interface IAuthContext {
   isSignedIn: boolean;
@@ -18,41 +19,63 @@ interface IAuthProvider {
 }
 
 export function AuthProvider({ children }: IAuthProvider) {
+  const [isSignedIn, setIsSignedIn] = useState(false);
+  const [appIsReady, setAppIsReady] = useState(false);
 
-  const [, forceUpdate] = useReducer((x: number) => x + 1, 0);
+  const { loadAccount } = useAccount({ enabled: false });
 
-  const { account, loadAccount } = useAccount({ enabled: false });
+  const setupAuth = useCallback(async (accessToken: string) => {
+    Service.setAuthorizationToken(accessToken);
+    await loadAccount();
+    setIsSignedIn(true);
+  }, [loadAccount]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function getTokens() {
-      const tokens = await AuthTokenManager.get();
+      try {
+        const tokens = await AuthTokenManager.get();
 
-      if (!tokens) {
-        return;
+        if (!tokens) {
+          return;
+        }
+
+        await setupAuth(tokens.accessToken);
+      } catch {
+
+      } finally {
+        setAppIsReady(true);
       }
-      Service.setAuthorizationToken(tokens.accessToken);
-      await loadAccount();
     }
 
     getTokens();
-  }, [loadAccount]);
+  }, [setupAuth]);
+
+  useEffect(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
 
   const signIn = useCallback(async (payload: AuthService.SignIn['params']) => {
     const response = await AuthService.signIn(payload);
 
     await AuthTokenManager.save(response);
-    Service.setAuthorizationToken(response.accessToken);
-    await loadAccount();
-  }, [loadAccount]);
+    await setupAuth(response.accessToken);
+  }, [setupAuth]);
 
   const signOut = useCallback(async () => {
+    Service.removeAuthorizationToken();
     AuthTokenManager.remove();
     queryClient.clear();
-    forceUpdate();
+    setIsSignedIn(false);
   }, []);
 
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
-    <AuthContext.Provider value={{ isSignedIn: !!account, signIn, signOut }}>
+    <AuthContext.Provider value={{ isSignedIn, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

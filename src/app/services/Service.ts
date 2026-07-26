@@ -10,4 +10,8 @@ export abstract class Service {
   static setAuthorizationToken(token: string) {
     this.client.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   }
+
+  static removeAuthorizationToken() {
+    this.client.defaults.headers.common['Authorization'] = undefined;
+  }
 }
