@@ -1,10 +1,11 @@
+import { AuthTokenManager } from '@/app/libs/AuthTokenManager';
 import { AuthService } from '@/app/services/AuthService';
-import { createContext, useCallback, useState } from 'react';
+import { createContext, useCallback, useLayoutEffect, useState } from 'react';
 
 interface IAuthContext {
   isSignedIn: boolean;
   signIn: (params: AuthService.SignIn['params']) => Promise<void>;
-  signOut: () => void;
+  signOut: () => Promise<void>;
 }
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -17,13 +18,29 @@ export function AuthProvider({ children }: IAuthProvider) {
 
   const [isSignedIn, setIsSignedIn] = useState(false);
 
+  useLayoutEffect(() => {
+    async function getTokens() {
+      const tokens = await AuthTokenManager.get();
+
+      if (!tokens) {
+        return;
+      }
+
+      setIsSignedIn(true);
+    }
+
+    getTokens();
+  }, []);
+
   const signIn = useCallback(async (payload: AuthService.SignIn['params']) => {
     const response = await AuthService.signIn(payload);
-    console.log(response);
+
+    await AuthTokenManager.save(response);
     setIsSignedIn(true);
   }, []);
 
-  const signOut = useCallback(() => {
+  const signOut = useCallback(async () => {
+    AuthTokenManager.remove();
     setIsSignedIn(false);
   }, []);
 
