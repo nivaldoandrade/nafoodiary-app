@@ -24,11 +24,47 @@ export function AuthProvider({ children }: IAuthProvider) {
 
   const { loadAccount } = useAccount({ enabled: false });
 
+  const signOut = useCallback(async () => {
+    Service.removeAuthorizationToken();
+    Service.removeInterceptorId();
+    AuthTokenManager.remove();
+    queryClient.clear();
+    setIsSignedIn(false);
+  }, []);
+
   const setupAuth = useCallback(async (accessToken: string) => {
+
     Service.setAuthorizationToken(accessToken);
-    await loadAccount();
+    Service.setupRefreshInterceptor(async () => {
+      try {
+        const storedTokens = await AuthTokenManager.get();
+
+        if (!storedTokens) {
+          throw new Error('No tokens available.');
+        }
+
+        const newTokens = await AuthService.refreshToken({
+          refreshToken: storedTokens.refreshToken,
+        });
+
+        await AuthTokenManager.save(newTokens);
+        Service.setAuthorizationToken(newTokens.accessToken);
+      } catch (error) {
+        await signOut();
+        throw error;
+      }
+    });
+
+    await loadAccount({ throwOnError: true });
     setIsSignedIn(true);
-  }, [loadAccount]);
+  }, [loadAccount, signOut]);
+
+  const signIn = useCallback(async (payload: AuthService.SignIn['params']) => {
+    const response = await AuthService.signIn(payload);
+
+    await AuthTokenManager.save(response);
+    await setupAuth(response.accessToken);
+  }, [setupAuth]);
 
   useEffect(() => {
     async function getTokens() {
@@ -40,35 +76,22 @@ export function AuthProvider({ children }: IAuthProvider) {
         }
 
         await setupAuth(tokens.accessToken);
-      } catch {
 
+      } catch {
+        await signOut();
       } finally {
         setAppIsReady(true);
       }
     }
 
     getTokens();
-  }, [setupAuth]);
+  }, [setupAuth, signOut]);
 
   useEffect(() => {
     if (appIsReady) {
       SplashScreen.hideAsync();
     }
   }, [appIsReady]);
-
-  const signIn = useCallback(async (payload: AuthService.SignIn['params']) => {
-    const response = await AuthService.signIn(payload);
-
-    await AuthTokenManager.save(response);
-    await setupAuth(response.accessToken);
-  }, [setupAuth]);
-
-  const signOut = useCallback(async () => {
-    Service.removeAuthorizationToken();
-    AuthTokenManager.remove();
-    queryClient.clear();
-    setIsSignedIn(false);
-  }, []);
 
   if (!appIsReady) {
     return null;

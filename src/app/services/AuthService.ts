@@ -24,6 +24,17 @@ export class AuthService extends Service {
 
     return data;
   }
+
+  static async refreshToken(
+    params: AuthService.RefreshToken['params'],
+  ): Promise<AuthService.RefreshToken['response']> {
+    const { data } = await this.client.post<AuthService.RefreshToken['response']>(
+      'auth/refresh-token',
+      params,
+    );
+
+    return data;
+  }
 }
 
 export namespace AuthService {
@@ -41,6 +52,16 @@ export namespace AuthService {
 
   export type SignUp = {
     params: OnboardingSchemaOutput,
+    response: {
+      accessToken: string;
+      refreshToken: string;
+    }
+  }
+
+  export type RefreshToken = {
+    params: {
+      refreshToken: string;
+    },
     response: {
       accessToken: string;
       refreshToken: string;
