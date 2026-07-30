@@ -1,6 +1,5 @@
 import { useAuth } from '@/app/contexts/AuthContext/useAuth';
-import { AppText } from '@/ui/components/AppText';
-import { ButtonApp } from '@/ui/components/Button';
+import { PlanSummaryModal } from '@/ui/screens/home/components/PlanSummaryModal';
 import { View } from 'react-native';
 
 export function Home() {
@@ -9,10 +8,11 @@ export function Home() {
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <AppText weight="semiBold" size="4xl">
+      <PlanSummaryModal />
+      {/* <AppText weight="semiBold" size="4xl">
         Home Screen
       </AppText>
-      <ButtonApp onPress={signOut}>Sair</ButtonApp>
+      <ButtonApp onPress={signOut}>Sair</ButtonApp> */}
     </View>
   );
 }
