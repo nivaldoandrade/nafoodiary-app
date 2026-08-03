@@ -49,8 +49,7 @@ export const styles = StyleSheet.create({
 
   rainbow: {
     width: '100%',
-    height: 225,
-    backgroundColor: 'red',
+    paddingHorizontal: 24,
   },
 
   footer: {

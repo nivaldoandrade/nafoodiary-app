@@ -1,5 +1,6 @@
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
+import { MacroRainbow } from '@/ui/components/MacroRainbow';
 import { styles } from '@/ui/screens/home/components/PlanSummaryModal/styles';
 import { theme } from '@/ui/styles/theme';
 import { Modal, Text, View } from 'react-native';
@@ -43,7 +44,14 @@ export function PlanSummaryModal() {
                 </View>
               </View>
               <View style={styles.rainbow}>
-
+                <MacroRainbow
+                  mode='full'
+                  calories={{ goal: 2000 }}
+                  protein={{ goal: 175 }}
+                  carbs={{ goal: 200 }}
+                  fat={{ goal: 56 }}
+                  colorText={theme.colors.gray[200]}
+                />
               </View>
             </View>
 
