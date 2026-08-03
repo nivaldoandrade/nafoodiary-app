@@ -1,10 +1,10 @@
 
-import { Goal } from '@/app/types/Goal';
 import { ButtonApp } from '@/ui/components/Button';
 import { RadioGroup, RadioGroupItem, RadioGroupItemIcon, RadioGroupItemLabel } from '@/ui/components/RadioGroup';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
+import { goalInfo } from '@/ui/utils/goal';
 import { ArrowRightIcon } from 'lucide-react-native';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -37,18 +37,12 @@ export function GoalStep() {
           control={control}
           render={({ field }) => (
             <RadioGroup value={field.value} onChange={field.onChange}>
-              <RadioGroupItem value={Goal.LOSE}>
-                <RadioGroupItemIcon>🥦</RadioGroupItemIcon>
-                <RadioGroupItemLabel>Perder peso</RadioGroupItemLabel>
-              </RadioGroupItem>
-              <RadioGroupItem value={Goal.MAINTAIN}>
-                <RadioGroupItemIcon>🍎</RadioGroupItemIcon>
-                <RadioGroupItemLabel>Manter peso</RadioGroupItemLabel>
-              </RadioGroupItem>
-              <RadioGroupItem value={Goal.GAIN}>
-                <RadioGroupItemIcon>🍗</RadioGroupItemIcon>
-                <RadioGroupItemLabel>Ganhar peso</RadioGroupItemLabel>
-              </RadioGroupItem>
+              {goalInfo.map((goal) => (
+                <RadioGroupItem key={goal.value} value={goal.value}>
+                  <RadioGroupItemIcon>{goal.icon}</RadioGroupItemIcon>
+                  <RadioGroupItemLabel>{goal.label}</RadioGroupItemLabel>
+                </RadioGroupItem>
+              ))}
             </RadioGroup>
           )}
         />

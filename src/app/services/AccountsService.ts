@@ -1,4 +1,5 @@
 import { Service } from '@/app/services/Service';
+import { Goal } from '@/app/types/Goal';
 
 export class AccountsService extends Service {
 
@@ -24,6 +25,7 @@ namespace AccountsService {
       gender: string;
       height: number;
       weight: number;
+      goal: Goal;
     };
     goal: {
       calories: number;

@@ -1,12 +1,18 @@
+import { useAccount } from '@/app/hooks/queries/useAccount';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { MacroRainbow } from '@/ui/components/MacroRainbow';
 import { styles } from '@/ui/screens/home/components/PlanSummaryModal/styles';
 import { theme } from '@/ui/styles/theme';
+import { goalInfoByValue } from '@/ui/utils/goal';
 import { Modal, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export function PlanSummaryModal() {
+
+  const { account } = useAccount({ enabled: false });
+
+  const currentGoal = goalInfoByValue[account!.profile.goal];
 
   return (
     <Modal
@@ -20,7 +26,7 @@ export function PlanSummaryModal() {
               <View style={styles.header}>
                 <View style={styles.iconContainer}>
                   <AppText style={{ textAlign: 'center' }}>
-                    🥦
+                    {currentGoal.icon}
                   </AppText>
                 </View>
                 <View style={styles.headerContent}>
@@ -31,7 +37,7 @@ export function PlanSummaryModal() {
                     style={styles.title}
                   >
                     Seu plano de dieta {'\n'} para {''}
-                    <Text style={styles.titleHighlight}>Perder Peso</Text>
+                    <Text style={styles.titleHighlight}>{currentGoal.label}</Text>
                     {'\n'} está pronto!
                   </AppText>
                   <AppText
@@ -46,10 +52,10 @@ export function PlanSummaryModal() {
               <View style={styles.rainbow}>
                 <MacroRainbow
                   mode='full'
-                  calories={{ goal: 2000 }}
-                  protein={{ goal: 175 }}
-                  carbs={{ goal: 200 }}
-                  fat={{ goal: 56 }}
+                  calories={{ goal: account!.goal.calories }}
+                  protein={{ goal: account!.goal.proteins }}
+                  carbs={{ goal: account!.goal.carbohydrates }}
+                  fat={{ goal: account!.goal.fats }}
                   colorText={theme.colors.gray[200]}
                 />
               </View>
