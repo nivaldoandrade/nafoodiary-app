@@ -1,3 +1,4 @@
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { useAccount } from '@/app/hooks/queries/useAccount';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
@@ -5,19 +6,29 @@ import { MacroRainbow } from '@/ui/components/MacroRainbow';
 import { styles } from '@/ui/screens/home/components/PlanSummaryModal/styles';
 import { theme } from '@/ui/styles/theme';
 import { goalInfoByValue } from '@/ui/utils/goal';
+import { useState } from 'react';
 import { Modal, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export function PlanSummaryModal() {
+  const { isSignedUp } = useAuth();
+  const [visible, setVisible] = useState(isSignedUp);
 
   const { account } = useAccount({ enabled: false });
 
   const currentGoal = goalInfoByValue[account!.profile.goal];
 
+  function handleClose() {
+    setVisible(false);
+  }
+
   return (
     <Modal
+      visible={visible}
       transparent
       statusBarTranslucent
+      animationType='fade'
+      onRequestClose={handleClose}
     >
       <View style={styles.container}>
         <SafeAreaProvider>
@@ -62,7 +73,9 @@ export function PlanSummaryModal() {
             </View>
 
             <View style={styles.footer}>
-              <ButtonApp>Começar meu plano</ButtonApp>
+              <ButtonApp onPress={handleClose}>
+                Começar meu plano
+              </ButtonApp>
             </View>
           </SafeAreaView>
         </SafeAreaProvider>

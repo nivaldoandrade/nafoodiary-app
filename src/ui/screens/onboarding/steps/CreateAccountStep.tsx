@@ -1,6 +1,6 @@
 
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { ApiError, ErrorCode, getErrorMessage } from '@/app/errors/apiErrors';
-import { AuthService } from '@/app/services/AuthService';
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
@@ -12,6 +12,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { TextInput, View } from 'react-native';
 
 export function CreateAccountStep() {
+
+  const { signUp } = useAuth();
 
   const {
     control,
@@ -27,9 +29,7 @@ export function CreateAccountStep() {
   const handleSubmit = RHFHandleSubmit(async (data) => {
     try {
 
-      const response = await AuthService.signUp(data);
-      console.log(response);
-
+      await signUp(data);
     } catch (error) {
       if (isAxiosError<ApiError>(error)) {
 

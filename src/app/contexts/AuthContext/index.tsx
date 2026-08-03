@@ -8,7 +8,9 @@ import { createContext, useCallback, useEffect, useState } from 'react';
 
 interface IAuthContext {
   isSignedIn: boolean;
+  isSignedUp: boolean;
   signIn: (params: AuthService.SignIn['params']) => Promise<void>;
+  signUp: (params: AuthService.SignUp['params']) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -19,6 +21,7 @@ interface IAuthProvider {
 }
 
 export function AuthProvider({ children }: IAuthProvider) {
+  const [isSignedUp, setIsSignedUp] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
 
@@ -66,6 +69,14 @@ export function AuthProvider({ children }: IAuthProvider) {
     await setupAuth(response.accessToken);
   }, [setupAuth]);
 
+  const signUp = useCallback(async (payload: AuthService.SignUp['params']): Promise<void> => {
+    const response = await AuthService.signUp(payload);
+
+    await AuthTokenManager.save(response);
+    await setupAuth(response.accessToken);
+    setIsSignedUp(true);
+  }, [setupAuth]);
+
   useEffect(() => {
     async function getTokens() {
       try {
@@ -98,7 +109,13 @@ export function AuthProvider({ children }: IAuthProvider) {
   }
 
   return (
-    <AuthContext.Provider value={{ isSignedIn, signIn, signOut }}>
+    <AuthContext.Provider value={{
+      isSignedIn,
+      isSignedUp,
+      signIn,
+      signUp,
+      signOut,
+    }}>
       {children}
     </AuthContext.Provider>
   );
