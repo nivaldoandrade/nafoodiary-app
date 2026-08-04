@@ -1,10 +1,13 @@
 import { AppText } from '@/ui/components/AppText';
 import { button, ButtonVariants, styles } from '@/ui/components/Button/styles';
 import { theme } from '@/ui/styles/theme';
+import { ReactNode } from 'react';
 import { ActivityIndicator, Platform, Pressable, PressableProps, View } from 'react-native';
 
 type ButtonProps = Omit<PressableProps, 'disabled'> & ButtonVariants & {
   isLoading?: boolean;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 };
 
 export function ButtonApp({
@@ -14,12 +17,18 @@ export function ButtonApp({
   disabled,
   isLoading,
   style,
+  leftIcon,
+  rightIcon,
   ...props
 }: ButtonProps) {
   const childrenElement = (
     typeof children === 'string'
       ? (
-        <AppText weight='medium'>{children}</AppText>
+        <View style={styles.content}>
+          {leftIcon}
+          <AppText weight='medium'>{children}</AppText>
+          {rightIcon}
+        </View>
       )
       : children
   );
