@@ -10,7 +10,8 @@ export const styles = StyleSheet.create({
   },
 
   content: {
-    padding: 20,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
   },
 
   divider: {

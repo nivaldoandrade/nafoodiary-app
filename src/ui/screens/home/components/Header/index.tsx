@@ -13,14 +13,12 @@ export function Header() {
           <CurrentGoal />
         </View>
         <View style={styles.divider} />
-        <View style={styles.content}>
-          <AppText
-            weight='medium'
-            style={{ letterSpacing: 1.28 }}
-          >
-            REFEIÇÕES
-          </AppText>
-        </View>
+        <AppText
+          weight='medium'
+          style={{ letterSpacing: 1.28, padding: 20, paddingBottom: 16 }}
+        >
+          REFEIÇÕES
+        </AppText>
       </View>
 
     </View>
