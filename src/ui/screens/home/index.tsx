@@ -1,5 +1,6 @@
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
+import { ListEmpty } from '@/ui/screens/home/components/ListEmpty';
 import { ListFooterComponent } from '@/ui/screens/home/components/ListFooterComponent';
 import { MealItem } from '@/ui/screens/home/components/MealItem';
 import { PlanSummaryModal } from '@/ui/screens/home/components/PlanSummaryModal';
@@ -30,7 +31,7 @@ export function Home() {
     <View style={[styles.container]}>
       <PlanSummaryModal />
       <FlatList
-        data={DATA}
+        data={[]}
         keyExtractor={item => String(item)}
         contentInset={{ top: top }}
         contentOffset={{ x: 0, y: -top }}
@@ -41,9 +42,10 @@ export function Home() {
             progressViewOffset={top}
           />
         }
-        contentContainerStyle={[styles.flatListContent, {
+        contentContainerStyle={{
           paddingTop: Platform.OS === 'android' ? top : 0,
-        }]}
+        }}
+        ListEmptyComponent={ListEmpty}
         ListHeaderComponent={Header}
         ListFooterComponent={ListFooterComponent}
         ItemSeparatorComponent={ItemSeparatorComponent}

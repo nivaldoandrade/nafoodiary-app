@@ -3,7 +3,9 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: theme.colors.lime[400],
+    minHeight: '100%',
+    backgroundColor: theme.colors.white,
+    paddingHorizontal: 20,
+    gap: 16,
   },
 });
