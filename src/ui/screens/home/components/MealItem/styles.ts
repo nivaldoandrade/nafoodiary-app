@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     gap: 16,
+    backgroundColor: theme.colors.white,
   },
 
   mealItem: {

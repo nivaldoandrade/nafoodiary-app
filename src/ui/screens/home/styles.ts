@@ -1,5 +1,5 @@
 import { theme } from '@/ui/styles/theme';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,9 +8,6 @@ export const styles = StyleSheet.create({
   },
 
   flatListContent: {
-    backgroundColor: theme.colors.white,
-    minHeight: '100%',
-    borderBottomRightRadius: Platform.OS === 'web' ? '' : 16,
-    borderBottomLeftRadius: Platform.OS === 'web' ? '' : 16,
+    // minHeight: '100%',
   },
 });
