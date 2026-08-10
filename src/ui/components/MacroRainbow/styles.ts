@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
   macrosRow: {
     width: '100%',
     justifyContent: 'space-between',
-    gap: 30,
     flexDirection: 'row',
     marginTop: 24,
   },
