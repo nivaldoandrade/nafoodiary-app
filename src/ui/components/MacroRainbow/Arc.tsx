@@ -73,16 +73,16 @@ export function Arc({ color, progress, mode, index = 0 }: ArcProps) {
 
   const offset = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [perimeter, perimeter * (1 - progress)],
+    outputRange: [perimeter, 0],
   });
 
   useEffect(() => {
     Animated.timing(animatedValue, {
-      toValue: 1,
+      toValue: progress,
       duration: 1000,
       useNativeDriver: false,
     }).start();
-  }, [animatedValue]);
+  }, [progress, animatedValue]);
 
   if (mode === 'full') {
     return (
