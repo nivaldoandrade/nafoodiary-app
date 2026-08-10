@@ -1,5 +1,5 @@
 import { MealsService } from '@/app/services/MealsService';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 export function useListMealByDay(date: Date) {
   const isoDate = date.toISOString().split('T')[0];
@@ -7,6 +7,7 @@ export function useListMealByDay(date: Date) {
   const { data, isLoading } = useQuery({
     queryKey: ['meals', isoDate],
     queryFn: () => MealsService.listByDay(isoDate),
+    placeholderData: keepPreviousData,
     staleTime: Infinity,
   });
 

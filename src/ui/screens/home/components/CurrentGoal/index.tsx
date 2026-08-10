@@ -6,12 +6,11 @@ import { styles } from '@/ui/screens/home/components/CurrentGoal/styles';
 import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { theme } from '@/ui/styles/theme';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react-native';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
 export function CurrentGoal() {
-  const { meals } = useHomeContext();
-  const [selectedDate] = useState<Date>(new Date());
+  const { meals, selectedDate, onNextDate, onPrevDate } = useHomeContext();
 
   const { account } = useAccount({ enabled: false });
 
@@ -41,7 +40,7 @@ export function CurrentGoal() {
   return (
     <View style={styles.container}>
       <View style={styles.datePicker}>
-        <ButtonApp size='icon' intent='ghost'>
+        <ButtonApp size='icon' intent='ghost' onPress={onPrevDate}>
           <ChevronLeftIcon />
         </ButtonApp>
         <AppText
@@ -51,7 +50,7 @@ export function CurrentGoal() {
         >
           {formatDateLabel(selectedDate)}
         </AppText>
-        <ButtonApp size='icon' intent='ghost'>
+        <ButtonApp size='icon' intent='ghost' onPress={onNextDate}>
           <ChevronRightIcon />
         </ButtonApp>
       </View>

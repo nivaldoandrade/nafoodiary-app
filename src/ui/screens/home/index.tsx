@@ -13,12 +13,29 @@ import { FlatList, Platform, RefreshControl, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function Home() {
+  const [selectedDate, setSelectedDate] = useState(new Date(2026, 5, 28));
   const [refreshing, setRefreshing] = useState(false);
   const { isSignedUp } = useAuth();
 
-  const { meals, isLoading } = useListMealByDay(new Date(2026, 5, 28));
+  const { meals, isLoading } = useListMealByDay(selectedDate);
 
   const { top, bottom } = useSafeAreaInsets();
+
+  function handleNextDate() {
+    setSelectedDate(prevState => {
+      const next = new Date(prevState);
+      next.setDate(next.getDate() + 1);
+      return next;
+    });
+  }
+
+  function handlePrevDate() {
+    setSelectedDate(prevState => {
+      const next = new Date(prevState);
+      next.setDate(next.getDate() - 1);
+      return next;
+    });
+  }
 
   async function handleRefresh() {
     setRefreshing(true);
@@ -36,7 +53,12 @@ export function Home() {
     <View style={[styles.container]}>
       <PlanSummaryModal />
 
-      <HomeProvider meals={meals}>
+      <HomeProvider
+        meals={meals}
+        selectedDate={selectedDate}
+        onNextDate={handleNextDate}
+        onPrevDate={handlePrevDate}
+      >
         <FlatList
           data={meals}
           keyExtractor={item => item.id}
