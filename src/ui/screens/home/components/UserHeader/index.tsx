@@ -1,3 +1,4 @@
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { useAccount } from '@/app/hooks/queries/useAccount';
 import { AppText } from '@/ui/components/AppText';
 import { Avatar } from '@/ui/components/Avatar';
@@ -8,6 +9,7 @@ import { TargetIcon } from 'lucide-react-native';
 import { View } from 'react-native';
 
 export function UserHeader() {
+  const { signOut } = useAuth();
 
   const { account } = useAccount({ enabled: false });
 
@@ -27,6 +29,7 @@ export function UserHeader() {
       <ButtonApp
         intent='ghost'
         leftIcon={<TargetIcon />}
+        onPress={signOut}
       >
         Metas
       </ButtonApp>

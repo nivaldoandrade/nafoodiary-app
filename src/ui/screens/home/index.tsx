@@ -1,19 +1,22 @@
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
+import { useListMealByDay } from '@/app/hooks/queries/useListMealByDay';
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
 import { ListEmpty } from '@/ui/screens/home/components/ListEmpty';
 import { ListFooterComponent } from '@/ui/screens/home/components/ListFooterComponent';
 import { MealItem } from '@/ui/screens/home/components/MealItem';
 import { PlanSummaryModal } from '@/ui/screens/home/components/PlanSummaryModal';
+import { SplashScreenLoader } from '@/ui/screens/home/components/SplashScreenLoader';
 import { styles } from '@/ui/screens/home/styles';
 import { useState } from 'react';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// const DATA = Array.from({ length: 23 }, () => Math.floor(Math.random() * 1000));
-const DATA = [1, 2, 3, 4, 5, 6];
-
 export function Home() {
   const [refreshing, setRefreshing] = useState(false);
+  const { isSignedUp } = useAuth();
+
+  const { meals, isLoading } = useListMealByDay(new Date(2026, 5, 28));
 
   const { top } = useSafeAreaInsets();
 
@@ -27,12 +30,15 @@ export function Home() {
     setRefreshing(false);
   }
 
+  const showSplash = isLoading && !isSignedUp;
+
   return (
     <View style={[styles.container]}>
       <PlanSummaryModal />
+
       <FlatList
-        data={[]}
-        keyExtractor={item => String(item)}
+        data={meals}
+        keyExtractor={item => item.id}
         contentInset={{ top: top }}
         contentOffset={{ x: 0, y: -top }}
         refreshControl={
@@ -51,6 +57,8 @@ export function Home() {
         ItemSeparatorComponent={ItemSeparatorComponent}
         renderItem={({ item }) => <MealItem />}
       />
+
+      <SplashScreenLoader visible={showSplash} />
     </View>
   );
 }
