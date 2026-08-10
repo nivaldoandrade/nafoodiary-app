@@ -3,7 +3,6 @@ import { useListMealByDay } from '@/app/hooks/queries/useListMealByDay';
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
 import { ListEmpty } from '@/ui/screens/home/components/ListEmpty';
-import { ListFooterComponent } from '@/ui/screens/home/components/ListFooterComponent';
 import { MealItem } from '@/ui/screens/home/components/MealItem';
 import { PlanSummaryModal } from '@/ui/screens/home/components/PlanSummaryModal';
 import { SplashScreenLoader } from '@/ui/screens/home/components/SplashScreenLoader';
@@ -17,9 +16,9 @@ export function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const { isSignedUp } = useAuth();
 
-  const { meals, isLoading } = useListMealByDay(new Date(2026, 5, 27));
+  const { meals, isLoading } = useListMealByDay(new Date(2026, 5, 28));
 
-  const { top } = useSafeAreaInsets();
+  const { top, bottom } = useSafeAreaInsets();
 
   async function handleRefresh() {
     setRefreshing(true);
@@ -50,13 +49,14 @@ export function Home() {
               progressViewOffset={top}
             />
           }
-          contentContainerStyle={{
+          contentContainerStyle={[styles.flatListContainer, {
             paddingTop: Platform.OS === 'android' ? top : 0,
-          }}
+            paddingBottom: Platform.OS === 'web' ? 32 : bottom,
+          }]}
           ListEmptyComponent={ListEmpty}
           ListHeaderComponent={Header}
-          ListFooterComponent={ListFooterComponent}
           ItemSeparatorComponent={ItemSeparatorComponent}
+          // ListFooterComponent={ListFooterComponent}
           renderItem={({ item: meal }) => <MealItem meal={meal} />}
         />
       </HomeProvider>
