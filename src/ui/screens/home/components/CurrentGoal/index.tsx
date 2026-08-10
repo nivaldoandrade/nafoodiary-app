@@ -3,15 +3,40 @@ import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { MacroRainbow } from '@/ui/components/MacroRainbow';
 import { styles } from '@/ui/screens/home/components/CurrentGoal/styles';
+import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { theme } from '@/ui/styles/theme';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react-native';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 export function CurrentGoal() {
+  const { meals } = useHomeContext();
   const [selectedDate] = useState<Date>(new Date());
 
   const { account } = useAccount({ enabled: false });
+
+  const summary = useMemo(() => {
+    const result = meals.flatMap(meal => meal.foods).reduce((acc, item) => {
+      acc.calories += item.calories;
+      acc.proteins = acc.proteins + item.proteins;
+      acc.carbohydrates += item.carbohydrates;
+      acc.fats += item.fats;
+
+      return acc;
+    }, {
+      calories: 0,
+      proteins: 0,
+      carbohydrates: 0,
+      fats: 0,
+    });
+
+    return {
+      calories: Math.round(result.calories),
+      proteins: parseFloat(result.proteins.toFixed(1)),
+      carbohydrates: parseFloat(result.carbohydrates.toFixed(1)),
+      fats: parseFloat(result.fats.toFixed(1)),
+    };
+  }, [meals]);
 
   return (
     <View style={styles.container}>
@@ -33,10 +58,10 @@ export function CurrentGoal() {
       <View style={{ paddingHorizontal: 25 }}>
         <MacroRainbow
           mode='progress'
-          calories={{ current: account!.goal.calories, goal: 2000 }}
-          protein={{ current: account!.goal.proteins, goal: 200 }}
-          carbs={{ current: account!.goal.carbohydrates, goal: 150 }}
-          fat={{ current: account!.goal.fats, goal: 100 }}
+          calories={{ current: summary.calories, goal: account!.goal.calories }}
+          protein={{ current: summary.proteins, goal: account!.goal.proteins }}
+          carbs={{ current: summary.carbohydrates, goal: account!.goal.carbohydrates }}
+          fat={{ current: summary.fats, goal: account!.goal.fats }}
           colorText={theme.colors.gray[700]}
         />
       </View>

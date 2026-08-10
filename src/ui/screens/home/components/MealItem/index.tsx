@@ -1,19 +1,54 @@
+import { Meal } from '@/app/types/Meal';
 import { AppText } from '@/ui/components/AppText';
 import { styles } from '@/ui/screens/home/components/MealItem/styles';
 import { theme } from '@/ui/styles/theme';
+import { useMemo } from 'react';
 import { View } from 'react-native';
 
-export function MealItem() {
+interface IMealItemProps {
+  meal: Meal
+}
+
+export function MealItem({ meal }: IMealItemProps) {
+
+  const formattedNameFoods = useMemo(() => {
+    return meal.foods.map(food => food.name).join(', ');
+  }, [meal.foods]);
+
+  const summaryMacros = useMemo(() => {
+    const result = meal.foods.reduce((acc, item) => {
+      acc.calories += item.calories;
+      acc.proteins = acc.proteins + item.proteins;
+      acc.carbohydrates += item.carbohydrates;
+      acc.fats += item.fats;
+
+      return acc;
+    },
+      {
+        calories: 0,
+        proteins: 0,
+        carbohydrates: 0,
+        fats: 0,
+      },
+    );
+
+    return {
+      calories: Math.round(result.calories),
+      proteins: parseFloat(result.proteins.toFixed(1)),
+      carbohydrates: parseFloat(result.carbohydrates.toFixed(1)),
+      fats: parseFloat(result.fats.toFixed(1)),
+    };
+  }, [meal.foods]);
 
   return (
     <View style={styles.container}>
       <AppText color={theme.colors.gray[700]} style={{ opacity: 0.8 }}>
-        12h15
+        {formatTime(meal.createdAt)}
       </AppText>
       <View style={styles.mealItem}>
         <View style={styles.header}>
           <View style={styles.icon}>
-            <AppText>🍞</AppText>
+            <AppText>{meal.icon}</AppText>
           </View>
           <View style={styles.info}>
             <AppText
@@ -21,10 +56,10 @@ export function MealItem() {
               size='sm'
               numberOfLines={1}
             >
-              Café da manhã
+              {meal.name}
             </AppText>
             <AppText weight='medium' numberOfLines={1} >
-              Pão, manteiga e café
+              {formattedNameFoods}
             </AppText>
           </View>
         </View>
@@ -32,13 +67,13 @@ export function MealItem() {
           <View style={styles.macrosRow}>
             <View style={styles.macroItem}>
               <MacroValue color={theme.colors.support.tomato}>
-                210
+                {summaryMacros.calories}
               </MacroValue>
               <MacroLabel>Kcal</MacroLabel>
             </View>
             <View style={styles.macroItem}>
               <MacroValue color={theme.colors.support.teal}>
-                5g
+                {summaryMacros.proteins}g
               </MacroValue>
               <MacroLabel>Proteínas</MacroLabel>
             </View>
@@ -46,13 +81,13 @@ export function MealItem() {
           <View style={styles.macrosRow}>
             <View style={styles.macroItem}>
               <MacroValue color={theme.colors.support.yellow}>
-                25g
+                {summaryMacros.carbohydrates}g
               </MacroValue>
               <MacroLabel>Carboidratos</MacroLabel>
             </View>
             <View style={styles.macroItem}>
               <MacroValue color={theme.colors.support.orange}>
-                9g
+                {summaryMacros.fats}g
               </MacroValue>
               <MacroLabel>Gorduras</MacroLabel>
             </View>
@@ -82,5 +117,13 @@ function MacroLabel({ children }: { children: React.ReactNode }) {
       {children}
     </AppText>
   );
+}
+
+function formatTime(dateString: string) {
+  const date = new Date(dateString);
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${hours}h${minutes}`;
 }
 
