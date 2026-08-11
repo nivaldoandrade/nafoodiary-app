@@ -7,8 +7,13 @@ export const styles = StyleSheet.create({
     gap: 16,
   },
 
-  buttonContainer: {
+  buttonWrapper: {
     flex: 1,
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+
+  buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     gap: 16,
@@ -17,6 +22,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderColor: theme.colors.gray[300],
+    userSelect: 'none',
   },
 
   icon: {
