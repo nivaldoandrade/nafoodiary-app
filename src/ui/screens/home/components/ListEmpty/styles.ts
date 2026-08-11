@@ -1,9 +1,9 @@
 import { theme } from '@/ui/styles/theme';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    minHeight: '100%',
+    minHeight: Platform.OS === 'web' ? 'auto' : '100%',
     backgroundColor: theme.colors.white,
     paddingHorizontal: 20,
     gap: 16,
