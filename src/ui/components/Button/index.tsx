@@ -39,8 +39,14 @@ export function ButtonApp({
         android_ripple={{ color: 'rgba(0, 0, 0, 0.2)' }}
         style={({ pressed }) => [
           button({ intent, size, disabled: disabled || isLoading }),
-          pressed && Platform.OS === 'ios' && { opacity: 0.7 },
           typeof style === 'function' ? style({ pressed }) : style,
+          pressed && {
+            ...Platform.select({
+              ios: { opacity: 0.7 },
+              web: { opacity: 0.4 },
+              default: null,
+            }),
+          },
         ]}
         disabled={disabled}
         {...props}

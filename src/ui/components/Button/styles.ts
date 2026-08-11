@@ -18,6 +18,7 @@ export const button = cva({
   base: {
     alignItems: 'center',
     justifyContent: 'center',
+    userSelect: 'none',
   },
   variants: {
     intent: {
