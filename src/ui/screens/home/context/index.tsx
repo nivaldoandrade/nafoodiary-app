@@ -3,6 +3,7 @@ import { createContext } from 'react';
 
 interface IHomeContextProps {
   meals: Meal[];
+  isLoading: boolean;
   selectedDate: Date;
   onNextDate: () => void;
   onPrevDate: () => void;
@@ -16,6 +17,7 @@ interface IHomeProvider extends IHomeContextProps {
 export function HomeProvider({
   children,
   meals,
+  isLoading,
   selectedDate,
   onNextDate,
   onPrevDate,
@@ -24,6 +26,7 @@ export function HomeProvider({
   return (
     <HomeContext.Provider value={{
       meals,
+      isLoading,
       selectedDate,
       onNextDate,
       onPrevDate,

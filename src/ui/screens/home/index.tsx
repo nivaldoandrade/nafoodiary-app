@@ -17,7 +17,7 @@ export function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const { isSignedUp } = useAuth();
 
-  const { meals, isLoading } = useListMealByDay(selectedDate);
+  const { meals, initialLoading, isLoading } = useListMealByDay(selectedDate);
 
   const { top, bottom } = useSafeAreaInsets();
 
@@ -47,7 +47,7 @@ export function Home() {
     setRefreshing(false);
   }
 
-  const showSplash = isLoading && !isSignedUp;
+  const showSplash = initialLoading && !isSignedUp;
 
   return (
     <View style={[styles.container]}>
@@ -55,6 +55,7 @@ export function Home() {
 
       <HomeProvider
         meals={meals}
+        isLoading={isLoading}
         selectedDate={selectedDate}
         onNextDate={handleNextDate}
         onPrevDate={handlePrevDate}
@@ -78,7 +79,6 @@ export function Home() {
           ListEmptyComponent={ListEmpty}
           ListHeaderComponent={Header}
           ItemSeparatorComponent={ItemSeparatorComponent}
-          // ListFooterComponent={ListFooterComponent}
           renderItem={({ item: meal }) => <MealItem meal={meal} />}
         />
       </HomeProvider>

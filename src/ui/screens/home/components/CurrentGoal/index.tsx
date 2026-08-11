@@ -10,6 +10,7 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 
 export function CurrentGoal() {
+  const { isLoading } = useHomeContext();
   const { meals, selectedDate, onNextDate, onPrevDate } = useHomeContext();
 
   const { account } = useAccount({ enabled: false });
@@ -40,7 +41,12 @@ export function CurrentGoal() {
   return (
     <View style={styles.container}>
       <View style={styles.datePicker}>
-        <ButtonApp size='icon' intent='ghost' onPress={onPrevDate}>
+        <ButtonApp
+          size='icon'
+          intent='ghost'
+          disabled={isLoading}
+          onPress={onPrevDate}
+        >
           <ChevronLeftIcon />
         </ButtonApp>
         <AppText
@@ -50,7 +56,12 @@ export function CurrentGoal() {
         >
           {formatDateLabel(selectedDate)}
         </AppText>
-        <ButtonApp size='icon' intent='ghost' onPress={onNextDate}>
+        <ButtonApp
+          size='icon'
+          intent='ghost'
+          disabled={isLoading}
+          onPress={onNextDate}
+        >
           <ChevronRightIcon />
         </ButtonApp>
       </View>

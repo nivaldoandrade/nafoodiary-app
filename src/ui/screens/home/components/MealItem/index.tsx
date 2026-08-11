@@ -1,6 +1,7 @@
 import { Meal } from '@/app/types/Meal';
 import { AppText } from '@/ui/components/AppText';
 import { styles } from '@/ui/screens/home/components/MealItem/styles';
+import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { theme } from '@/ui/styles/theme';
 import { useMemo } from 'react';
 import { View } from 'react-native';
@@ -10,6 +11,8 @@ interface IMealItemProps {
 }
 
 export function MealItem({ meal }: IMealItemProps) {
+
+  const { isLoading } = useHomeContext();
 
   const formattedNameFoods = useMemo(() => {
     return meal.foods.map(food => food.name).join(', ');
@@ -41,7 +44,7 @@ export function MealItem({ meal }: IMealItemProps) {
   }, [meal.foods]);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { opacity: isLoading ? 0.4 : 1 }]}>
       <AppText color={theme.colors.gray[700]} style={{ opacity: 0.8 }}>
         {formatTime(meal.createdAt)}
       </AppText>
