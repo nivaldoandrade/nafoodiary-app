@@ -1,5 +1,3 @@
-import { useAuth } from '@/app/contexts/AuthContext/useAuth';
-import { useListMealByDay } from '@/app/hooks/queries/useListMealByDay';
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
 import { ListEmpty } from '@/ui/screens/home/components/ListEmpty';
@@ -8,46 +6,23 @@ import { PlanSummaryModal } from '@/ui/screens/home/components/PlanSummaryModal'
 import { SplashScreenLoader } from '@/ui/screens/home/components/SplashScreenLoader';
 import { HomeProvider } from '@/ui/screens/home/context';
 import { styles } from '@/ui/screens/home/styles';
-import { useState } from 'react';
+import { useHome } from '@/ui/screens/home/useHome';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function Home() {
-  const [selectedDate, setSelectedDate] = useState(new Date(2026, 5, 28));
-  const [refreshing, setRefreshing] = useState(false);
-  const { isSignedUp } = useAuth();
 
-  const { meals, initialLoading, isLoading } = useListMealByDay(selectedDate);
-
-  const { top, bottom } = useSafeAreaInsets();
-
-  function handleNextDate() {
-    setSelectedDate(prevState => {
-      const next = new Date(prevState);
-      next.setDate(next.getDate() + 1);
-      return next;
-    });
-  }
-
-  function handlePrevDate() {
-    setSelectedDate(prevState => {
-      const next = new Date(prevState);
-      next.setDate(next.getDate() - 1);
-      return next;
-    });
-  }
-
-  async function handleRefresh() {
-    setRefreshing(true);
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    });
-
-    setRefreshing(false);
-  }
-
-  const showSplash = initialLoading && !isSignedUp;
+  const {
+    selectedDate,
+    refreshing,
+    meals,
+    isLoading,
+    top,
+    bottom,
+    handleNextDate,
+    handlePrevDate,
+    handleRefresh,
+    showSplash,
+  } = useHome();
 
   return (
     <View style={[styles.container]}>

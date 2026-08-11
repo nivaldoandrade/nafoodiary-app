@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 export function useListMealByDay(date: Date) {
   const isoDate = date.toISOString().split('T')[0];
 
-  const { data, isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching, refetch } = useQuery({
     queryKey: ['meals', isoDate],
     queryFn: () => MealsService.listByDay(isoDate),
     placeholderData: keepPreviousData,
@@ -15,5 +15,6 @@ export function useListMealByDay(date: Date) {
     meals: data?.meals ?? [],
     initialLoading: isLoading,
     isLoading: isFetching,
+    refetch,
   };
 }
