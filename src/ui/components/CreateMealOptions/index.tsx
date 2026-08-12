@@ -1,4 +1,5 @@
 import { AppText } from '@/ui/components/AppText';
+import { AudioModal } from '@/ui/components/AudioModal';
 import { styles } from '@/ui/components/CreateMealOptions/styles';
 import { CameraIcon, LucideIcon, MicIcon } from 'lucide-react-native';
 import { Platform, Pressable, View } from 'react-native';
@@ -14,6 +15,8 @@ export function CreateMealOptions({
 
   return (
     <View style={styles.container}>
+      <AudioModal />
+
       <OptionButton icon={MicIcon} label='Áudio' disabled={disabled} />
       <OptionButton icon={CameraIcon} label='Foto' disabled={disabled} />
     </View>
