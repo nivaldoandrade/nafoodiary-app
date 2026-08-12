@@ -1,3 +1,5 @@
+import * as SystemUI from 'expo-system-ui';
+
 import { Logo } from '@/ui/components/Logo';
 import { theme } from '@/ui/styles/theme';
 import { useEffect, useState } from 'react';
@@ -16,6 +18,18 @@ interface ISplashScreenLoader {
 export function SplashScreenLoader({ visible }: ISplashScreenLoader) {
 
   const [opacityAnimated] = useState(() => new Animated.Value(visible ? 1 : 0));
+
+  useEffect(() => {
+    if (!(Platform.OS === 'web' && visible)) {
+      return;
+    }
+
+    SystemUI.setBackgroundColorAsync(theme.colors.lime[700]);
+
+    return () => {
+      SystemUI.setBackgroundColorAsync(null);
+    };
+  }, [visible]);
 
   useEffect(() => {
     if (!visible) {

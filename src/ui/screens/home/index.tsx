@@ -7,11 +7,13 @@ import { SplashScreenLoader } from '@/ui/screens/home/components/SplashScreenLoa
 import { HomeProvider } from '@/ui/screens/home/context';
 import { styles } from '@/ui/screens/home/styles';
 import { useHome } from '@/ui/screens/home/useHome';
+import { theme } from '@/ui/styles/theme';
 import { StatusBar } from 'expo-status-bar';
+import * as SystemUI from 'expo-system-ui';
+import { useEffect } from 'react';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
 
 export function Home() {
-
   const {
     selectedDate,
     refreshing,
@@ -24,6 +26,17 @@ export function Home() {
     handleRefresh,
     showSplash,
   } = useHome();
+
+  useEffect(() => {
+    if (!(Platform.OS === 'web' && !showSplash)) {
+      return;
+    }
+    SystemUI.setBackgroundColorAsync(theme.colors.lime[400]);
+
+    return () => {
+      SystemUI.setBackgroundColorAsync(null);
+    };
+  }, [showSplash]);
 
   return (
     <View style={[styles.container]}>
