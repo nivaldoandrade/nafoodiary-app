@@ -7,6 +7,7 @@ import { SplashScreenLoader } from '@/ui/screens/home/components/SplashScreenLoa
 import { HomeProvider } from '@/ui/screens/home/context';
 import { styles } from '@/ui/screens/home/styles';
 import { useHome } from '@/ui/screens/home/useHome';
+import { StatusBar } from 'expo-status-bar';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
 
 export function Home() {
@@ -26,6 +27,7 @@ export function Home() {
 
   return (
     <View style={[styles.container]}>
+      <StatusBar style='dark' />
       <PlanSummaryModal />
 
       <HomeProvider
@@ -48,7 +50,6 @@ export function Home() {
             />
           }
           contentContainerStyle={[styles.flatListContainer, {
-            paddingTop: Platform.OS === 'android' ? top : 0,
             paddingBottom: Platform.OS === 'web' ? 32 : bottom,
           }]}
           ListEmptyComponent={ListEmpty}

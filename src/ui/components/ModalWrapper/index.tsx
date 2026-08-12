@@ -1,6 +1,7 @@
 import { ButtonApp } from '@/ui/components/Button';
 import { styles } from '@/ui/components/ModalWrapper/styles';
 import { theme } from '@/ui/styles/theme';
+import { StatusBar } from 'expo-status-bar';
 import { XIcon } from 'lucide-react-native';
 import { Modal, StyleProp, View, ViewStyle } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -27,6 +28,7 @@ export function ModalWrapper({
       animationType="slide"
       onRequestClose={onCloseModal}
     >
+      <StatusBar style='light' />
       <View style={styles.container}>
         <SafeAreaProvider>
           <SafeAreaView style={[styles.wrapper, style]}>
