@@ -11,13 +11,21 @@ import { theme } from '@/ui/styles/theme';
 import { MicIcon } from 'lucide-react-native';
 import { View } from 'react-native';
 
-export function AudioModal() {
+interface IAudioModalProps {
+  visible: boolean;
+  onClose: () => void;
+}
 
+export function AudioModal({ visible, onClose }: IAudioModalProps) {
   const isRecording = false;
 
   return (
-    <ModalWrapper style={styles.wrapper}>
-      <ModalHeader style={styles.header} />
+    <ModalWrapper
+      style={styles.wrapper}
+      visible={visible}
+      onCloseModal={onClose}
+    >
+      <ModalHeader style={styles.header} onPress={onClose} />
       <ModalContent style={styles.content}>
         <View style={[styles.circle1, isRecording && styles.circle1Recording]}>
           <View style={[styles.circle2, isRecording && styles.circle2Recording]}>
@@ -36,7 +44,7 @@ export function AudioModal() {
           <MicIcon size={20} color={theme.colors.lime[600]} />
         </ButtonApp>
         <AppText color={theme.colors.gray[500]} style={{ textAlign: 'center' }}>
-          Clique no microfone{'\n'}para começar a gravar
+          Toque no microfone{'\n'}para começar a gravar
         </AppText>
       </ModalFooter>
     </ModalWrapper>

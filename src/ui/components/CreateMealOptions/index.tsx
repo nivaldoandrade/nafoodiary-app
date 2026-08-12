@@ -2,34 +2,53 @@ import { AppText } from '@/ui/components/AppText';
 import { AudioModal } from '@/ui/components/AudioModal';
 import { styles } from '@/ui/components/CreateMealOptions/styles';
 import { CameraIcon, LucideIcon, MicIcon } from 'lucide-react-native';
-import { Platform, Pressable, View } from 'react-native';
+import { useState } from 'react';
+import { Platform, Pressable, PressableProps, View } from 'react-native';
 
 interface ICreateMealOptionsProps {
   disabled?: boolean;
 }
 
+type ModalTypeOption = 'audio' | 'photo' | null
+
 export function CreateMealOptions({
   disabled,
 }: ICreateMealOptionsProps,
 ) {
+  const [modalTypeOption, setModalTypeOption] = useState<ModalTypeOption>(null);
+
+  function handleOpenModal(type: ModalTypeOption) {
+    setModalTypeOption(type);
+  }
+
+  function handleCloseModal() {
+    setModalTypeOption(null);
+  }
 
   return (
     <View style={styles.container}>
-      <AudioModal />
+      <AudioModal
+        visible={modalTypeOption === 'audio'}
+        onClose={handleCloseModal}
+      />
 
-      <OptionButton icon={MicIcon} label='Áudio' disabled={disabled} />
+      <OptionButton
+        icon={MicIcon}
+        label='Áudio'
+        disabled={disabled}
+        onPress={() => handleOpenModal('audio')}
+      />
       <OptionButton icon={CameraIcon} label='Foto' disabled={disabled} />
     </View>
   );
 }
 
-interface IOptionButtonProps {
+interface IOptionButtonProps extends PressableProps {
   icon: LucideIcon;
   label: string;
-  disabled?: boolean;
 }
 
-function OptionButton({ icon: Icon, label, disabled = false }: IOptionButtonProps) {
+function OptionButton({ icon: Icon, label, disabled = false, ...props }: IOptionButtonProps) {
   return (
     <View style={styles.buttonWrapper}>
       <Pressable
@@ -45,6 +64,7 @@ function OptionButton({ icon: Icon, label, disabled = false }: IOptionButtonProp
             }),
           },
         ]}
+        {...props}
       >
         <View style={styles.icon}>
           <Icon size={24} />

@@ -8,14 +8,24 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 interface IModalWrapperProps {
   children: React.ReactNode
   style?: StyleProp<ViewStyle>;
+  visible?: boolean;
+  onCloseModal: () => void;
 }
 
-export function ModalWrapper({ children, style }: IModalWrapperProps) {
+export function ModalWrapper({
+  children,
+  style,
+  visible,
+  onCloseModal,
+}: IModalWrapperProps) {
 
   return (
     <Modal
-      visible={true}
+      visible={visible}
+      transparent
+      statusBarTranslucent
       animationType="slide"
+      onRequestClose={onCloseModal}
     >
       <View style={styles.container}>
         <SafeAreaProvider>
@@ -30,13 +40,14 @@ export function ModalWrapper({ children, style }: IModalWrapperProps) {
 
 interface IModalHeaderProps {
   style?: StyleProp<ViewStyle>;
+  onPress: () => void;
 }
 
-export function ModalHeader({ style }: IModalHeaderProps) {
+export function ModalHeader({ style, onPress }: IModalHeaderProps) {
 
   return (
     <View style={[styles.header, style]}>
-      <ButtonApp intent='neutral' size='icon'>
+      <ButtonApp intent='neutral' size='icon' onPress={onPress}>
         <XIcon size={20} color={theme.colors.gray[500]} />
       </ButtonApp>
     </View>

@@ -5,7 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function useHome() {
 
-  const [selectedDate, setSelectedDate] = useState(new Date(2026, 5, 28));
+  const [selectedDate, setSelectedDate] = useState(new Date(2026, 5, 29));
   const [refreshing, setRefreshing] = useState(false);
   const { isSignedUp } = useAuth();
 
