@@ -1,6 +1,6 @@
 import { AppText } from '@/ui/components/AppText';
+import { Actions } from '@/ui/components/AudioModal/Actions';
 import { styles } from '@/ui/components/AudioModal/styles';
-import { ButtonApp } from '@/ui/components/Button';
 import {
   ModalContent,
   ModalFooter,
@@ -8,8 +8,16 @@ import {
   ModalWrapper,
 } from '@/ui/components/ModalWrapper';
 import { theme } from '@/ui/styles/theme';
-import { MicIcon } from 'lucide-react-native';
+import {
+  AudioModule,
+  RecordingPresets,
+  setAudioModeAsync,
+  useAudioRecorder,
+} from 'expo-audio';
+import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
+
+export type ActionType = 'startRecord' | 'recording' | 'reviewing';
 
 interface IAudioModalProps {
   visible: boolean;
@@ -17,7 +25,59 @@ interface IAudioModalProps {
 }
 
 export function AudioModal({ visible, onClose }: IAudioModalProps) {
-  const isRecording = false;
+  const [recordingStatus, setRecordingStatus] = useState<ActionType>('startRecord');
+  const [recordedUri, setRecordedUri] = useState<string | null>(null);
+
+  const audioRecorder = useAudioRecorder(RecordingPresets.LOW_QUALITY);
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    (async () => {
+
+      const status = await AudioModule.requestRecordingPermissionsAsync();
+      if (!status.granted) {
+        alert('Permission to access microphone was denied');
+      }
+
+      setAudioModeAsync({
+        playsInSilentMode: true,
+        allowsRecording: true,
+      });
+    })();
+  }, [visible]);
+
+  const handleChangeRecordingStatus = useCallback(
+    async (actionType: ActionType) => {
+      if (actionType === 'recording') {
+        try {
+          await audioRecorder.prepareToRecordAsync();
+          audioRecorder.record();
+        } catch {
+          alert('Permission to access microphone was denied');
+          return;
+        }
+      }
+
+      if (actionType === 'reviewing') {
+        await audioRecorder.stop();
+        setRecordedUri(audioRecorder.uri);
+      }
+
+      setRecordingStatus(actionType);
+    }, [audioRecorder]);
+
+  function handleTryAgain() {
+    setRecordingStatus('startRecord');
+  }
+
+  function handleSend() {
+    alert('Enviando o arquivo do audio');
+  }
+
+  const isRecording = recordingStatus === 'recording';
 
   return (
     <ModalWrapper
@@ -40,13 +100,16 @@ export function AudioModal({ visible, onClose }: IAudioModalProps) {
         </View>
       </ModalContent>
       <ModalFooter style={styles.footer}>
-        <ButtonApp intent='neutral' size='icon'>
-          <MicIcon size={20} color={theme.colors.lime[600]} />
-        </ButtonApp>
-        <AppText color={theme.colors.gray[500]} style={{ textAlign: 'center' }}>
-          Toque no microfone{'\n'}para começar a gravar
-        </AppText>
+        <Actions
+          actionType={recordingStatus}
+          onTryAgain={handleTryAgain}
+          onSend={handleSend}
+          onChangeRecordingStatus={handleChangeRecordingStatus}
+          recordedUri={recordedUri}
+          audioRecorder={audioRecorder}
+        />
       </ModalFooter>
     </ModalWrapper>
   );
 }
+
