@@ -1,3 +1,4 @@
+import { Fab } from '@/ui/screens/home/components/Fab';
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
 import { ListEmpty } from '@/ui/screens/home/components/ListEmpty';
@@ -71,6 +72,8 @@ export function Home() {
           renderItem={({ item: meal }) => <MealItem meal={meal} />}
         />
       </HomeProvider>
+
+      {meals.length > 0 && <Fab />}
 
       <SplashScreenLoader visible={showSplash} />
     </View>
