@@ -29,6 +29,7 @@ export async function getFileInfo(fileOrUri: string | globalThis.File) {
     const mimeType = filename.endsWith('.jpg') ? 'image/jpeg' : 'audio/m4a';
 
     return {
+      filename: filename,
       size: fileInfo.size,
       mimeType,
     } as const;

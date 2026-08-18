@@ -31,6 +31,15 @@ export class MealsService extends Service {
       },
     );
 
+    await this.uploadPresignedPOST({
+      uploadSignature: data.uploadSignature,
+      file: params.file ? params.file : {
+        name: params.filename!,
+        type: params.contentType,
+        uri: params.uri,
+      },
+    });
+
     return {
       mealId: data.mealId,
     };
@@ -52,6 +61,8 @@ export namespace MealsService {
 
   export type Create = {
     params: {
+      uri: string;
+      filename: string | undefined;
       contentType: string;
       fileSize: number;
       file: File | undefined
