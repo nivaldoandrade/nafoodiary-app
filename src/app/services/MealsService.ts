@@ -23,8 +23,13 @@ export class MealsService extends Service {
     params: MealsService.Create['params'],
   ): Promise<MealsService.Create['response']> {
 
-    const { data } = await this.client
-      .post<MealsService.Create['rawResponse']>('create-meal', { ...params });
+    const { data } = await this.client.post<MealsService.Create['rawResponse']>(
+      'create-meal',
+      {
+        contentType: params.contentType,
+        fileSize: params.fileSize,
+      },
+    );
 
     return {
       mealId: data.mealId,
@@ -47,8 +52,9 @@ export namespace MealsService {
 
   export type Create = {
     params: {
-      contentType: 'audio/m4a' | 'image/jpeg';
+      contentType: string;
       fileSize: number;
+      file: File | undefined
     },
 
     rawResponse: {
