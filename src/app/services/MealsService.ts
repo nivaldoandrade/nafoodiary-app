@@ -19,9 +19,21 @@ export class MealsService extends Service {
     return data;
   }
 
+  static async create(
+    params: MealsService.Create['params'],
+  ): Promise<MealsService.Create['response']> {
+
+    const { data } = await this.client
+      .post<MealsService.Create['rawResponse']>('create-meal', { ...params });
+
+    return {
+      mealId: data.mealId,
+    };
+  }
+
 }
 
-namespace MealsService {
+export namespace MealsService {
 
   export type ListByDayResponse = {
     meals: {
@@ -32,4 +44,18 @@ namespace MealsService {
       createdAt: string;
     }[]
   };
+
+  export type Create = {
+    params: {
+      contentType: 'audio/m4a' | 'image/jpeg';
+      fileSize: number;
+    },
+
+    rawResponse: {
+      mealId: string;
+      uploadSignature: string;
+    }
+
+    response: Omit<MealsService.Create['rawResponse'], 'uploadSignature'>;
+  }
 }

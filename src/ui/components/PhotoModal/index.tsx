@@ -1,3 +1,4 @@
+import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { ModalContent, ModalFooter, ModalHeader, ModalWrapper } from '@/ui/components/ModalWrapper';
@@ -22,8 +23,18 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
-  function handleSend() {
-    alert('Enviando a foto');
+  const { createMeal } = useCreateMeal();
+
+  async function handleSend() {
+    if (!photoUri) {
+      return;
+    }
+
+    try {
+      await createMeal(photoUri);
+    } catch (error) {
+      console.error(error);
+    }
   }
   function handleTryAgain() {
     setPhotoActionType('takePhoto');

@@ -3031,6 +3031,11 @@ expo-constants@~56.0.18:
   dependencies:
     "@expo/env" "~2.3.0"
 
+expo-file-system@~56.0.10:
+  version "56.0.10"
+  resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-56.0.10.tgz#7a99d91e1496f0ce7676d142bcea1a1de3c9309d"
+  integrity sha512-qXX6lGnt0nIouZJMaaxqEMiWvDRTk+1aQxCzowZiZ22xD5VQIa25glX1/d+YpUhuB8Rh5auSdgFUbH+xliL+rg==
+
 expo-file-system@~56.0.8:
   version "56.0.8"
   resolved "https://registry.yarnpkg.com/expo-file-system/-/expo-file-system-56.0.8.tgz#025542c887433957f2fdddf8557e59f2b03abe17"
