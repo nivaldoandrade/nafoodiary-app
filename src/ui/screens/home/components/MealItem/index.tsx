@@ -1,16 +1,20 @@
+import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { Meal } from '@/app/types/Meal';
 import { AppText } from '@/ui/components/AppText';
 import { styles } from '@/ui/screens/home/components/MealItem/styles';
 import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { theme } from '@/ui/styles/theme';
+import { useNavigation } from '@react-navigation/native';
 import { useMemo } from 'react';
-import { View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 
 interface IMealItemProps {
   meal: Meal
 }
 
 export function MealItem({ meal }: IMealItemProps) {
+
+  const { navigate } = useNavigation<AppStackNavigatorProps>();
 
   const { isLoading } = useHomeContext();
 
@@ -49,53 +53,69 @@ export function MealItem({ meal }: IMealItemProps) {
         {formatTime(meal.createdAt)}
       </AppText>
       <View style={styles.mealItem}>
-        <View style={styles.header}>
-          <View style={styles.icon}>
-            <AppText>{meal.icon}</AppText>
-          </View>
-          <View style={styles.info}>
-            <AppText
-              color={theme.colors.gray[700]}
-              size='sm'
-              numberOfLines={1}
-            >
-              {meal.name}
-            </AppText>
-            <AppText weight='medium' numberOfLines={1} >
-              {formattedNameFoods}
-            </AppText>
-          </View>
-        </View>
-        <View style={styles.macrosContainer}>
-          <View style={styles.macrosRow}>
-            <View style={styles.macroItem}>
-              <MacroValue color={theme.colors.support.tomato}>
-                {summaryMacros.calories}
-              </MacroValue>
-              <MacroLabel>Kcal</MacroLabel>
+        <Pressable
+          onPress={() => navigate('MealDetails', { mealId: meal.id })}
+          android_ripple={{ color: 'rgba(0, 0, 0, 0.2)' }}
+          disabled={isLoading}
+          style={({ pressed }) => [
+            styles.buttonContainer,
+            pressed && {
+              ...Platform.select({
+                ios: { opacity: 0.7 },
+                web: { opacity: 0.4 },
+                default: null,
+              }),
+            },
+          ]}
+        >
+          <View style={styles.header}>
+            <View style={styles.icon}>
+              <AppText>{meal.icon}</AppText>
             </View>
-            <View style={styles.macroItem}>
-              <MacroValue color={theme.colors.support.teal}>
-                {summaryMacros.proteins}g
-              </MacroValue>
-              <MacroLabel>Proteínas</MacroLabel>
-            </View>
-          </View>
-          <View style={styles.macrosRow}>
-            <View style={styles.macroItem}>
-              <MacroValue color={theme.colors.support.yellow}>
-                {summaryMacros.carbohydrates}g
-              </MacroValue>
-              <MacroLabel>Carboidratos</MacroLabel>
-            </View>
-            <View style={styles.macroItem}>
-              <MacroValue color={theme.colors.support.orange}>
-                {summaryMacros.fats}g
-              </MacroValue>
-              <MacroLabel>Gorduras</MacroLabel>
+            <View style={styles.info}>
+              <AppText
+                color={theme.colors.gray[700]}
+                size='sm'
+                numberOfLines={1}
+              >
+                {meal.name}
+              </AppText>
+              <AppText weight='medium' numberOfLines={1} >
+                {formattedNameFoods}
+              </AppText>
             </View>
           </View>
-        </View>
+          <View style={styles.macrosContainer}>
+            <View style={styles.macrosRow}>
+              <View style={styles.macroItem}>
+                <MacroValue color={theme.colors.support.tomato}>
+                  {summaryMacros.calories}
+                </MacroValue>
+                <MacroLabel>Kcal</MacroLabel>
+              </View>
+              <View style={styles.macroItem}>
+                <MacroValue color={theme.colors.support.teal}>
+                  {summaryMacros.proteins}g
+                </MacroValue>
+                <MacroLabel>Proteínas</MacroLabel>
+              </View>
+            </View>
+            <View style={styles.macrosRow}>
+              <View style={styles.macroItem}>
+                <MacroValue color={theme.colors.support.yellow}>
+                  {summaryMacros.carbohydrates}g
+                </MacroValue>
+                <MacroLabel>Carboidratos</MacroLabel>
+              </View>
+              <View style={styles.macroItem}>
+                <MacroValue color={theme.colors.support.orange}>
+                  {summaryMacros.fats}g
+                </MacroValue>
+                <MacroLabel>Gorduras</MacroLabel>
+              </View>
+            </View>
+          </View>
+        </Pressable>
       </View>
     </View>
   );

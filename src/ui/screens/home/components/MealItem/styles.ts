@@ -9,6 +9,11 @@ export const styles = StyleSheet.create({
   },
 
   mealItem: {
+    borderRadius: 16,
+    overflow: 'hidden',
+  },
+
+  buttonContainer: {
     padding: 8,
     gap: 8,
     borderRadius: 16,
