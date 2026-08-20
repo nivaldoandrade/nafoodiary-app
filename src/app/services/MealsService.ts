@@ -25,7 +25,10 @@ export class MealsService extends Service {
       `meals/${mealId}`,
     );
 
-    return data;
+    return {
+      ...data,
+      createdAt: new Date(data.createdAt),
+    };
   }
 
   static async create(
