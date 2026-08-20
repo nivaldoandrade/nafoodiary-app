@@ -1,5 +1,6 @@
 import { Service } from '@/app/services/Service';
 import { Food } from '@/app/types/Food';
+import { MealItem } from '@/app/types/Meal';
 
 export class MealsService extends Service {
 
@@ -14,6 +15,14 @@ export class MealsService extends Service {
           date,
         },
       },
+    );
+
+    return data;
+  }
+
+  static async getById(mealId: string): Promise<MealsService.GetByIdResponse> {
+    const { data } = await this.client.get<MealsService.GetByIdResponse>(
+      `meals/${mealId}`,
     );
 
     return data;
@@ -75,4 +84,6 @@ export namespace MealsService {
 
     response: Omit<MealsService.Create['rawResponse'], 'uploadSignature'>;
   }
+
+  export type GetByIdResponse = MealItem;
 }

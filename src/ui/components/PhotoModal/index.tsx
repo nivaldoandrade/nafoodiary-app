@@ -1,13 +1,13 @@
-import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
+import { CreateMealLoader } from '@/ui/components/CreateMealLoader';
 import { ModalContent, ModalFooter, ModalHeader, ModalWrapper } from '@/ui/components/ModalWrapper';
 import { PhotoActions } from '@/ui/components/PhotoModal/PhotoActions';
 import { styles } from '@/ui/components/PhotoModal/styles';
+import { usePhotoModal } from '@/ui/components/PhotoModal/usePhotoModal';
 import { theme } from '@/ui/styles/theme';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { CameraView } from 'expo-camera';
 import { CameraIcon, LockIcon } from 'lucide-react-native';
-import { useRef, useState } from 'react';
 import { Image, View } from 'react-native';
 
 export type PhotoActionType = 'takePhoto' | 'reviewing';
@@ -18,38 +18,17 @@ interface IPhotoModalProps {
 }
 
 export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
-  const [photoActionType, setPhotoActionType] = useState<PhotoActionType>('takePhoto');
-  const [photoUri, setPhotoUri] = useState<string | null>(null);
-  const [permission, requestPermission] = useCameraPermissions();
-  const cameraRef = useRef<CameraView>(null);
-
-  const { createMeal } = useCreateMeal();
-
-  async function handleSend() {
-    if (!photoUri) {
-      return;
-    }
-
-    try {
-      await createMeal(photoUri);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  function handleTryAgain() {
-    setPhotoActionType('takePhoto');
-    setPhotoUri(null);
-  }
-
-  async function handleTakePicture() {
-    if (!cameraRef.current) {
-      return;
-    }
-
-    const photo = await cameraRef.current.takePictureAsync();
-    setPhotoUri(photo.uri);
-    setPhotoActionType('reviewing');
-  }
+  const {
+    photoActionType,
+    loading,
+    permission,
+    photoUri,
+    cameraRef,
+    requestPermission,
+    handleTakePicture,
+    handleTryAgain,
+    handleSend,
+  } = usePhotoModal();
 
   if (!permission) {
     return;
@@ -60,6 +39,7 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
       visible={visible}
       onCloseModal={onClose}
     >
+      <CreateMealLoader visible={loading} />
       <ModalHeader style={styles.header} onPress={onClose} />
       <ModalContent style={styles.content}>
         {!permission.granted &&

@@ -37,9 +37,17 @@ export function CreateMealLoader({ visible }: ISplashScreenLoader) {
       Animated.timing(opacityAnimated, {
         toValue: 0,
         duration: 600,
-        useNativeDriver: Platform.OS === 'web' ? false : true,
+        useNativeDriver: Boolean(Platform.OS === 'web'),
       }).start();
+
+      return;
     }
+
+    Animated.timing(opacityAnimated, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: Boolean(Platform.OS === 'web'),
+    }).start();
   }, [visible, opacityAnimated]);
 
   return (
