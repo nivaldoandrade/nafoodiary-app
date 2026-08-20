@@ -33,9 +33,11 @@ export function usePhotoModal({ onClose }: IUsePhotoModalParams) {
     }
 
     if (meal.status === 'SUCCESS') {
+
       navigate('MealDetails', { mealId: meal.id });
       onClose();
       dismiss();
+
     }
   }, [meal, navigate, onClose, dismiss]);
 

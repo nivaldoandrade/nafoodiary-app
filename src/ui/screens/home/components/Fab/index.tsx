@@ -2,7 +2,7 @@ import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { CreateMealOptions } from '@/ui/components/CreateMealOptions';
 import { styles } from '@/ui/screens/home/components/Fab/styles';
-import { BottomSheetModal, BottomSheetModalProvider, BottomSheetView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { PlusIcon } from 'lucide-react-native';
 import { useRef } from 'react';
 import { Platform, View } from 'react-native';
@@ -31,22 +31,20 @@ export function Fab() {
         </ButtonApp>
       </View>
 
-      <BottomSheetModalProvider>
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          style={styles.bottomSheetContainer}
-        >
-          <BottomSheetView style={[
-            styles.bottomSheetContent,
-            { paddingBottom: Platform.OS === 'web' ? 32 : bottom },
-          ]}>
-            <AppText size='xl' weight='semiBold' style={{ letterSpacing: -0.4 }}>
-              Cadastre sua refeição
-            </AppText>
-            <CreateMealOptions />
-          </BottomSheetView>
-        </BottomSheetModal>
-      </BottomSheetModalProvider>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        style={styles.bottomSheetContainer}
+      >
+        <BottomSheetView style={[
+          styles.bottomSheetContent,
+          { paddingBottom: Platform.OS === 'web' ? 32 : bottom },
+        ]}>
+          <AppText size='xl' weight='semiBold' style={{ letterSpacing: -0.4 }}>
+            Cadastre sua refeição
+          </AppText>
+          <CreateMealOptions />
+        </BottomSheetView>
+      </BottomSheetModal>
     </>
   );
 }
