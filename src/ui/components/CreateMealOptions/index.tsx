@@ -3,7 +3,7 @@ import { AudioModal } from '@/ui/components/AudioModal';
 import { styles } from '@/ui/components/CreateMealOptions/styles';
 import { PhotoModal } from '@/ui/components/PhotoModal';
 import { CameraIcon, LucideIcon, MicIcon } from 'lucide-react-native';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Platform, Pressable, PressableProps, View } from 'react-native';
 
 interface ICreateMealOptionsProps {
@@ -22,9 +22,9 @@ export function CreateMealOptions({
     setModalTypeOption(type);
   }
 
-  function handleCloseModal() {
+  const handleCloseModal = useCallback(() => {
     setModalTypeOption(null);
-  }
+  }, []);
 
   return (
     <View style={styles.container}>

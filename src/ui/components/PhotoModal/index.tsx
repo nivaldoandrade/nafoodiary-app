@@ -28,7 +28,7 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
     handleTakePicture,
     handleTryAgain,
     handleSend,
-  } = usePhotoModal();
+  } = usePhotoModal({ onClose });
 
   if (!permission) {
     return;

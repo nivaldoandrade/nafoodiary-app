@@ -2,16 +2,22 @@ import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { PhotoActionType } from '@/ui/components/PhotoModal';
+import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
 
-export function usePhotoModal() {
+interface IUsePhotoModalParams {
+  onClose: () => void;
+}
+
+export function usePhotoModal({ onClose }: IUsePhotoModalParams) {
   const [photoActionType, setPhotoActionType] = useState<PhotoActionType>('takePhoto');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
+  const { dismiss } = useBottomSheetModal();
   const { navigate } = useNavigation<AppStackNavigatorProps>();
 
   const { createMeal, mealId, isPending } = useCreateMeal();
@@ -28,8 +34,10 @@ export function usePhotoModal() {
 
     if (meal.status === 'SUCCESS') {
       navigate('MealDetails', { mealId: meal.id });
+      onClose();
+      dismiss();
     }
-  }, [meal, navigate]);
+  }, [meal, navigate, onClose, dismiss]);
 
   async function handleSend() {
     if (!photoUri) {
