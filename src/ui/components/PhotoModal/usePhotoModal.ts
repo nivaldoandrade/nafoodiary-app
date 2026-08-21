@@ -1,26 +1,27 @@
 import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
+import type { CreateMealModalAnimationType } from '@/ui/components/CreateMealModals';
 import { PhotoActionType } from '@/ui/components/PhotoModal';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useEffect, useRef, useState } from 'react';
+import { Platform } from 'react-native';
 
 interface IUsePhotoModalParams {
-  onClose: () => void;
+  onRequestClose: (animationType?: CreateMealModalAnimationType) => void;
 }
 
-export function usePhotoModal({ onClose }: IUsePhotoModalParams) {
+export function usePhotoModal({ onRequestClose }: IUsePhotoModalParams) {
   const [photoActionType, setPhotoActionType] = useState<PhotoActionType>('takePhoto');
   const [photoUri, setPhotoUri] = useState<string | null>(null);
+
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
 
   const queryClient = useQueryClient();
-  const { dismiss } = useBottomSheetModal();
-  const { navigate } = useNavigation<AppStackNavigatorProps>();
+  const { navigate, addListener } = useNavigation<AppStackNavigatorProps>();
 
   const { createMeal, mealId, isPending } = useCreateMeal();
   const { meal, isLoading, isProcessing } = useGetMealById(mealId);
@@ -37,13 +38,21 @@ export function usePhotoModal({ onClose }: IUsePhotoModalParams) {
     if (meal.status === 'SUCCESS') {
       const isoDate = meal.createdAt.toISOString().split('T')[0];
 
-      queryClient.invalidateQueries({ queryKey: ['meals', isoDate] });
-      navigate('MealDetails', { mealId: meal.id });
-      onClose();
-      dismiss();
+      const unsubscribe = addListener('transitionEnd', ({ data }) => {
+        unsubscribe();
+        onRequestClose('fade');
+      });
 
+      navigate('MealDetails', { mealId: meal.id });
+      if (Platform.OS === 'web') {
+        unsubscribe();
+        onRequestClose('fade');
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['meals', isoDate] });
     }
-  }, [meal, navigate, onClose, dismiss, queryClient]);
+
+  }, [addListener, meal, navigate, onRequestClose, queryClient]);
 
   async function handleSend() {
     if (!photoUri) {

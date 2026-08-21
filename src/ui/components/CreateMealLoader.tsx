@@ -34,11 +34,11 @@ export function CreateMealLoader({ visible }: ISplashScreenLoader) {
 
   useEffect(() => {
     if (!visible) {
-      Animated.timing(opacityAnimated, {
-        toValue: 0,
-        duration: 600,
-        useNativeDriver: Boolean(Platform.OS === 'web'),
-      }).start();
+      // Animated.timing(opacityAnimated, {
+      //   toValue: 0,
+      //   duration: 600,
+      //   useNativeDriver: Boolean(Platform.OS === 'web'),
+      // }).start();
 
       return;
     }
@@ -46,7 +46,7 @@ export function CreateMealLoader({ visible }: ISplashScreenLoader) {
     Animated.timing(opacityAnimated, {
       toValue: 1,
       duration: 300,
-      useNativeDriver: Boolean(Platform.OS === 'web'),
+      useNativeDriver: Platform.OS === 'web' ? false : true,
     }).start();
   }, [visible, opacityAnimated]);
 

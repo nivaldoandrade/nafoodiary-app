@@ -1,6 +1,7 @@
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { CreateMealLoader } from '@/ui/components/CreateMealLoader';
+import type { CreateMealModalAnimationType } from '@/ui/components/CreateMealModals';
 import { ModalContent, ModalFooter, ModalHeader, ModalWrapper } from '@/ui/components/ModalWrapper';
 import { PhotoActions } from '@/ui/components/PhotoModal/PhotoActions';
 import { styles } from '@/ui/components/PhotoModal/styles';
@@ -14,10 +15,17 @@ export type PhotoActionType = 'takePhoto' | 'reviewing';
 
 interface IPhotoModalProps {
   visible: boolean;
-  onClose: () => void;
+  animationType: CreateMealModalAnimationType;
+  onRequestClose: (animationType?: CreateMealModalAnimationType) => void;
+  onDismiss: () => void;
 }
 
-export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
+export function PhotoModal({
+  visible,
+  animationType,
+  onRequestClose,
+  onDismiss,
+}: IPhotoModalProps) {
   const {
     photoActionType,
     loading,
@@ -28,7 +36,7 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
     handleTakePicture,
     handleTryAgain,
     handleSend,
-  } = usePhotoModal({ onClose });
+  } = usePhotoModal({ onRequestClose });
 
   if (!permission) {
     return;
@@ -36,11 +44,13 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
 
   return (
     <ModalWrapper
+      animationType={animationType}
       visible={visible}
-      onCloseModal={onClose}
+      onCloseModal={() => onRequestClose('slide')}
+      onDismiss={onDismiss}
     >
       <CreateMealLoader visible={loading} />
-      <ModalHeader style={styles.header} onPress={onClose} />
+      <ModalHeader style={styles.header} onPress={() => onRequestClose('slide')} />
       <ModalContent style={styles.content}>
         {!permission.granted &&
           <View style={styles.permissionContainer}>
@@ -73,7 +83,7 @@ export function PhotoModal({ visible, onClose }: IPhotoModalProps) {
             </View>
           </View>
         }
-        {permission.granted && (
+        {visible && permission.granted && (
           <>
             {!photoUri ? (
               <CameraView

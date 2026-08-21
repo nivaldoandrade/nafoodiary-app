@@ -11,6 +11,8 @@ interface IModalWrapperProps {
   style?: StyleProp<ViewStyle>;
   visible?: boolean;
   onCloseModal: () => void;
+  animationType?: 'slide' | 'fade';
+  onDismiss?: () => void;
 }
 
 export function ModalWrapper({
@@ -18,6 +20,8 @@ export function ModalWrapper({
   style,
   visible,
   onCloseModal,
+  animationType = 'slide',
+  onDismiss,
 }: IModalWrapperProps) {
 
   return (
@@ -25,8 +29,9 @@ export function ModalWrapper({
       visible={visible}
       transparent
       statusBarTranslucent
-      animationType="slide"
+      animationType={animationType}
       onRequestClose={onCloseModal}
+      onDismiss={onDismiss}
     >
       <StatusBar style='light' />
       <View style={styles.container}>

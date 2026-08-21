@@ -1,3 +1,4 @@
+import { CreateMealModals } from '@/ui/components/CreateMealModals';
 import { Fab } from '@/ui/screens/home/components/Fab';
 import { Header } from '@/ui/screens/home/components/Header';
 import { ItemSeparatorComponent } from '@/ui/screens/home/components/ItemSeparatorComponent';
@@ -26,6 +27,12 @@ export function Home() {
     handlePrevDate,
     handleRefresh,
     showSplash,
+    handleOpenCreateMealModal,
+    handleRequestCloseCreateMealModal,
+    activeCreateMealModal,
+    isCreateMealModalVisible,
+    createMealModalAnimationType,
+    finalizeCreateMealModalClose,
   } = useHome();
 
   useEffect(() => {
@@ -34,10 +41,14 @@ export function Home() {
     }
     SystemUI.setBackgroundColorAsync(theme.colors.lime[400]);
 
+    if (!!activeCreateMealModal) {
+      SystemUI.setBackgroundColorAsync(null);
+    }
+
     return () => {
       SystemUI.setBackgroundColorAsync(null);
     };
-  }, [showSplash]);
+  }, [showSplash, activeCreateMealModal]);
 
   return (
     <View style={[styles.container]}>
@@ -50,6 +61,7 @@ export function Home() {
         selectedDate={selectedDate}
         onNextDate={handleNextDate}
         onPrevDate={handlePrevDate}
+        onOpenCreateMealModal={handleOpenCreateMealModal}
       >
         <FlatList
           data={meals}
@@ -71,9 +83,18 @@ export function Home() {
           ItemSeparatorComponent={ItemSeparatorComponent}
           renderItem={({ item: meal }) => <MealItem meal={meal} />}
         />
+        {meals.length > 0 && <Fab />}
       </HomeProvider>
 
-      {meals.length > 0 && <Fab />}
+      {activeCreateMealModal && (
+        <CreateMealModals
+          activeCreateMealModal={activeCreateMealModal}
+          visible={isCreateMealModalVisible}
+          animationType={createMealModalAnimationType}
+          onRequestClose={handleRequestCloseCreateMealModal}
+          onDismiss={finalizeCreateMealModalClose}
+        />
+      )}
 
       <SplashScreenLoader visible={showSplash} />
     </View>

@@ -1,7 +1,9 @@
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
+import type { CreateMealModalType } from '@/ui/components/CreateMealModals';
 import { CreateMealOptions } from '@/ui/components/CreateMealOptions';
 import { styles } from '@/ui/screens/home/components/Fab/styles';
+import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { PlusIcon } from 'lucide-react-native';
 import { useRef } from 'react';
@@ -9,11 +11,18 @@ import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function Fab() {
+  const { onOpenCreateMealModal } = useHomeContext();
+
   const { bottom } = useSafeAreaInsets();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
   function handleOpenCreateMealOptions() {
     bottomSheetModalRef.current?.present();
+  }
+
+  function handleSelectCreateMealOption(type: Exclude<CreateMealModalType, null>) {
+    bottomSheetModalRef.current?.dismiss();
+    onOpenCreateMealModal(type);
   }
 
   return (
@@ -42,7 +51,7 @@ export function Fab() {
           <AppText size='xl' weight='semiBold' style={{ letterSpacing: -0.4 }}>
             Cadastre sua refeição
           </AppText>
-          <CreateMealOptions />
+          <CreateMealOptions onSelect={handleSelectCreateMealOption} />
         </BottomSheetView>
       </BottomSheetModal>
     </>

@@ -1,4 +1,5 @@
 import { Meal } from '@/app/types/Meal';
+import type { CreateMealModalType } from '@/ui/components/CreateMealModals';
 import { createContext } from 'react';
 
 interface IHomeContextProps {
@@ -7,6 +8,7 @@ interface IHomeContextProps {
   selectedDate: Date;
   onNextDate: () => void;
   onPrevDate: () => void;
+  onOpenCreateMealModal: (type: Exclude<CreateMealModalType, null>) => void;
 }
 
 export const HomeContext = createContext({} as IHomeContextProps);
@@ -21,6 +23,7 @@ export function HomeProvider({
   selectedDate,
   onNextDate,
   onPrevDate,
+  onOpenCreateMealModal,
 }: IHomeProvider) {
 
   return (
@@ -30,6 +33,7 @@ export function HomeProvider({
       selectedDate,
       onNextDate,
       onPrevDate,
+      onOpenCreateMealModal,
     }}>
       {children}
     </HomeContext.Provider>
