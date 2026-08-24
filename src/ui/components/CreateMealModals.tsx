@@ -24,7 +24,9 @@ export function CreateMealModals({
     <>
       <AudioModal
         visible={visible && activeCreateMealModal === 'audio'}
-        onClose={() => onRequestClose('slide')}
+        animationType={animationType}
+        onRequestClose={onRequestClose}
+        onDismiss={onDismiss}
       />
 
       <PhotoModal

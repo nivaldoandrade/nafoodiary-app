@@ -1,6 +1,9 @@
 import { AppText } from '@/ui/components/AppText';
 import { Actions } from '@/ui/components/AudioModal/Actions';
 import { styles } from '@/ui/components/AudioModal/styles';
+import { useAudioModal } from '@/ui/components/AudioModal/useAudioModal';
+import { CreateMealLoader } from '@/ui/components/CreateMealLoader';
+import { CreateMealModalAnimationType } from '@/ui/components/CreateMealModals';
 import {
   ModalContent,
   ModalFooter,
@@ -8,84 +11,45 @@ import {
   ModalWrapper,
 } from '@/ui/components/ModalWrapper';
 import { theme } from '@/ui/styles/theme';
-import {
-  AudioModule,
-  RecordingPresets,
-  setAudioModeAsync,
-  useAudioRecorder,
-} from 'expo-audio';
-import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 export type ActionType = 'startRecord' | 'recording' | 'reviewing';
 
 interface IAudioModalProps {
   visible: boolean;
-  onClose: () => void;
+  animationType: CreateMealModalAnimationType;
+  onRequestClose: (animationType?: CreateMealModalAnimationType) => void;
+  onDismiss: () => void;
 }
 
-export function AudioModal({ visible, onClose }: IAudioModalProps) {
-  const [recordingStatus, setRecordingStatus] = useState<ActionType>('startRecord');
-  const [recordedUri, setRecordedUri] = useState<string | null>(null);
+export function AudioModal({
+  visible,
+  animationType,
+  onRequestClose,
+  onDismiss,
+}: IAudioModalProps) {
 
-  const audioRecorder = useAudioRecorder(RecordingPresets.LOW_QUALITY);
-
-  useEffect(() => {
-    if (!visible) {
-      return;
-    }
-
-    (async () => {
-
-      const status = await AudioModule.requestRecordingPermissionsAsync();
-      if (!status.granted) {
-        alert('Permission to access microphone was denied');
-      }
-
-      setAudioModeAsync({
-        playsInSilentMode: true,
-        allowsRecording: true,
-      });
-    })();
-  }, [visible]);
-
-  const handleChangeRecordingStatus = useCallback(
-    async (actionType: ActionType) => {
-      if (actionType === 'recording') {
-        try {
-          await audioRecorder.prepareToRecordAsync();
-          audioRecorder.record();
-        } catch {
-          alert('Permission to access microphone was denied');
-          return;
-        }
-      }
-
-      if (actionType === 'reviewing') {
-        await audioRecorder.stop();
-        setRecordedUri(audioRecorder.uri);
-      }
-
-      setRecordingStatus(actionType);
-    }, [audioRecorder]);
-
-  function handleTryAgain() {
-    setRecordingStatus('startRecord');
-  }
-
-  function handleSend() {
-    alert('Enviando o arquivo do audio');
-  }
-
-  const isRecording = recordingStatus === 'recording';
+  const {
+    isRecording,
+    recordingStatus,
+    handleTryAgain,
+    handleSend,
+    handleChangeRecordingStatus,
+    recordedUri,
+    audioRecorder,
+    isCreateMealLoaderVisible,
+  } = useAudioModal({ visible, onRequestClose });
 
   return (
     <ModalWrapper
       style={styles.wrapper}
       visible={visible}
-      onCloseModal={onClose}
+      animationType={animationType}
+      onCloseModal={() => onRequestClose('slide')}
+      onDismiss={onDismiss}
     >
-      <ModalHeader style={styles.header} onPress={onClose} />
+      <CreateMealLoader visible={isCreateMealLoaderVisible} />
+      <ModalHeader style={styles.header} onPress={() => onRequestClose('slide')} />
       <ModalContent style={styles.content}>
         <View style={[styles.circle1, isRecording && styles.circle1Recording]}>
           <View style={[styles.circle2, isRecording && styles.circle2Recording]}>
