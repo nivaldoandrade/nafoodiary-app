@@ -14,27 +14,16 @@ interface ICreateMealModalsProps {
 
 export function CreateMealModals({
   activeCreateMealModal,
-  visible,
-  animationType,
-  onRequestClose,
-  onDismiss,
+  ...props
 }: ICreateMealModalsProps) {
 
-  return (
-    <>
-      <AudioModal
-        visible={visible && activeCreateMealModal === 'audio'}
-        animationType={animationType}
-        onRequestClose={onRequestClose}
-        onDismiss={onDismiss}
-      />
+  if (activeCreateMealModal === 'audio') {
+    return <AudioModal {...props} />;
+  }
 
-      <PhotoModal
-        visible={visible && activeCreateMealModal === 'photo'}
-        animationType={animationType}
-        onRequestClose={onRequestClose}
-        onDismiss={onDismiss}
-      />
-    </>
-  );
+  if (activeCreateMealModal === 'photo') {
+    return <PhotoModal {...props} />;
+  }
+
+  return null;
 }
