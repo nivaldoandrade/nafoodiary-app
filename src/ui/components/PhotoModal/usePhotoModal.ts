@@ -82,9 +82,15 @@ export function usePhotoModal({ onRequestClose }: IUsePhotoModalParams) {
     setPhotoActionType('reviewing');
   }
 
+  const isCreateMealLoaderVisible =
+    isPending ||
+    isLoading ||
+    isProcessing ||
+    meal?.status === 'SUCCESS';
+
   return {
+    isCreateMealLoaderVisible,
     photoActionType,
-    loading: isLoading || isPending || isProcessing,
     permission,
     photoUri,
     cameraRef,

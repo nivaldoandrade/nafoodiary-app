@@ -27,8 +27,8 @@ export function PhotoModal({
   onDismiss,
 }: IPhotoModalProps) {
   const {
+    isCreateMealLoaderVisible,
     photoActionType,
-    loading,
     permission,
     photoUri,
     cameraRef,
@@ -49,7 +49,7 @@ export function PhotoModal({
       onCloseModal={() => onRequestClose('slide')}
       onDismiss={onDismiss}
     >
-      <CreateMealLoader visible={loading} />
+      <CreateMealLoader visible={isCreateMealLoaderVisible} />
       <ModalHeader style={styles.header} onPress={() => onRequestClose('slide')} />
       <ModalContent style={styles.content}>
         {!permission.granted &&
