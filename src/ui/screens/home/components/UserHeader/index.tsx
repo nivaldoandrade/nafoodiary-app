@@ -5,6 +5,7 @@ import { Avatar } from '@/ui/components/Avatar';
 import { ButtonApp } from '@/ui/components/Button';
 import { styles } from '@/ui/screens/home/components/UserHeader/styles';
 import { theme } from '@/ui/styles/theme';
+import * as SystemUI from 'expo-system-ui';
 import { TargetIcon } from 'lucide-react-native';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -15,6 +16,11 @@ export function UserHeader() {
   const { signOut } = useAuth();
 
   const { account } = useAccount({ enabled: false });
+
+  function handleSignOut() {
+    SystemUI.setBackgroundColorAsync(null);
+    signOut();
+  }
 
   return (
     <View style={[styles.container, {
@@ -34,7 +40,7 @@ export function UserHeader() {
       <ButtonApp
         intent='ghost'
         leftIcon={<TargetIcon />}
-        onPress={signOut}
+        onPress={handleSignOut}
       >
         Metas
       </ButtonApp>

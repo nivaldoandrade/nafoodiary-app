@@ -10,9 +10,10 @@ import { HomeProvider } from '@/ui/screens/home/context';
 import { styles } from '@/ui/screens/home/styles';
 import { useHome } from '@/ui/screens/home/useHome';
 import { theme } from '@/ui/styles/theme';
+import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { FlatList, Platform, RefreshControl, View } from 'react-native';
 
 export function Home() {
@@ -35,20 +36,19 @@ export function Home() {
     finalizeCreateMealModalClose,
   } = useHome();
 
-  useEffect(() => {
-    if (!(Platform.OS === 'web' && !showSplash)) {
-      return;
-    }
-    SystemUI.setBackgroundColorAsync(theme.colors.lime[400]);
+  useFocusEffect(
+    useCallback(() => {
+      if (!(Platform.OS === 'web' && !showSplash)) {
+        return;
+      }
+      SystemUI.setBackgroundColorAsync(theme.colors.lime[400]);
 
-    if (!!activeCreateMealModal) {
-      SystemUI.setBackgroundColorAsync(null);
-    }
+      if (!!activeCreateMealModal) {
+        SystemUI.setBackgroundColorAsync(null);
+      }
 
-    return () => {
-      SystemUI.setBackgroundColorAsync(null);
-    };
-  }, [showSplash, activeCreateMealModal]);
+    }, [activeCreateMealModal, showSplash]),
+  );
 
   return (
     <View style={[styles.container]}>
