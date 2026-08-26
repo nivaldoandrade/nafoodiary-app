@@ -8,8 +8,6 @@ export const styles = StyleSheet.create({
 
   MacrosContent: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
     gap: 24,
   },
 
@@ -17,6 +15,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     gap: 8,
+  },
+
+  macroValues: {
+    alignItems: 'center',
+    gap: 4,
   },
 
   BarContainer: {

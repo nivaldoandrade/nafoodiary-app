@@ -8,7 +8,11 @@ import { ChevronLeftIcon } from 'lucide-react-native';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export function Header() {
+interface IHeaderProps {
+  totalCalories: number;
+}
+
+export function Header({ totalCalories }: IHeaderProps) {
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<AppStackNavigatorProps>();
 
@@ -31,7 +35,7 @@ export function Header() {
         <AppText color={theme.colors.gray[300]} style={{ opacity: 0.8 }}>
           Calorias
         </AppText>
-        <AppText weight='medium' color={theme.colors.white}>630kcal</AppText>
+        <AppText weight='medium' color={theme.colors.white}>{totalCalories}kcal</AppText>
       </View>
 
     </View>

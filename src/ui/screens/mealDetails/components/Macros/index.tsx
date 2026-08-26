@@ -11,50 +11,39 @@ const MACRO_COLORS: Record<MacroType, string> = {
   'Gorduras': theme.colors.support.orange,
 };
 
-export function Macros() {
+interface IMacroItem {
+  label: MacroType;
+  quantity: number;
+  percentage: number;
+}
+
+interface IMacrosProps {
+  macros: IMacroItem[];
+}
+
+export function Macros({ macros }: IMacrosProps) {
 
   return (
     <View style={styles.container}>
       <View style={styles.MacrosContent}>
-        <Macro
-          label='Carboidratos'
-          quantity={56}
-          porcentage={50}
-        />
-        <Macro
-          label='Proteínas'
-          quantity={56}
-          porcentage={25}
-        />
-        <Macro
-          label='Gorduras'
-          quantity={56}
-          porcentage={25}
-        />
-      </View>
-      <View>
-
+        {macros.map((macro) => (
+          <Macro key={macro.label} {...macro} />
+        ))}
       </View>
       <View style={styles.BarContainer}>
-        <BarItem item='Carboidratos' porcentage={50} />
-        <BarItem item='Proteínas' porcentage={25} />
-        <BarItem item='Gorduras' porcentage={25} />
+        {macros.map((macro) => (
+          <BarItem key={macro.label} label={macro.label} percentage={macro.percentage} />
+        ))}
       </View>
     </View>
   );
 }
 
-interface IMacroProps {
-  label: MacroType;
-  quantity: number;
-  porcentage: number;
-}
-
 function Macro({
   label,
   quantity,
-  porcentage,
-}: IMacroProps) {
+  percentage,
+}: IMacroItem) {
 
   const color = MACRO_COLORS[label];
 
@@ -63,23 +52,21 @@ function Macro({
       <AppText color={theme.colors.gray[700]} style={{ opacity: 0.8 }}>
         {label}
       </AppText>
-      <AppText color={color}>{quantity}g ({porcentage}%)</AppText>
+      <View style={styles.macroValues}>
+        <AppText weight='medium' color={color}>{quantity}g</AppText>
+        <AppText weight='medium' color={color}>({percentage}%)</AppText>
+      </View>
     </View>
   );
 }
 
-interface IBarProps {
-  item: MacroType;
-  porcentage: number;
-}
+function BarItem({ label, percentage }: Pick<IMacroItem, 'label' | 'percentage'>) {
 
-function BarItem({ item, porcentage }: IBarProps) {
-
-  const color = MACRO_COLORS[item];
+  const color = MACRO_COLORS[label];
 
   return (
     <View style={[styles.barItem, {
-      width: `${porcentage}%`,
+      width: `${percentage}%`,
       backgroundColor: color,
     }]} />
   );
