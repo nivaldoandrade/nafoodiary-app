@@ -1,6 +1,7 @@
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
 import { AppStackScreenRouteProps } from '@/app/navigation/AppStack';
 import { AppText } from '@/ui/components/AppText';
+import { Skeleton } from '@/ui/components/Skeleton';
 import { Header } from '@/ui/screens/mealDetails/components/Header';
 import { Macros } from '@/ui/screens/mealDetails/components/Macros';
 import { styles } from '@/ui/screens/mealDetails/styles';
@@ -13,7 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) {
   const { mealId } = route.params;
-  const { meal } = useGetMealById(mealId);
+  const { meal, isLoading } = useGetMealById(mealId);
 
   const { bottom } = useSafeAreaInsets();
 
@@ -73,22 +74,41 @@ export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) 
 
   return (
     <View style={[styles.container]}>
-      <Header totalCalories={summary.calories} />
-      <Macros macros={summary.macros} />
+      <Header totalCalories={summary.calories} isLoading={isLoading} />
+      <Macros macros={summary.macros} isLoading={isLoading} />
       <View style={styles.divider} />
       <View style={styles.listHeader}>
-        <AppText color={theme.colors.black[700]} weight='semiBold' size='2xl'>
-          {meal?.name}
-        </AppText>
+        <Skeleton width="50%" height={32} show={isLoading}>
+          <AppText color={theme.colors.black[700]} weight='semiBold' size='2xl'>
+            {meal?.name}
+          </AppText>
+        </Skeleton>
         <AppText color={theme.colors.gray[700]} weight='medium' >
           Itens
         </AppText>
       </View>
       <FlatList
-        data={meal?.foods}
+        data={meal?.foods ?? []}
         contentContainerStyle={{
           paddingBottom: Platform.OS === 'web' ? 34 : bottom,
         }}
+        ListEmptyComponent={() => (
+          !isLoading
+            ? null
+            : (
+              <>
+                <View style={styles.foodContainer}>
+                  <Skeleton width='100%' height={60} colorMode='light' />
+                </View>
+                <View style={styles.foodContainer}>
+                  <Skeleton width='100%' height={60} colorMode='light' />
+                </View>
+                <View style={styles.foodContainer}>
+                  <Skeleton width='100%' height={60} colorMode='light' />
+                </View>
+              </>
+            )
+        )}
         renderItem={({ item }) => (
           <View style={styles.foodContainer}>
             <AppText>{item.quantity}</AppText>

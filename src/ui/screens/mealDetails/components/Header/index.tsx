@@ -1,6 +1,7 @@
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
+import { Skeleton } from '@/ui/components/Skeleton';
 import { styles } from '@/ui/screens/mealDetails/components/Header/styles';
 import { theme } from '@/ui/styles/theme';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +11,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IHeaderProps {
   totalCalories: number;
+  isLoading: boolean;
 }
 
-export function Header({ totalCalories }: IHeaderProps) {
+export function Header({ totalCalories, isLoading }: IHeaderProps) {
   const { top } = useSafeAreaInsets();
   const { goBack } = useNavigation<AppStackNavigatorProps>();
 
@@ -35,9 +37,12 @@ export function Header({ totalCalories }: IHeaderProps) {
         <AppText color={theme.colors.gray[300]} style={{ opacity: 0.8 }}>
           Calorias
         </AppText>
-        <AppText weight='medium' color={theme.colors.white}>{totalCalories}kcal</AppText>
+        <Skeleton colorMode="dark" show={isLoading}>
+          <AppText weight='medium' color={theme.colors.white}>
+            {totalCalories}kcal
+          </AppText>
+        </Skeleton>
       </View>
-
     </View>
   );
 }
