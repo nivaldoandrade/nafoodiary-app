@@ -1,16 +1,19 @@
 import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { useAccount } from '@/app/hooks/queries/useAccount';
+import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { AppText } from '@/ui/components/AppText';
 import { Avatar } from '@/ui/components/Avatar';
 import { ButtonApp } from '@/ui/components/Button';
 import { styles } from '@/ui/screens/home/components/UserHeader/styles';
 import { theme } from '@/ui/styles/theme';
+import { useNavigation } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { TargetIcon } from 'lucide-react-native';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function UserHeader() {
+  const { navigate } = useNavigation<AppStackNavigatorProps>();
   const { top } = useSafeAreaInsets();
 
   const { signOut } = useAuth();
@@ -40,7 +43,7 @@ export function UserHeader() {
       <ButtonApp
         intent='ghost'
         leftIcon={<TargetIcon />}
-        onPress={handleSignOut}
+        onPress={() => navigate('EditGoals')}
       >
         Metas
       </ButtonApp>
