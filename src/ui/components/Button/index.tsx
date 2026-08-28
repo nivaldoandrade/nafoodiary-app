@@ -34,29 +34,27 @@ export function ButtonApp({
   );
 
   return (
-    <View style={styles.container}>
-      <Pressable
-        android_ripple={{ color: 'rgba(0, 0, 0, 0.2)' }}
-        style={({ pressed }) => [
-          button({ intent, size, disabled: disabled || isLoading }),
-          typeof style === 'function' ? style({ pressed }) : style,
-          pressed && {
-            ...Platform.select({
-              ios: { opacity: 0.7 },
-              web: { opacity: 0.4 },
-              default: null,
-            }),
-          },
-        ]}
-        disabled={disabled}
-        {...props}
-      >
-        {isLoading
-          ? <ActivityIndicator color={theme.colors.black[700]} />
-          : childrenElement
-        }
-      </Pressable>
-    </View>
+    <Pressable
+      android_ripple={{ color: 'rgba(0, 0, 0, 0.2)' }}
+      style={({ pressed }) => [
+        button({ intent, size, disabled: disabled || isLoading }),
+        typeof style === 'function' ? style({ pressed }) : style,
+        pressed && {
+          ...Platform.select({
+            ios: { opacity: 0.7 },
+            web: { opacity: 0.4 },
+            default: null,
+          }),
+        },
+      ]}
+      disabled={disabled}
+      {...props}
+    >
+      {isLoading
+        ? <ActivityIndicator color={theme.colors.black[700]} />
+        : childrenElement
+      }
+    </Pressable>
 
   );
 }

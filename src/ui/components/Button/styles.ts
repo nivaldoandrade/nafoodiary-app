@@ -3,10 +3,6 @@ import { cva, VariantProps } from '@/ui/styles/utils/cva';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  container: {
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
   content: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -19,6 +15,8 @@ export const button = cva({
     alignItems: 'center',
     justifyContent: 'center',
     userSelect: 'none',
+    borderRadius: 12,
+    overflow: 'hidden',
   },
   variants: {
     intent: {
