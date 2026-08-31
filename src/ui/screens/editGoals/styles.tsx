@@ -14,21 +14,6 @@ export const styles = StyleSheet.create({
     gap: 32,
   },
 
-  inputGroup: {
-    flexDirection: 'row',
-    gap: 8,
-    alignItems: 'flex-end',
-  },
-
-  unit: {
-    minWidth: 56,
-    minHeight: 52,
-    padding: 14,
-    backgroundColor: theme.colors.gray[100],
-    borderRadius: 10,
-    textAlign: 'center',
-  },
-
   footer: {
     padding: 20,
     borderTopWidth: 1,

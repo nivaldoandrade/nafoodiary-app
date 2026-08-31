@@ -1,27 +1,32 @@
+import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
+import { useUpdateGoal } from '@/app/hooks/mutations/useUpdateGoal';
 import { useAccount } from '@/app/hooks/queries/useAccount';
-import { AppText } from '@/ui/components/AppText';
+import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { ButtonApp } from '@/ui/components/Button';
-import { FormGroup } from '@/ui/components/FormGroup';
-import { InputApp } from '@/ui/components/Input';
+import { GoalInputField } from '@/ui/screens/editGoals/components/GoalInputField';
 import { EditGoalSchema, editGoalsSchema } from '@/ui/screens/editGoals/schema';
 import { styles } from '@/ui/screens/editGoals/styles';
 import { HeaderApp } from '@/ui/screens/home/components/HeaderApp';
 import { theme } from '@/ui/styles/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { isAxiosError } from 'axios';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useState } from 'react';
-import { Control, Controller, FieldValues, Path, useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Platform, View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function EditGoals() {
   const [footerHeight, setFooterHeight] = useState(0);
+
+  const { goBack } = useNavigation<AppStackNavigatorProps>();
   const { account } = useAccount({ enabled: false });
   const { top, bottom } = useSafeAreaInsets();
+  const { isPending, updateGoal } = useUpdateGoal();
 
-  const { control } = useForm<EditGoalSchema>({
+  const form = useForm<EditGoalSchema>({
     defaultValues: {
       calories: account?.goal.calories,
       carbohydrates: account?.goal.carbohydrates,
@@ -42,110 +47,86 @@ export function EditGoals() {
     }, []),
   );
 
-  return (
-    <View style={[styles.container, { paddingTop: top }]}>
-      <KeyboardAwareScrollView
-        bottomOffset={footerHeight}
-      >
-        <HeaderApp title='Suas Metas' />
-        <View style={styles.content}>
-          <GoalInputField
-            name='calories'
-            control={control}
-            label='Calorias'
-            placeholder='2000'
-            unit='kcal'
-          />
-          <GoalInputField
-            name='carbohydrates'
-            control={control}
-            label='Carboidratos'
-            placeholder='200'
-            unit='g'
-          />
-          <GoalInputField
-            name='proteins'
-            control={control}
-            label='Proteínas'
-            placeholder='175'
-            unit='g'
-          />
-          <GoalInputField
-            name='fats'
-            control={control}
-            label='Gorduras'
-            placeholder='56'
-            unit='g'
-          />
-        </View>
-      </KeyboardAwareScrollView>
-      <KeyboardStickyView
-        onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height + bottom)}
-        offset={{ opened: 10 }}
-        style={{ backgroundColor: theme.colors.white }}
-      >
-        <View style={[styles.footer, { paddingBottom: bottom }]}>
-          <ButtonApp
-            intent='neutral'
-            style={{ flex: 1 }}
-            onPress={() => console.log('Cancelar')}
-          >
-            Cancelar
-          </ButtonApp>
-          <ButtonApp
-            style={{ flex: 1 }}
-            onPress={() => console.log('salvar')}
-          >
-            Salvar
-          </ButtonApp>
-        </View>
-      </KeyboardStickyView>
-    </View >
-  );
-}
+  const handleSubmit = form.handleSubmit(async (data) => {
+    try {
+      await updateGoal(data);
+      goBack();
+    } catch (error) {
+      if (isAxiosError<ApiError>(error)) {
+        const code = error.response?.data.error.code;
+        const message = getErrorMessage(code);
+        form.setError('root.api', { message });
+      }
+    }
+  });
 
-type GoalInputFieldProps<T extends FieldValues> = {
-  name: Path<T>;
-  control: Control<T>;
-  label: string;
-  unit: string;
-  placeholder?: string;
-};
+  const isSubmitting = (form.formState.isSubmitting || isPending);
 
-function GoalInputField<T extends FieldValues>({
-  name,
-  control,
-  label,
-  unit,
-  placeholder,
-}: GoalInputFieldProps<T>) {
   return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field, fieldState }) => (
-        <View style={styles.inputGroup}>
-          <FormGroup
-            label={label}
-            error={fieldState.error?.message}
-            style={{ flex: 1 }}
-          >
-            <InputApp
-              placeholder={placeholder}
-              inputMode='numeric'
-              onChangeText={field.onChange}
-              value={String(field.value)}
-              returnKeyType='default'
+    <FormProvider {...form} >
+      <View style={[styles.container, { paddingTop: top }]}>
+        <HeaderApp title='Suas Metas' disabled={isSubmitting} />
+        <KeyboardAwareScrollView
+          bottomOffset={footerHeight}
+        >
+          <View style={styles.content}>
+            <GoalInputField
+              name='calories'
+              label='Calorias'
+              placeholder='2000'
+              unit='kcal'
+              disabled={isSubmitting}
             />
-          </FormGroup>
-          <AppText
-            color={theme.colors.gray[700]}
-            style={styles.unit}
-          >
-            {unit}
-          </AppText>
-        </View>
-      )}
-    />
+            <GoalInputField
+              name='carbohydrates'
+              label='Carboidratos'
+              placeholder='200'
+              unit='g'
+              disabled={isSubmitting}
+            />
+            <GoalInputField
+              name='proteins'
+              label='Proteínas'
+              placeholder='175'
+              unit='g'
+              disabled={isSubmitting}
+            />
+            <GoalInputField
+              name='fats'
+              label='Gorduras'
+              placeholder='56'
+              unit='g'
+              disabled={isSubmitting}
+              errorApi={form.formState.errors.root?.api.message}
+            />
+          </View>
+        </KeyboardAwareScrollView>
+        <KeyboardStickyView
+          onLayout={(e) => setFooterHeight(e.nativeEvent.layout.height + bottom)}
+          offset={{ opened: 10 + 20 }}
+          style={{ backgroundColor: theme.colors.white }}
+        >
+          <View style={[styles.footer, { paddingBottom: bottom }]}>
+            <ButtonApp
+              intent='neutral'
+              style={{ flex: 1 }}
+              disabled={isSubmitting}
+              onPress={goBack}
+            >
+              Cancelar
+            </ButtonApp>
+            <ButtonApp
+              style={{ flex: 1 }}
+              disabled={!form.formState.isValid || isSubmitting}
+              isLoading={isSubmitting}
+              onPress={handleSubmit}
+            >
+              Salvar
+            </ButtonApp>
+          </View>
+        </KeyboardStickyView>
+      </View >
+    </FormProvider>
   );
 }
+

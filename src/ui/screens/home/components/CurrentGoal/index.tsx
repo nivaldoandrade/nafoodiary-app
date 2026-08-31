@@ -13,7 +13,7 @@ export function CurrentGoal() {
   const { isLoading } = useHomeContext();
   const { meals, selectedDate, onNextDate, onPrevDate } = useHomeContext();
 
-  const { account } = useAccount({ enabled: false });
+  const { account } = useAccount({ enabled: true });
 
   const summary = useMemo(() => {
     const result = meals.flatMap(meal => meal.foods).reduce((acc, item) => {
