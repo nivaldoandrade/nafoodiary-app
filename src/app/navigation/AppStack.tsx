@@ -1,4 +1,4 @@
-import { EditGoals } from '@/ui/screens/editGoals/inde';
+import { EditGoals } from '@/ui/screens/editGoals';
 import { Home } from '@/ui/screens/home';
 import { MealDetails } from '@/ui/screens/mealDetails';
 import { createNativeStackNavigator, NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
