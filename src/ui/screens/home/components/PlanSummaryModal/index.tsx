@@ -14,7 +14,7 @@ export function PlanSummaryModal() {
   const { isSignedUp } = useAuth();
   const [visible, setVisible] = useState(isSignedUp);
 
-  const { account } = useAccount({ enabled: false });
+  const { account } = useAccount();
 
   const currentGoal = goalInfoByValue[account!.profile.goal];
 

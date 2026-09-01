@@ -18,7 +18,7 @@ export function UserHeader() {
 
   const { signOut } = useAuth();
 
-  const { account } = useAccount({ enabled: false });
+  const { account } = useAccount();
 
   function handleSignOut() {
     SystemUI.setBackgroundColorAsync(null);

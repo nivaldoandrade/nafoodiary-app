@@ -5,7 +5,7 @@ interface IUseAccountParams {
   enabled?: boolean;
 }
 
-export function useAccount({ enabled = false }: IUseAccountParams) {
+export function useAccount({ enabled = true }: IUseAccountParams = {}) {
   const { data, refetch } = useQuery({
     queryKey: ['accounts'],
     queryFn: () => AccountsService.me(),
