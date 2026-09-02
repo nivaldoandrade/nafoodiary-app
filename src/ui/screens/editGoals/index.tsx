@@ -57,7 +57,8 @@ export function EditGoals() {
       if (isAxiosError<ApiError>(error)) {
         const code = error.response?.data.error.code;
         const message = getErrorMessage(code);
-        form.setError('root.api', { message });
+        code === 'VALIDATION' && form.setError('root.api', { message });
+        toast.error(message);
       }
     }
   });
@@ -99,7 +100,6 @@ export function EditGoals() {
               placeholder='56'
               unit='g'
               disabled={isSubmitting}
-              errorApi={form.formState.errors.root?.api.message}
             />
           </View>
         </KeyboardAwareScrollView>
