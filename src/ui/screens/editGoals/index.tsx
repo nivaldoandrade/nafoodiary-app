@@ -1,69 +1,26 @@
-import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
-import { useUpdateGoal } from '@/app/hooks/mutations/useUpdateGoal';
-import { useAccount } from '@/app/hooks/queries/useAccount';
-import { toast } from '@/app/libs/sonner';
-import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { ButtonApp } from '@/ui/components/Button';
 import { HeaderApp } from '@/ui/components/HeaderApp';
 import { GoalInputField } from '@/ui/screens/editGoals/components/GoalInputField';
-import { EditGoalSchema, editGoalsSchema } from '@/ui/screens/editGoals/schema';
 import { styles } from '@/ui/screens/editGoals/styles';
+import { useEditGoals } from '@/ui/screens/editGoals/useEditGoals';
 import { theme } from '@/ui/styles/theme';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { isAxiosError } from 'axios';
-import * as SystemUI from 'expo-system-ui';
-import { useCallback, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Platform, View } from 'react-native';
+import { FormProvider } from 'react-hook-form';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function EditGoals() {
-  const [footerHeight, setFooterHeight] = useState(0);
 
-  const { goBack } = useNavigation<AppStackNavigatorProps>();
-  const { account } = useAccount();
-  const { top, bottom } = useSafeAreaInsets();
-  const { isPending, updateGoal } = useUpdateGoal();
+  const {
+    isSubmitting,
+    form,
+    top,
+    footerHeight,
+    setFooterHeight,
+    bottom,
+    goBack,
+    handleSubmit,
 
-  const form = useForm<EditGoalSchema>({
-    defaultValues: {
-      calories: account?.goal.calories,
-      carbohydrates: account?.goal.carbohydrates,
-      proteins: account?.goal.proteins,
-      fats: account?.goal.fats,
-    },
-    resolver: zodResolver(editGoalsSchema),
-  });
-
-  useFocusEffect(
-    useCallback(() => {
-      if (!(Platform.OS === 'web')) {
-        return;
-      }
-
-      SystemUI.setBackgroundColorAsync(null);
-
-    }, []),
-  );
-
-  const handleSubmit = form.handleSubmit(async (data) => {
-    try {
-      await updateGoal(data);
-      toast.success('Metas atualizadas com sucesso!');
-      goBack();
-    } catch (error) {
-      if (isAxiosError<ApiError>(error)) {
-        const code = error.response?.data.error.code;
-        const message = getErrorMessage(code);
-        code === 'VALIDATION' && form.setError('root.api', { message });
-        toast.error(message);
-      }
-    }
-  });
-
-  const isSubmitting = (form.formState.isSubmitting || isPending);
+  } = useEditGoals();
 
   return (
     <FormProvider {...form} >
