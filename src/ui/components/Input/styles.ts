@@ -3,12 +3,23 @@ import { cva, VariantProps } from '@/ui/styles/utils/cva';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  input: {
+  container: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+
+  sufix: {
+    minWidth: 56,
+    padding: 14,
+    backgroundColor: theme.colors.gray[100],
+    borderRadius: 10,
+    textAlign: 'center',
   },
 });
 
 export const input = cva({
   base: {
+    flex: 1,
     backgroundColor: theme.colors.white,
     borderWidth: 1,
     borderRadius: 10,
