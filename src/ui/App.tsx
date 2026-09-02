@@ -1,6 +1,7 @@
 
 import { AuthProvider } from '@/app/contexts/AuthContext';
 import { queryClient } from '@/app/libs/queryClient';
+import { Toaster } from '@/app/libs/sonner';
 import { Navigation } from '@/app/navigation';
 import {
   HostGrotesk_300Light,
@@ -38,6 +39,7 @@ export default function App() {
               <Navigation />
             </AuthProvider>
           </QueryClientProvider>
+          <Toaster position="bottom-center" />
         </GestureHandlerRootView>
       </KeyboardProvider>
     </SafeAreaProvider >

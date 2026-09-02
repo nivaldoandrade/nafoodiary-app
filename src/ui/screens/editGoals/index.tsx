@@ -1,6 +1,7 @@
 import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
 import { useUpdateGoal } from '@/app/hooks/mutations/useUpdateGoal';
 import { useAccount } from '@/app/hooks/queries/useAccount';
+import { toast } from '@/app/libs/sonner';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { ButtonApp } from '@/ui/components/Button';
 import { HeaderApp } from '@/ui/components/HeaderApp';
@@ -50,6 +51,7 @@ export function EditGoals() {
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       await updateGoal(data);
+      toast.success('Metas atualizadas com sucesso!');
       goBack();
     } catch (error) {
       if (isAxiosError<ApiError>(error)) {
