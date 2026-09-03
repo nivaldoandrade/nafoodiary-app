@@ -10,13 +10,27 @@ export class AccountsService extends Service {
       ...data,
       profile: {
         ...data.profile,
-        birthDate: new Date(data.profile.birthDate),
+        birthDate: this.parseDateFromAPI(data.profile.birthDate),
       },
     };
   }
+
+  static async updateProfile(params: AccountsService.UpdateProfileParams): Promise<void> {
+    await this.client.put('profiles', params);
+  }
+
+  private static parseDateFromAPI(dateString: string): Date {
+    const date = new Date(dateString);
+
+    return new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+    );
+  };
 }
 
-namespace AccountsService {
+export namespace AccountsService {
 
   export type MeResponse = {
     profile: {
@@ -39,5 +53,13 @@ namespace AccountsService {
     profile: Omit<MeResponse['profile'], 'birthDate'> & {
       birthDate: Date;
     };
+  };
+
+  export type UpdateProfileParams = {
+    name: string;
+    height: number;
+    weight: number;
+    gender: string;
+    birthDate: string;
   };
 }

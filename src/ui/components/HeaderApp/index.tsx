@@ -10,6 +10,7 @@ interface IHeaderAppProps {
 	title: string;
 	rightIcon?: React.ComponentType<LucideProps>;
 	disabled?: boolean;
+	onRightPress?: () => void;
 }
 
 export function HeaderApp({
@@ -17,6 +18,7 @@ export function HeaderApp({
 	rightIcon:
 	RighIcon,
 	disabled = false,
+	onRightPress,
 }: IHeaderAppProps) {
 
 	const { goBack } = useNavigation<AppStackNavigatorProps>();
@@ -36,7 +38,7 @@ export function HeaderApp({
 				intent='ghost'
 				size='icon'
 				disabled={!RighIcon || disabled}
-				onPress={() => console.log('ok')}
+				onPress={onRightPress}
 			>
 				{RighIcon && <RighIcon size={20} />}
 			</ButtonApp>

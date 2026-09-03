@@ -1,6 +1,7 @@
 import { EditGoals } from '@/ui/screens/editGoals';
 import { Home } from '@/ui/screens/home';
 import { MealDetails } from '@/ui/screens/mealDetails';
+import { Profile } from '@/ui/screens/profile';
 import { createNativeStackNavigator, NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type AppStackParamlist = {
@@ -9,6 +10,7 @@ type AppStackParamlist = {
     mealId: string;
   },
   EditGoals: undefined;
+  Profile: undefined;
 }
 
 const Stack = createNativeStackNavigator<AppStackParamlist>();
@@ -25,6 +27,7 @@ export function AppStack() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="MealDetails" component={MealDetails} />
       <Stack.Screen name="EditGoals" component={EditGoals} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 }

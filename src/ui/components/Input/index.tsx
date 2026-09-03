@@ -9,6 +9,7 @@ type InputAppProps = Omit<TextInputProps, 'readOnly'> & InputVariant & {
   Component?: React.ComponentType<TextInputProps>;
   ref?: React.RefObject<TextInput | null>;
   sufix?: string;
+  rightAdornment?: React.ReactNode;
 };
 
 export function InputApp({
@@ -20,6 +21,7 @@ export function InputApp({
   onFocus,
   onBlur,
   sufix,
+  rightAdornment,
   ...props
 }: InputAppProps) {
   const [isFocused, setIsFocused] = useState(false);
@@ -48,17 +50,23 @@ export function InputApp({
 
   return (
     <View style={styles.container}>
-      <Component
-        placeholderTextColor={theme.colors.gray[700]}
-        style={[
-          input({ intent: getInputStatus(), disabled }),
-          style,
-        ]}
-        onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
-        readOnly={disabled}
-        {...props}
-      />
+      <View style={styles.inputContainer}>
+        <Component
+          placeholderTextColor={theme.colors.gray[700]}
+          style={[
+            input({ intent: getInputStatus(), disabled }),
+            rightAdornment && styles.adornmentPadding,
+            style,
+          ]}
+          onFocus={handleOnFocus}
+          onBlur={handleOnBlur}
+          readOnly={disabled}
+          {...props}
+        />
+        {rightAdornment && (
+          <View style={styles.adornment}>{rightAdornment}</View>
+        )}
+      </View>
       {sufix && (
         <AppText
           color={theme.colors.gray[700]}

@@ -8,6 +8,24 @@ export const styles = StyleSheet.create({
     gap: 8,
   },
 
+  inputContainer: {
+    position: 'relative',
+    flex: 1,
+  },
+
+  adornmentPadding: {
+    paddingRight: 48,
+  },
+
+  adornment: {
+    position: 'absolute',
+    right: 14,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   sufix: {
     minWidth: 56,
     padding: 14,

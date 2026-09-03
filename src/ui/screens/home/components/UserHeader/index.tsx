@@ -1,4 +1,3 @@
-import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { useAccount } from '@/app/hooks/queries/useAccount';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { AppText } from '@/ui/components/AppText';
@@ -7,29 +6,24 @@ import { ButtonApp } from '@/ui/components/Button';
 import { styles } from '@/ui/screens/home/components/UserHeader/styles';
 import { theme } from '@/ui/styles/theme';
 import { useNavigation } from '@react-navigation/native';
-import * as SystemUI from 'expo-system-ui';
 import { TargetIcon } from 'lucide-react-native';
-import { Platform, View } from 'react-native';
+import { Platform, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function UserHeader() {
   const { navigate } = useNavigation<AppStackNavigatorProps>();
   const { top } = useSafeAreaInsets();
 
-  const { signOut } = useAuth();
-
   const { account } = useAccount();
-
-  function handleSignOut() {
-    SystemUI.setBackgroundColorAsync(null);
-    signOut();
-  }
 
   return (
     <View style={[styles.container, {
       paddingTop: Platform.OS === 'android' ? top : 0,
     }]}>
-      <View style={styles.userInfo}>
+      <TouchableOpacity
+        style={styles.userInfo}
+        onPress={() => navigate('Profile')}
+      >
         <Avatar name={account!.profile.name} />
         <View style={styles.userDetails}>
           <AppText color={theme.colors.gray[700]} size='sm'>
@@ -39,7 +33,7 @@ export function UserHeader() {
             {account!.profile.name}
           </AppText>
         </View>
-      </View>
+      </TouchableOpacity>
       <ButtonApp
         intent='ghost'
         leftIcon={<TargetIcon />}
