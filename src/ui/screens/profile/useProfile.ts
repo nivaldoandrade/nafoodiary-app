@@ -2,6 +2,7 @@ import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
 import { useUpdateProfile } from '@/app/hooks/mutations/useUpdateProfile';
 import { useAccount } from '@/app/hooks/queries/useAccount';
+import { toast } from '@/app/libs/sonner';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { ProfileSchema, profileSchema } from '@/ui/screens/profile/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,7 +12,6 @@ import * as SystemUI from 'expo-system-ui';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { toast } from 'sonner-native';
 
 export function useProfile() {
   const [footerHeight, setFooterHeight] = useState(0);
