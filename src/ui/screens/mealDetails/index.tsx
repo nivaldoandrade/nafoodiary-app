@@ -7,6 +7,7 @@ import { Macros } from '@/ui/screens/mealDetails/components/Macros';
 import { styles } from '@/ui/screens/mealDetails/styles';
 import { theme } from '@/ui/styles/theme';
 import { useFocusEffect } from '@react-navigation/native';
+import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useMemo } from 'react';
 import { FlatList, Platform, View } from 'react-native';
@@ -73,51 +74,54 @@ export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) 
   );
 
   return (
-    <View style={[styles.container]}>
-      <Header totalCalories={summary.calories} isLoading={isLoading} />
-      <Macros macros={summary.macros} isLoading={isLoading} />
-      <View style={styles.divider} />
-      <View style={styles.listHeader}>
-        <Skeleton width="50%" height={32} show={isLoading}>
-          <AppText color={theme.colors.black[700]} weight='semiBold' size='2xl'>
-            {meal?.name}
-          </AppText>
-        </Skeleton>
-        <AppText color={theme.colors.gray[700]} weight='medium' >
-          Itens
-        </AppText>
-      </View>
-      <FlatList
-        data={meal?.foods ?? []}
-        contentContainerStyle={{
-          paddingBottom: Platform.OS === 'web' ? 34 : bottom,
-        }}
-        ListEmptyComponent={() => (
-          !isLoading
-            ? null
-            : (
-              <>
-                <View style={styles.foodContainer}>
-                  <Skeleton width='100%' height={60} colorMode='light' />
-                </View>
-                <View style={styles.foodContainer}>
-                  <Skeleton width='100%' height={60} colorMode='light' />
-                </View>
-                <View style={styles.foodContainer}>
-                  <Skeleton width='100%' height={60} colorMode='light' />
-                </View>
-              </>
-            )
-        )}
-        renderItem={({ item }) => (
-          <View style={styles.foodContainer}>
-            <AppText>{item.quantity}</AppText>
-            <AppText style={{ textTransform: 'capitalize' }}>
-              {item.name}
+    <>
+      <StatusBar animated style='light' />
+      <View style={[styles.container]}>
+        <Header totalCalories={summary.calories} isLoading={isLoading} />
+        <Macros macros={summary.macros} isLoading={isLoading} />
+        <View style={styles.divider} />
+        <View style={styles.listHeader}>
+          <Skeleton width="50%" height={32} show={isLoading}>
+            <AppText color={theme.colors.black[700]} weight='semiBold' size='2xl'>
+              {meal?.name}
             </AppText>
-          </View>
-        )}
-      />
-    </View>
+          </Skeleton>
+          <AppText color={theme.colors.gray[700]} weight='medium' >
+            Itens
+          </AppText>
+        </View>
+        <FlatList
+          data={meal?.foods ?? []}
+          contentContainerStyle={{
+            paddingBottom: Platform.OS === 'web' ? 34 : bottom,
+          }}
+          ListEmptyComponent={() => (
+            !isLoading
+              ? null
+              : (
+                <>
+                  <View style={styles.foodContainer}>
+                    <Skeleton width='100%' height={60} colorMode='light' />
+                  </View>
+                  <View style={styles.foodContainer}>
+                    <Skeleton width='100%' height={60} colorMode='light' />
+                  </View>
+                  <View style={styles.foodContainer}>
+                    <Skeleton width='100%' height={60} colorMode='light' />
+                  </View>
+                </>
+              )
+          )}
+          renderItem={({ item }) => (
+            <View style={styles.foodContainer}>
+              <AppText>{item.quantity}</AppText>
+              <AppText style={{ textTransform: 'capitalize' }}>
+                {item.name}
+              </AppText>
+            </View>
+          )}
+        />
+      </View>
+    </>
   );
 }
