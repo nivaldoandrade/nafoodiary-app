@@ -1,7 +1,6 @@
 
 import { ButtonApp } from '@/ui/components/Button';
-import { FormGroup } from '@/ui/components/FormGroup';
-import { InputApp } from '@/ui/components/Input';
+import { MeasurementField } from '@/ui/components/Inputs/MeasurementField';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
@@ -37,24 +36,21 @@ export function WeightStep() {
           name='profile.weight'
           control={control}
           render={({ field, fieldState }) => (
-            <FormGroup
-              label='Peso (kg)'
-              style={{ width: '100%' }}
+
+            <MeasurementField
+              autoFocus
+              name='weight'
+              placeholder='80'
+              unit='kg'
+              value={field.value}
+              onChange={(value) => {
+                clearErrors('root.api');
+                field.onChange(formatWeight(value));
+              }}
               error={fieldState.error?.message}
-            >
-              <InputApp
-                autoFocus
-                placeholder='89'
-                inputMode='decimal'
-                onChangeText={(v) => {
-                  clearErrors('profile.weight');
-                  field.onChange(formatWeight(v));
-                }}
-                value={field.value}
-                returnKeyType='next'
-                onSubmitEditing={handleCheckAndNextStep}
-              />
-            </FormGroup>
+              returnKeyType='next'
+              onSubmitEditing={handleCheckAndNextStep}
+            />
           )}
         />
       </StepContent>

@@ -24,8 +24,8 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   contentCenter: {
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   footer: {
     alignItems: 'flex-end',

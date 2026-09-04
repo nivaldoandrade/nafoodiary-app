@@ -4,6 +4,7 @@ import { ApiError, ErrorCode, getErrorMessage } from '@/app/errors/apiErrors';
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
+import { NameInput } from '@/ui/components/Inputs/NameInput';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { OnboardingSchema, OnboardingSchemaOutput } from '@/ui/screens/onboarding/schema';
 import { isAxiosError } from 'axios';
@@ -58,19 +59,18 @@ export function CreateAccountStep() {
             name='profile.name'
             control={control}
             render={({ field, fieldState }) => (
-              <FormGroup label='Nome' error={fieldState.error?.message}>
-                <InputApp
-                  autoFocus
-                  placeholder='Jonh Doe'
-                  inputMode='text'
-                  autoCapitalize='words'
-                  autoComplete='name'
-                  onChangeText={field.onChange}
-                  value={field.value}
-                  returnKeyType='next'
-                  onSubmitEditing={() => emailInputRef.current?.focus()}
-                />
-              </FormGroup>
+              <NameInput
+                autoFocus
+                inputMode='text'
+                autoCapitalize='words'
+                autoComplete='name'
+                onChange={field.onChange}
+                value={field.value}
+                error={fieldState.error?.message}
+                returnKeyType='next'
+                onSubmitEditing={() => emailInputRef.current?.focus()}
+
+              />
             )}
           />
           <Controller

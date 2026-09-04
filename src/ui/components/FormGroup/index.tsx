@@ -4,7 +4,7 @@ import { cloneElement } from 'react';
 import { View, ViewStyle } from 'react-native';
 
 interface IFormGroupProps {
-  label: string;
+  label?: string;
   error?: string;
   children: React.ReactElement<{ error: boolean }>;
   style?: ViewStyle;
@@ -19,9 +19,11 @@ export function FormGroup({
 
   return (
     <View style={[{ gap: 8 }, style]}>
-      <AppText weight='medium'>
-        {label}
-      </AppText>
+      {label && (
+        <AppText weight='medium'>
+          {label}
+        </AppText>
+      )}
       {cloneElement(children, { error: !!error })}
       {error && (
         <AppText size='sm' color={theme.colors.support.red}>

@@ -1,9 +1,9 @@
 import { ButtonApp } from '@/ui/components/Button';
 import { HeaderApp } from '@/ui/components/HeaderApp';
+import { GenderInput } from '@/ui/components/Inputs/GenderInput';
+import { MeasurementField } from '@/ui/components/Inputs/MeasurementField';
+import { NameInput } from '@/ui/components/Inputs/NameInput';
 import { BirthDateField } from '@/ui/screens/profile/components/BirthDateField';
-import { MeasurementField } from '@/ui/screens/profile/components/MeasurementField';
-import { NameField } from '@/ui/screens/profile/components/NameField';
-import { GenderField } from '@/ui/screens/profile/components/GenderField';
 import { styles } from '@/ui/screens/profile/styles';
 import { useProfile } from '@/ui/screens/profile/useProfile';
 import { theme } from '@/ui/styles/theme';
@@ -12,7 +12,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { LogOutIcon } from 'lucide-react-native';
 import { useCallback } from 'react';
-import { FormProvider } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 import { Platform, View } from 'react-native';
 import { KeyboardAwareScrollView, KeyboardStickyView } from 'react-native-keyboard-controller';
 
@@ -53,23 +53,62 @@ export function Profile() {
             {/* <View style={styles.avatar}>
               <Avatar name={account?.profile.name ?? 'Perfil'} />
             </View> */}
-            <NameField />
+            <Controller
+              name='name'
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <NameInput
+                  value={field.value}
+                  onChange={(value) => {
+                    form.clearErrors('root.api');
+                    field.onChange(value);
+                  }}
+                  error={fieldState.error?.message}
+                />
+              )}
+            />
             <BirthDateField />
-            <MeasurementField
+            <Controller
               name='height'
-              label='Altura'
-              placeholder='175'
-              unit='cm'
-              formatter={formatHeight}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <MeasurementField
+                  name={field.name}
+                  placeholder='175'
+                  unit='cm'
+                  value={field.value}
+                  onChange={(value) => {
+                    form.clearErrors('root.api');
+                    field.onChange(formatHeight(value));
+                  }}
+                  error={fieldState.error?.message}
+                />
+              )}
             />
-            <MeasurementField
+            <Controller
               name='weight'
-              label='Peso'
-              placeholder='80'
-              unit='kg'
-              formatter={formatWeight}
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <MeasurementField
+                  name={field.name}
+                  placeholder='80'
+                  unit='kg'
+                  value={field.value}
+                  onChange={(value) => {
+                    form.clearErrors('root.api');
+                    field.onChange(formatWeight(value));
+                  }}
+                  error={fieldState.error?.message}
+                />
+              )}
             />
-            <GenderField />
+            <Controller
+              name="gender"
+              control={form.control}
+              render={({ field }) => (
+                <GenderInput value={field.value} onChange={field.onChange} />
+              )}
+            />
           </View>
         </KeyboardAwareScrollView>
         <KeyboardStickyView

@@ -1,7 +1,6 @@
 
 import { ButtonApp } from '@/ui/components/Button';
-import { FormGroup } from '@/ui/components/FormGroup';
-import { InputApp } from '@/ui/components/Input';
+import { MeasurementField } from '@/ui/components/Inputs/MeasurementField';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
@@ -37,24 +36,20 @@ export function HeightStep() {
           name='profile.height'
           control={control}
           render={({ field, fieldState }) => (
-            <FormGroup
-              label='Altura (cm)'
-              style={{ width: '100%' }}
+            <MeasurementField
+              autoFocus
+              name='height'
+              placeholder='175'
+              unit='cm'
+              value={field.value}
+              onChange={(value) => {
+                clearErrors('root.api');
+                field.onChange(formatHeight(value));
+              }}
               error={fieldState.error?.message}
-            >
-              <InputApp
-                autoFocus
-                placeholder='175'
-                inputMode='decimal'
-                onChangeText={(v) => {
-                  clearErrors('profile.height');
-                  field.onChange(formatHeight(v));
-                }}
-                value={field.value}
-                returnKeyType='next'
-                onSubmitEditing={handleCheckAndNextStep}
-              />
-            </FormGroup>
+              returnKeyType='next'
+              onSubmitEditing={handleCheckAndNextStep}
+            />
           )}
         />
       </StepContent>
