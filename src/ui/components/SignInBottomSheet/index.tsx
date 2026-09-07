@@ -26,7 +26,10 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
   } = useSignInBottomSheet({ ref });
 
   return (
-    <BottomSheetModal ref={bottomSheetModalRef}>
+    <BottomSheetModal
+      ref={bottomSheetModalRef}
+      keyboardBlurBehavior='restore'
+    >
       <BottomSheetView style={[
         styles.container,
         { paddingBottom: bottom },
