@@ -1,9 +1,9 @@
 import { AppText } from '@/ui/components/AppText';
+import { styles } from '@/ui/components/BirthDate/BirthDateBottomSheet/styles';
 import { ButtonApp } from '@/ui/components/Button';
-import { styles } from '@/ui/screens/profile/components/BirthDateBottomSheet/styles';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@react-native-community/datetimepicker';
-import { Platform, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IBirthDateBottomSheetProps {
@@ -42,7 +42,6 @@ export function BirthDateBottomSheet({
             display='spinner'
             onValueChange={onChange}
             maximumDate={new Date()}
-            style={Platform.OS === 'ios' ? { height: 180 } : undefined}
           />
         </View>
       </BottomSheetView>

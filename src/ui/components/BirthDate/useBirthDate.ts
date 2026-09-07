@@ -1,34 +1,49 @@
-import { ProfileSchema } from '@/ui/screens/profile/schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { DateTimePickerChangeEvent } from '@react-native-community/datetimepicker';
-import { ChangeEvent, useRef, useState } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { Platform } from 'react-native';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { FieldPath, FieldPathValue, FieldValues, useFormContext } from 'react-hook-form';
+import { Keyboard, Platform } from 'react-native';
 
-export function useBirthDateField() {
+export function useBirthDate<T extends FieldValues>(fieldName: FieldPath<T>) {
   const [showMobilePicker, setShowMobilePicker] = useState(false);
 
   const {
-    control,
     setValue,
     setError,
     clearErrors,
-  } = useFormContext<ProfileSchema>();
+    control,
+  } = useFormContext<T>();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  useEffect(() => {
+    if (Platform.OS !== 'ios') {
+      return;
+    }
+
+    const sub = Keyboard.addListener('keyboardWillShow', () => {
+      bottomSheetRef.current?.close();
+    });
+
+    return () => sub.remove();
+  }, []);
 
   function onMobileChange(_event: DateTimePickerChangeEvent, newSelectedDate: Date | undefined) {
     if (!newSelectedDate || isFutureDate(newSelectedDate)) {
       return;
     }
 
-    setValue('birthDate', newSelectedDate);
-    clearErrors('birthDate');
+    setValue(fieldName, newSelectedDate as FieldPathValue<T, FieldPath<T>>);
+    clearErrors(fieldName);
 
     if (Platform.OS === 'android') {
       setShowMobilePicker(false);
     }
+  }
+
+  function onMobileDismiss() {
+    setShowMobilePicker(false);
   }
 
   function onWebChange(e: ChangeEvent<HTMLInputElement>) {
@@ -42,21 +57,23 @@ export function useBirthDateField() {
     const pickedDate = new Date(year, month - 1, day);
 
     if (!isNaN(pickedDate.getTime())) {
-      setValue('birthDate', pickedDate);
+      setValue(fieldName, pickedDate as FieldPathValue<T, FieldPath<T>>);
     }
 
     if (isFutureDate(pickedDate)) {
-      setError('birthDate', {
+      setError(fieldName, {
         message: 'Insira uma data de nascimento válida.',
       });
       inputRef.current?.blur();
       return;
     }
 
-    clearErrors('birthDate');
+    clearErrors(fieldName);
   }
 
   function openPicker() {
+    Keyboard.dismiss();
+
     if (Platform.OS === 'ios') {
       bottomSheetRef.current?.present();
       return;
@@ -101,10 +118,12 @@ export function useBirthDateField() {
     showMobilePicker,
     inputRef,
     bottomSheetRef,
-    control,
     openPicker,
     onMobileChange,
     onWebChange,
     toDateInputValue,
+    onMobileDismiss,
+    isFutureDate,
+    control,
   };
 }

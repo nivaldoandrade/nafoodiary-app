@@ -48,7 +48,10 @@ export function Profile() {
           rightIcon={LogOutIcon}
           onRightPress={handleSignOut}
         />
-        <KeyboardAwareScrollView bottomOffset={footerHeight}>
+        <KeyboardAwareScrollView
+          bottomOffset={footerHeight}
+          keyboardShouldPersistTaps='handled'
+        >
           <View style={styles.content}>
             {/* <View style={styles.avatar}>
               <Avatar name={account?.profile.name ?? 'Perfil'} />

@@ -1,27 +1,52 @@
-
 import { AppText } from '@/ui/components/AppText';
+import { BirthDateBottomSheet } from '@/ui/components/BirthDate/BirthDateBottomSheet';
+import { useBirthDate } from '@/ui/components/BirthDate/useBirthDate';
 import { ButtonApp } from '@/ui/components/Button';
 import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
-import { useBirthDateStep } from '@/ui/screens/onboarding/steps/hooks/useBirthDateStep';
+import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
+import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
 import { theme } from '@/ui/styles/theme';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ArrowRightIcon } from 'lucide-react-native';
-import { Controller } from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 import { Platform, TouchableOpacity, View } from 'react-native';
 
 export function BirthDateStep() {
+  const { nextStep } = useOnboarding();
+  const {
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useFormContext<OnboardingSchema>();
 
   const {
     showMobilePicker,
     inputRef,
-    control,
-    errors,
+    bottomSheetRef,
     openPicker,
     onMobileChange,
     onWebChange,
-    handleCheckAndNextStep,
     toDateInputValue,
-  } = useBirthDateStep();
+    onMobileDismiss,
+    isFutureDate,
+    control,
+  } = useBirthDate<OnboardingSchema>('profile.birthDate');
+
+  async function handleCheckAndNextStep() {
+    const selectedDate = getValues('profile.birthDate');
+
+    if (!selectedDate || isFutureDate(selectedDate)) {
+      return;
+    }
+
+    const isValid = await trigger('profile.birthDate');
+
+    if (!isValid) {
+      return;
+    }
+
+    nextStep();
+  }
 
   return (
     <Step>
@@ -33,9 +58,10 @@ export function BirthDateStep() {
         <Controller
           name='profile.birthDate'
           control={control}
-          render={({ field, fieldState }) => (
-            <View>
-              {Platform.OS !== 'ios' && (
+          render={({ field, fieldState }) => {
+            const selectedDate = field.value ?? new Date();
+            return (
+              <View>
                 <TouchableOpacity onPress={openPicker}>
                   <AppText
                     weight='semiBold'
@@ -43,17 +69,15 @@ export function BirthDateStep() {
                     color={theme.colors.gray[700]}
                     style={{ textAlign: 'center' }}
                   >
-                    {formatDateForInput(field.value)}
+                    {formatDateForInput(selectedDate)}
                   </AppText>
                 </TouchableOpacity>
-              )}
 
-              {Platform.OS === 'web' && (
-                <>
+                {Platform.OS === 'web' && (
                   <input
                     ref={inputRef}
                     type='date'
-                    value={toDateInputValue(field.value ?? new Date())}
+                    value={toDateInputValue(selectedDate)}
                     onChange={onWebChange}
                     role='textbox'
                     max={toDateInputValue(new Date())}
@@ -65,32 +89,42 @@ export function BirthDateStep() {
                       opacity: 0,
                     }}
                   />
-                  {fieldState.error && (
-                    <AppText
-                      weight='semiBold'
-                      color={theme.colors.support.red}
-                      style={{ textAlign: 'center' }}
-                    >
-                      {fieldState.error.message}
-                    </AppText>
-                  )}
-                </>
-              )}
+                )}
 
-              {(showMobilePicker && Platform.OS !== 'web') && (
-                <DateTimePicker
-                  value={field.value}
-                  mode='date'
-                  display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
-                  onValueChange={onMobileChange}
-                  maximumDate={new Date()}
-                />
-              )}
-            </View>
-          )}
+                {(showMobilePicker && Platform.OS === 'android') && (
+                  <DateTimePicker
+                    value={selectedDate}
+                    mode='date'
+                    display='calendar'
+                    onValueChange={onMobileChange}
+                    onDismiss={onMobileDismiss}
+                    maximumDate={new Date()}
+                  />
+                )}
+
+                {Platform.OS === 'ios' && (
+                  <BirthDateBottomSheet
+                    bottomSheetRef={bottomSheetRef}
+                    value={selectedDate}
+                    onChange={onMobileChange}
+                  />
+                )}
+
+                {fieldState.error && (
+                  <AppText
+                    weight='semiBold'
+                    color={theme.colors.support.red}
+                    style={{ textAlign: 'center' }}
+                  >
+                    {fieldState.error.message}
+                  </AppText>
+                )}
+              </View>
+            );
+          }}
         />
       </StepContent>
-      <StepFooter >
+      <StepFooter>
         <ButtonApp
           disabled={!!errors.profile?.birthDate}
           size='icon'
@@ -106,4 +140,3 @@ export function BirthDateStep() {
 function formatDateForInput(value: Date) {
   return new Intl.DateTimeFormat('pt-BR').format(value);
 }
-

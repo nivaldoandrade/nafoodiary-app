@@ -1,24 +1,26 @@
+import { BirthDateBottomSheet } from '@/ui/components/BirthDate/BirthDateBottomSheet';
+import { useBirthDate } from '@/ui/components/BirthDate/useBirthDate';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
-import { BirthDateBottomSheet } from '@/ui/screens/profile/components/BirthDateBottomSheet';
-import { useBirthDateField } from '@/ui/screens/profile/components/hooks/useBirthDateField';
+import { ProfileSchema } from '@/ui/screens/profile/schema';
 import { theme } from '@/ui/styles/theme';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { CalendarDaysIcon } from 'lucide-react-native';
 import { Controller } from 'react-hook-form';
-import { Platform, View } from 'react-native';
+import { Platform, Pressable, View } from 'react-native';
 
 export function BirthDateField() {
   const {
     showMobilePicker,
     inputRef,
     bottomSheetRef,
-    control,
     openPicker,
     onMobileChange,
     onWebChange,
     toDateInputValue,
-  } = useBirthDateField();
+    onMobileDismiss,
+    control,
+  } = useBirthDate<ProfileSchema>('birthDate');
 
   return (
     <Controller
@@ -32,15 +34,17 @@ export function BirthDateField() {
               label='Data de Nascimento'
               error={fieldState.error?.message}
             >
-              <InputApp
-                placeholder='19/02/2000'
-                value={field.value ? formatDateForInput(field.value) : ''}
-                editable={false}
-                onPress={openPicker}
-                rightAdornment={
-                  <CalendarDaysIcon size={20} color={theme.colors.black[700]} />
-                }
-              />
+              <Pressable onPress={openPicker}>
+                <InputApp
+                  placeholder='19/02/2000'
+                  value={field.value ? formatDateForInput(field.value) : ''}
+                  editable={false}
+                  pointerEvents='none'
+                  rightAdornment={
+                    <CalendarDaysIcon size={20} color={theme.colors.black[700]} />
+                  }
+                />
+              </Pressable>
             </FormGroup>
 
             {Platform.OS === 'android' && showMobilePicker && (
@@ -49,6 +53,7 @@ export function BirthDateField() {
                 mode='date'
                 display='calendar'
                 onValueChange={onMobileChange}
+                onDismiss={onMobileDismiss}
                 maximumDate={new Date()}
               />
             )}
@@ -66,7 +71,7 @@ export function BirthDateField() {
                   height: 52,
                   bottom: 0,
                   opacity: 0,
-                  pointerEvents: 'auto',
+                  pointerEvents: 'none',
                 }}
               />
             )}
