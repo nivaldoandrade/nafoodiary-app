@@ -7,12 +7,14 @@ type NameInputProps = Omit<TextInputProps, 'onChange'> & {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  disabled?: boolean;
 }
 
 export function NameInput({
   value,
   onChange,
   error,
+  disabled = false,
   ...props
 }: NameInputProps) {
 
@@ -28,6 +30,7 @@ export function NameInput({
         autoComplete='name'
         value={value}
         onChangeText={onChange}
+        disabled={disabled}
         {...props}
       />
     </FormGroup>

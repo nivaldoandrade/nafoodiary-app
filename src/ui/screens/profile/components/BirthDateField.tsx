@@ -9,7 +9,11 @@ import { CalendarDaysIcon } from 'lucide-react-native';
 import { Controller } from 'react-hook-form';
 import { Platform, Pressable, View } from 'react-native';
 
-export function BirthDateField() {
+interface IBirthDateFieldProps {
+  disabled?: boolean;
+}
+
+export function BirthDateField({ disabled }: IBirthDateFieldProps) {
   const {
     showMobilePicker,
     inputRef,
@@ -34,12 +38,13 @@ export function BirthDateField() {
               label='Data de Nascimento'
               error={fieldState.error?.message}
             >
-              <Pressable onPress={openPicker}>
+              <Pressable onPress={openPicker} disabled={disabled}>
                 <InputApp
                   placeholder='19/02/2000'
                   value={field.value ? formatDateForInput(field.value) : ''}
                   editable={false}
                   pointerEvents='none'
+                  disabled={disabled}
                   rightAdornment={
                     <CalendarDaysIcon size={20} color={theme.colors.black[700]} />
                   }

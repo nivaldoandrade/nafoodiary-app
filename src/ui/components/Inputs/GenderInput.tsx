@@ -6,22 +6,24 @@ interface IGenderInputProps {
   isLabel?: boolean;
   value: Gender;
   onChange: (value: Gender) => void;
+  disabled?: boolean;
 }
 
 export function GenderInput({
   isLabel = true,
   value,
   onChange,
+  disabled = false,
 }: IGenderInputProps) {
 
   return (
     <FormGroup label={isLabel ? 'Sexo' : undefined}>
       <RadioGroup value={value} onChange={onChange} isHorizontal>
-        <RadioGroupItem value={Gender.MALE}>
+        <RadioGroupItem disabled={disabled} value={Gender.MALE}>
           <RadioGroupItemIcon>👱‍♂️</RadioGroupItemIcon>
           <RadioGroupItemLabel>Masculino</RadioGroupItemLabel>
         </RadioGroupItem>
-        <RadioGroupItem value={Gender.FEMALE}>
+        <RadioGroupItem disabled={disabled} value={Gender.FEMALE}>
           <RadioGroupItemIcon>👩</RadioGroupItemIcon>
           <RadioGroupItemLabel>Feminino</RadioGroupItemLabel>
         </RadioGroupItem>

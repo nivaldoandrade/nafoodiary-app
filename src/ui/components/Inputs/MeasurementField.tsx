@@ -9,6 +9,7 @@ type MeasurementFieldProps = Omit<TextInputProps, 'onChange'> & {
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  disabled?: boolean;
 };
 
 const LabelType: Record<MeasurementFieldProps['name'], string> = {
@@ -23,6 +24,7 @@ export function MeasurementField({
   value,
   onChange,
   error,
+  disabled = false,
   ...props
 }: MeasurementFieldProps) {
   const label = LabelType[name];
@@ -37,6 +39,7 @@ export function MeasurementField({
         value={value}
         onChangeText={onChange}
         sufix={unit}
+        disabled={disabled}
         {...props}
       />
     </FormGroup>

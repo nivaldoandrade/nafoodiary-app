@@ -67,10 +67,11 @@ export function Profile() {
                     field.onChange(value);
                   }}
                   error={fieldState.error?.message}
+                  disabled={isSubmitting}
                 />
               )}
             />
-            <BirthDateField />
+            <BirthDateField disabled={isSubmitting} />
             <Controller
               name='height'
               control={form.control}
@@ -80,6 +81,7 @@ export function Profile() {
                   placeholder='175'
                   unit='cm'
                   value={field.value}
+                  disabled={isSubmitting}
                   onChange={(value) => {
                     form.clearErrors('root.api');
                     field.onChange(formatHeight(value));
@@ -97,6 +99,7 @@ export function Profile() {
                   placeholder='80'
                   unit='kg'
                   value={field.value}
+                  disabled={isSubmitting}
                   onChange={(value) => {
                     form.clearErrors('root.api');
                     field.onChange(formatWeight(value));
@@ -109,7 +112,11 @@ export function Profile() {
               name="gender"
               control={form.control}
               render={({ field }) => (
-                <GenderInput value={field.value} onChange={field.onChange} />
+                <GenderInput
+                  value={field.value}
+                  onChange={field.onChange}
+                  disabled={isSubmitting}
+                />
               )}
             />
           </View>

@@ -57,6 +57,7 @@ const RadioGroupItemContext = createContext({ isSelected: false });
 function RadioGroupItem({
   style,
   value,
+  disabled,
   ...props
 }: IRadioGroupItemProps) {
   const { onChange, selectedValue, isHorizontal } = use(RadioGroupContext);
@@ -69,9 +70,11 @@ function RadioGroupItem({
           styles.item,
           isHorizontal && styles.itemHorizontal,
           isSelected && styles.isSelectedItem,
+          disabled && styles.itemDisabled,
           style,
         ]}
         onPress={() => onChange(value)}
+        disabled={disabled}
         {...props} />
     </RadioGroupItemContext.Provider>
   );

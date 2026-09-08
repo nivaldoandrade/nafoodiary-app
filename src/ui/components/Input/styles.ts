@@ -26,6 +26,10 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  adormentDisabled: {
+    opacity: 0.5,
+  },
+
   sufix: {
     minWidth: 56,
     padding: 14,
