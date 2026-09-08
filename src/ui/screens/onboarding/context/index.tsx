@@ -1,8 +1,10 @@
-import { AuthStackNavigatorProps } from '@/app/navigation/AuthStack';
+import { AuthStackNavigatorProps, AuthStackParamList } from '@/app/navigation/AuthStack';
 import { OnboardingParamList } from '@/app/navigation/OnboardingStack';
 import { orderedSteps } from '@/ui/screens/onboarding/orderedSteps';
-import { useNavigation } from '@react-navigation/native';
-import { createContext, useCallback, useState, type ReactNode } from 'react';
+import { useNavigation, useNavigationState } from '@react-navigation/native';
+import { createContext, useCallback, type ReactNode } from 'react';
+
+const ONBOARDING_ROUTE_NAME = 'Onboarding' satisfies keyof AuthStackParamList;
 
 interface IOnboardingContextProps {
   initialStep: keyof OnboardingParamList;
@@ -19,18 +21,35 @@ interface IOnboardingProviderProps {
 export const OnboardingContext = createContext({} as IOnboardingContextProps);
 
 export function OnboardingProvider({ children }: IOnboardingProviderProps) {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const navigation = useNavigation<AuthStackNavigatorProps>();
 
+  const currentStepIndex = useNavigationState(state => {
+    const onboardingRoute = state.routes[state.index];
+
+    if (
+      onboardingRoute?.name !== ONBOARDING_ROUTE_NAME
+      || !onboardingRoute.state
+    ) {
+      return 0;
+    }
+
+    const nestedState = onboardingRoute.state;
+    const currentName = nestedState.routes[nestedState.index ?? 0]?.name;
+
+    if (!currentName) {
+      return 0;
+    }
+
+    return orderedSteps.indexOf(currentName as keyof OnboardingParamList);
+  });
+
   const nextStep = useCallback(() => {
-    const nextStepIndex = currentStepIndex + 1;
     const nextStep = orderedSteps[currentStepIndex + 1];
 
     if (!nextStep) {
       return;
     }
 
-    setCurrentStepIndex(nextStepIndex);
     navigation.navigate('Onboarding', { screen: nextStep });
   }, [navigation, currentStepIndex]);
 
@@ -44,7 +63,6 @@ export function OnboardingProvider({ children }: IOnboardingProviderProps) {
 
     const previousStep = orderedSteps[currentStepIndex - 1];
 
-    setCurrentStepIndex(previousStepIndex);
     navigation.navigate('Onboarding', {
       screen: previousStep, pop: true,
     });
