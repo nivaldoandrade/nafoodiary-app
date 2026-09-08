@@ -34,6 +34,7 @@ export function Home() {
     isCreateMealModalVisible,
     createMealModalAnimationType,
     finalizeCreateMealModalClose,
+    handleSelectDate,
   } = useHome();
 
   useFocusEffect(
@@ -62,6 +63,7 @@ export function Home() {
         onNextDate={handleNextDate}
         onPrevDate={handlePrevDate}
         onOpenCreateMealModal={handleOpenCreateMealModal}
+        onSelectDate={handleSelectDate}
       >
         <FlatList
           data={meals}

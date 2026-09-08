@@ -2,6 +2,7 @@ import { AppText } from '@/ui/components/AppText';
 import { CurrentGoal } from '@/ui/screens/home/components/CurrentGoal';
 import { styles } from '@/ui/screens/home/components/Header/styles';
 import { UserHeader } from '@/ui/screens/home/components/UserHeader';
+import { WeekCalendar } from '@/ui/screens/home/components/WeekCalendar';
 import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { View } from 'react-native';
 
@@ -13,6 +14,7 @@ export function Header() {
       <UserHeader />
       <View style={styles.container}>
         <View style={[styles.content, { opacity: isLoading ? 0.4 : 1 }]}>
+          <WeekCalendar />
           <CurrentGoal />
         </View>
         <View style={styles.divider} />

@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
   },
 
   content: {
+    gap: 8,
     paddingHorizontal: 8,
     paddingVertical: 12,
   },

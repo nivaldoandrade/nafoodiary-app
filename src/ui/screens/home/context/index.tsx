@@ -9,6 +9,7 @@ interface IHomeContextProps {
   onNextDate: () => void;
   onPrevDate: () => void;
   onOpenCreateMealModal: (type: Exclude<CreateMealModalType, null>) => void;
+  onSelectDate: (date: Date) => void;
 }
 
 export const HomeContext = createContext({} as IHomeContextProps);
@@ -24,6 +25,7 @@ export function HomeProvider({
   onNextDate,
   onPrevDate,
   onOpenCreateMealModal,
+  onSelectDate,
 }: IHomeProvider) {
 
   return (
@@ -34,6 +36,7 @@ export function HomeProvider({
       onNextDate,
       onPrevDate,
       onOpenCreateMealModal,
+      onSelectDate,
     }}>
       {children}
     </HomeContext.Provider>

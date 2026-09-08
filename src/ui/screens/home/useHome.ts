@@ -57,6 +57,10 @@ export function useHome() {
 
   const { top, bottom } = useSafeAreaInsets();
 
+  function handleSelectDate(date: Date) {
+    setSelectedDate(date);
+  }
+
   function handleNextDate() {
     setSelectedDate(prevState => {
       const next = new Date(prevState);
@@ -98,5 +102,6 @@ export function useHome() {
     isCreateMealModalVisible,
     createMealModalAnimationType,
     finalizeCreateMealModalClose,
+    handleSelectDate,
   };
 }

@@ -5,6 +5,7 @@ import { MacroRainbow } from '@/ui/components/MacroRainbow';
 import { styles } from '@/ui/screens/home/components/CurrentGoal/styles';
 import { useHomeContext } from '@/ui/screens/home/context/useHomeContext';
 import { theme } from '@/ui/styles/theme';
+import { isSameDate } from '@/ui/utils/isSameDate';
 import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react-native';
 import { useMemo } from 'react';
 import { View } from 'react-native';
@@ -12,6 +13,8 @@ import { View } from 'react-native';
 export function CurrentGoal() {
   const { isLoading } = useHomeContext();
   const { meals, selectedDate, onNextDate, onPrevDate } = useHomeContext();
+
+  const isFutureDate = isSameDate(selectedDate, new Date());
 
   const { account } = useAccount();
 
@@ -59,7 +62,7 @@ export function CurrentGoal() {
         <ButtonApp
           size='icon'
           intent='ghost'
-          disabled={isLoading}
+          disabled={isLoading || isFutureDate}
           onPress={onNextDate}
         >
           <ChevronRightIcon />
