@@ -3,13 +3,13 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 24,
-    paddingTop: 10,
-    gap: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
-
-  googleButton: {
-    borderWidth: 1,
-    borderColor: theme.colors.gray[400],
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: theme.colors.gray[400],
   },
 });

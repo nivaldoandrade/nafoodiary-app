@@ -1,7 +1,11 @@
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
+import { useSocialAuth } from '@/app/hooks/useSocialAuth';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
+import { GoogleIcon } from '@/ui/components/GoogleIcon';
 import { InputApp } from '@/ui/components/Input';
+import { OrDivider } from '@/ui/components/OrDivider';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/components/SignInBottomSheet/styles';
 import { useSignInBottomSheet } from '@/ui/components/SignInBottomSheet/useSignInBottomSheet';
@@ -25,6 +29,14 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
     clearErrors,
   } = useSignInBottomSheet({ ref });
 
+  const { signInWithSocial } = useAuth();
+  const { signInWithGoogle, isLoading: isGoogleLoading } = useSocialAuth({
+    onSuccess: (response) => {
+      bottomSheetModalRef.current?.dismiss();
+      return signInWithSocial(response);
+    },
+  });
+
   return (
     <BottomSheetModal
       ref={bottomSheetModalRef}
@@ -41,6 +53,17 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
         >
           Entre em sua conta
         </AppText>
+        <ButtonApp
+          intent='ghost'
+          style={styles.googleButton}
+          leftIcon={<GoogleIcon />}
+          isLoading={isGoogleLoading}
+          disabled={isGoogleLoading}
+          onPress={signInWithGoogle}
+        >
+          Continuar com o Google
+        </ButtonApp>
+        <OrDivider />
         <View style={{ gap: 32 }}>
           <Controller
             name='email'
