@@ -12,11 +12,11 @@ const Stack = createNativeStackNavigator<RootParamList>();
 
 export function RootStack() {
 
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, shouldShowOnboarding } = useAuth();
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!isSignedIn ? (
+      {!isSignedIn || shouldShowOnboarding ? (
         <Stack.Screen
           name="Auth"
           component={AuthStack}

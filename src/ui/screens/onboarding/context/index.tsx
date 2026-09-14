@@ -1,8 +1,9 @@
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { AuthStackNavigatorProps, AuthStackParamList } from '@/app/navigation/AuthStack';
 import { OnboardingParamList } from '@/app/navigation/OnboardingStack';
 import { orderedSteps } from '@/ui/screens/onboarding/orderedSteps';
 import { useNavigation, useNavigationState } from '@react-navigation/native';
-import { createContext, useCallback, type ReactNode } from 'react';
+import { createContext, useCallback, useMemo, type ReactNode } from 'react';
 
 const ONBOARDING_ROUTE_NAME = 'Onboarding' satisfies keyof AuthStackParamList;
 
@@ -10,6 +11,7 @@ interface IOnboardingContextProps {
   initialStep: keyof OnboardingParamList;
   currentStepIndex: number;
   totalStep: number;
+  isLastStep: boolean;
   nextStep: () => void;
   previousStep: () => void;
 }
@@ -22,6 +24,14 @@ export const OnboardingContext = createContext({} as IOnboardingContextProps);
 
 export function OnboardingProvider({ children }: IOnboardingProviderProps) {
   const navigation = useNavigation<AuthStackNavigatorProps>();
+
+  const { shouldShowOnboarding } = useAuth();
+
+  const flowSteps = useMemo(() => {
+    return shouldShowOnboarding
+      ? orderedSteps.filter(step => step !== 'CreateAccountStep')
+      : orderedSteps;
+  }, [shouldShowOnboarding]);
 
   const currentStepIndex = useNavigationState(state => {
     const onboardingRoute = state.routes[state.index];
@@ -40,18 +50,18 @@ export function OnboardingProvider({ children }: IOnboardingProviderProps) {
       return 0;
     }
 
-    return orderedSteps.indexOf(currentName as keyof OnboardingParamList);
+    return flowSteps.indexOf(currentName as keyof OnboardingParamList);
   });
 
   const nextStep = useCallback(() => {
-    const nextStep = orderedSteps[currentStepIndex + 1];
+    const nextStep = flowSteps[currentStepIndex + 1];
 
     if (!nextStep) {
       return;
     }
 
     navigation.navigate('Onboarding', { screen: nextStep });
-  }, [navigation, currentStepIndex]);
+  }, [navigation, currentStepIndex, flowSteps]);
 
   const previousStep = useCallback(() => {
     const previousStepIndex = currentStepIndex - 1;
@@ -61,20 +71,23 @@ export function OnboardingProvider({ children }: IOnboardingProviderProps) {
       return;
     }
 
-    const previousStep = orderedSteps[currentStepIndex - 1];
+    const previousStep = flowSteps[currentStepIndex - 1];
 
     navigation.navigate('Onboarding', {
       screen: previousStep, pop: true,
     });
-  }, [navigation, currentStepIndex]);
+  }, [navigation, currentStepIndex, flowSteps]);
+
+  const isLastStep = currentStepIndex === flowSteps.length - 1;
 
   return (
     <OnboardingContext value={{
       currentStepIndex,
       nextStep,
       previousStep,
-      initialStep: orderedSteps[0],
-      totalStep: orderedSteps.length,
+      initialStep: flowSteps[0],
+      totalStep: flowSteps.length,
+      isLastStep,
     }}>
       {children}
     </ OnboardingContext>

@@ -1,4 +1,5 @@
 
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import type { AuthStackNavigatorProps } from '@/app/navigation/AuthStack';
 import welcomeBg from '@/ui/assets/welcome-bg/welcome.png';
 import { AppText } from '@/ui/components/AppText';
@@ -10,7 +11,7 @@ import { styles } from '@/ui/screens/welcome/styles';
 import { theme } from '@/ui/styles/theme';
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -24,6 +25,14 @@ const blurIntensity = Platform.select({
 export function Welcome() {
   const navigation = useNavigation<AuthStackNavigatorProps>();
   const signInModalRef = useRef<ISignInBottomSheet>(null);
+
+  const { shouldShowOnboarding } = useAuth();
+
+  useEffect(() => {
+    if (shouldShowOnboarding) {
+      navigation.navigate('Onboarding');
+    }
+  }, [shouldShowOnboarding, navigation]);
 
   const handleSignInModalOpen = () => {
     signInModalRef.current?.open();
