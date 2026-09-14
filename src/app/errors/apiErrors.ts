@@ -1,10 +1,12 @@
 import { ValueOf } from '@/app/utils/ValueOf';
+import { isAxiosError } from 'axios';
 
 export const ErrorCode = {
   VALIDATION: 'VALIDATION',
   EMAIL_ALREADY_IN_USE: 'EMAIL_ALREADY_IN_USE',
   INVALID_REFRESH_TOKEN: 'INVALID_REFRESH_TOKEN',
   INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  INVALID_GRANT: 'INVALID_GRANT',
   RESOURCE_NOT_FOUND: 'RESOURCE_NOT_FOUND',
 
   // HTTP
@@ -26,6 +28,7 @@ export const ApiErrorMessages: Record<ErrorCode, string> = {
   EMAIL_ALREADY_IN_USE: 'Este e-mail já está em uso.',
   INVALID_REFRESH_TOKEN: 'Sua sessão expirou. Faça login novamente.',
   INVALID_CREDENTIALS: 'E-mail ou senha incorretos.',
+  INVALID_GRANT: 'Falha na autenticação. Tente novamente.',
   RESOURCE_NOT_FOUND: 'Recurso não encontrado.',
   BAD_REQUEST: 'Requisição inválida.',
   INTERNAL_SERVER_ERROR: 'Erro interno. Tente novamente mais tarde.',
@@ -33,4 +36,12 @@ export const ApiErrorMessages: Record<ErrorCode, string> = {
 
 export function getErrorMessage(code?: ErrorCode): string {
   return code ? ApiErrorMessages[code] : 'Ocorreu um erro. Tente novamente.';
+}
+
+export function getApiErrorCode(error: unknown): ErrorCode | undefined {
+  if (!isAxiosError<ApiError>(error)) {
+    return undefined;
+  }
+
+  return error.response?.data.error.code;
 }

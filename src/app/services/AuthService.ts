@@ -3,6 +3,12 @@ import { OnboardingSchemaOutput } from '@/ui/screens/onboarding/schema';
 
 export class AuthService extends Service {
 
+  static async signInWithSocial(params: AuthService.SignInWithSocial['params']): Promise<AuthService.SignInWithSocial['response']> {
+    const { data } = await this.client.post<AuthService.SignInWithSocial['response']>('auth/oauth/callback', params);
+
+    return data;
+  }
+
   static async signIn(
     params: AuthService.SignIn['params'],
   ): Promise<AuthService.SignIn['response']> {
@@ -38,6 +44,20 @@ export class AuthService extends Service {
 }
 
 export namespace AuthService {
+
+  export type SignInWithSocial = {
+    params: {
+      code: string;
+      codeVerifier: string;
+      redirectUri: string;
+    },
+
+    response: {
+      isOnboarded: boolean;
+      accessToken: string;
+      refreshToken: string;
+    }
+  }
 
   export type SignIn = {
     params: {

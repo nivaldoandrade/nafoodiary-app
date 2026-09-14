@@ -1,4 +1,6 @@
 import { Service } from '@/app/services/Service';
+import { ActivityLevel } from '@/app/types/ActivityLevel';
+import { Gender } from '@/app/types/Gender';
 import { Goal } from '@/app/types/Goal';
 
 export class AccountsService extends Service {
@@ -17,6 +19,11 @@ export class AccountsService extends Service {
 
   static async updateProfile(params: AccountsService.UpdateProfileParams): Promise<void> {
     await this.client.put('profiles', params);
+  }
+
+  static async completeOnboarding(params: AccountsService.CompleteOnboardingParams): Promise<void> {
+    await this.client.post('auth/complete-onboarding', params);
+
   }
 
   private static parseDateFromAPI(dateString: string): Date {
@@ -61,5 +68,15 @@ export namespace AccountsService {
     weight: number;
     gender: string;
     birthDate: string;
+  };
+
+  export type CompleteOnboardingParams = {
+    accessToken: string;
+    birthDate: string;
+    height: number;
+    weight: number;
+    gender: Gender;
+    goal: Goal;
+    activityLevel: ActivityLevel;
   };
 }
