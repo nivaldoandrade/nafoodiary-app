@@ -1,7 +1,7 @@
 
 import { ButtonApp } from '@/ui/components/Button';
 import { MeasurementField } from '@/ui/components/Inputs/MeasurementField';
-import { Step, StepContent, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
+import { Step, StepContent, StepDismissKeyboard, StepFooter, StepHeader, StepSubTitle, StepTitle } from '@/ui/screens/onboarding/components/Step';
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
 import { formatWeight } from '@/ui/utils/formatMeasurement';
@@ -26,43 +26,45 @@ export function WeightStep() {
   }
 
   return (
-    <Step>
-      <StepHeader>
-        <StepTitle>Qual é seu peso?</StepTitle>
-        <StepSubTitle>Você pode inserir uma estimativa</StepSubTitle>
-      </StepHeader>
-      <StepContent position='center'>
-        <Controller
-          name='profile.weight'
-          control={control}
-          render={({ field, fieldState }) => (
+    <StepDismissKeyboard>
+      <Step>
+        <StepHeader>
+          <StepTitle>Qual é seu peso?</StepTitle>
+          <StepSubTitle>Você pode inserir uma estimativa</StepSubTitle>
+        </StepHeader>
+        <StepContent position='center'>
+          <Controller
+            name='profile.weight'
+            control={control}
+            render={({ field, fieldState }) => (
 
-            <MeasurementField
-              autoFocus
-              name='weight'
-              placeholder='80'
-              unit='kg'
-              value={field.value}
-              onChange={(value) => {
-                clearErrors('root.api');
-                field.onChange(formatWeight(value));
-              }}
-              error={fieldState.error?.message}
-              returnKeyType='next'
-              onSubmitEditing={handleCheckAndNextStep}
-            />
-          )}
-        />
-      </StepContent>
-      <StepFooter >
-        <ButtonApp
-          disabled={!selectedWeight}
-          size='icon'
-          onPress={handleCheckAndNextStep}
-        >
-          <ArrowRightIcon />
-        </ButtonApp>
-      </StepFooter>
-    </Step>
+              <MeasurementField
+                autoFocus
+                name='weight'
+                placeholder='80'
+                unit='kg'
+                value={field.value}
+                onChange={(value) => {
+                  clearErrors('root.api');
+                  field.onChange(formatWeight(value));
+                }}
+                error={fieldState.error?.message}
+                returnKeyType='next'
+                onSubmitEditing={handleCheckAndNextStep}
+              />
+            )}
+          />
+        </StepContent>
+        <StepFooter >
+          <ButtonApp
+            disabled={!selectedWeight}
+            size='icon'
+            onPress={handleCheckAndNextStep}
+          >
+            <ArrowRightIcon />
+          </ButtonApp>
+        </StepFooter>
+      </Step>
+    </StepDismissKeyboard>
   );
 }

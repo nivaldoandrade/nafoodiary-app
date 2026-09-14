@@ -1,7 +1,8 @@
 import { AppText, IAppTextProps } from '@/ui/components/AppText';
 import { styles } from '@/ui/screens/onboarding/components/Step/styles';
 import { theme } from '@/ui/styles/theme';
-import { View, ViewProps } from 'react-native';
+import { ReactElement } from 'react';
+import { Keyboard, Platform, TouchableWithoutFeedback, View, ViewProps } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function Step({ style, ...props }: ViewProps) {
@@ -63,9 +64,24 @@ function StepFooter({ style, ...props }: ViewProps) {
   );
 }
 
+function StepDismissKeyboard({ children }: { children: ReactElement }) {
+  if (Platform.OS === 'web') {
+    return children;
+  }
+
+  return (
+    <View style={styles.keyboardDismiss}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {children}
+      </TouchableWithoutFeedback>
+    </View>
+  );
+}
+
 export {
   Step,
   StepContent,
+  StepDismissKeyboard,
   StepFooter,
   StepHeader,
   StepSubTitle,

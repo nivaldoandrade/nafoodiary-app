@@ -5,7 +5,7 @@ import { onboardingSchema } from '@/ui/screens/onboarding/schema';
 import { theme } from '@/ui/styles/theme';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
+import { View } from 'react-native';
 
 export function Onboarding() {
   const form = useForm({
@@ -28,17 +28,10 @@ export function Onboarding() {
   return (
     <FormProvider {...form}>
       <OnboardingProvider>
-        <KeyboardAwareScrollView
-          bottomOffset={62}
-          contentContainerStyle={{
-            flexGrow: 1,
-            backgroundColor: theme.colors.white,
-          }}
-        >
+        <View style={{ flex: 1, backgroundColor: theme.colors.white }}>
           <OnboardingHeader />
           <OnboardingStack />
-
-        </KeyboardAwareScrollView>
+        </View>
       </OnboardingProvider>
     </FormProvider>
   );

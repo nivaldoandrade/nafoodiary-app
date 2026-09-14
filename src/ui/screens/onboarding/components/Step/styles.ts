@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.white,
-    flex: 1,
+    flexGrow: 1,
     paddingHorizontal: 24,
   },
   header: {
@@ -29,5 +29,8 @@ export const styles = StyleSheet.create({
   },
   footer: {
     alignItems: 'flex-end',
+  },
+  keyboardDismiss: {
+    flex: 1,
   },
 });
