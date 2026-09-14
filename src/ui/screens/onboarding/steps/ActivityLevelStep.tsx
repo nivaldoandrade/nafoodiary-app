@@ -1,4 +1,8 @@
 
+import { useAuth } from '@/app/contexts/AuthContext/useAuth';
+import { ErrorCode, getApiErrorCode, getErrorMessage } from '@/app/errors/apiErrors';
+import { useSocialAuth } from '@/app/hooks/useSocialAuth';
+import { AuthService } from '@/app/services/AuthService';
 import { ActivityLevel } from '@/app/types/ActivityLevel';
 import { ButtonApp } from '@/ui/components/Button';
 import { RadioGroup, RadioGroupItem, RadioGroupItemDescription, RadioGroupItemIcon, RadioGroupItemInfo, RadioGroupItemLabel } from '@/ui/components/RadioGroup';
@@ -6,14 +10,46 @@ import { Step, StepContent, StepFooter, StepHeader, StepTitle } from '@/ui/scree
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { OnboardingSchema } from '@/ui/screens/onboarding/schema';
 import { ArrowRightIcon } from 'lucide-react-native';
+import { useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
+import { toast } from '@/app/libs/sonner';
 
 export function ActivityLevelStep() {
-  const { nextStep } = useOnboarding();
+  const { nextStep, isLastStep } = useOnboarding();
+  const { shouldShowOnboarding, completeOnboarding, signInWithSocial } = useAuth();
 
-  const { control, trigger, watch } = useFormContext<OnboardingSchema>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const reauthAttemptedRef = useRef(false);
+
+  const { signInWithGoogle, isLoading: isGoogleLoading } = useSocialAuth({
+    onSuccess: handleGoogleOnSuccess,
+  });
+
+  const { control, trigger, watch, getValues } = useFormContext<OnboardingSchema>();
 
   const selectedActivityLevel = watch('profile.activityLevel');
+
+  async function handleGoogleOnSuccess(response: AuthService.SignInWithSocial['response']) {
+    if (response.isOnboarded) {
+      await signInWithSocial(response);
+      return;
+    }
+
+    await submitOnboarding();
+  }
+
+  async function submitOnboarding() {
+    const profile = getValues('profile');
+
+    await completeOnboarding({
+      birthDate: profile.birthDate.toISOString().split('T')[0],
+      height: Number(profile.height),
+      weight: Number(profile.weight),
+      gender: profile.gender,
+      goal: profile.goal,
+      activityLevel: profile.activityLevel,
+    });
+  }
 
   async function handleCheckAndNextStep() {
     const isValid = await trigger('profile.activityLevel');
@@ -22,7 +58,32 @@ export function ActivityLevelStep() {
       return;
     }
 
+    if (isLastStep && shouldShowOnboarding) {
+      await finishGoogleOnboarding();
+      return;
+    }
+
     nextStep();
+  }
+
+  async function finishGoogleOnboarding() {
+    setIsSubmitting(true);
+    try {
+      await submitOnboarding();
+    } catch (error) {
+      if (
+        getApiErrorCode(error) === ErrorCode.INVALID_GRANT
+        && !reauthAttemptedRef.current
+      ) {
+        reauthAttemptedRef.current = true;
+        await signInWithGoogle();
+        return;
+      }
+
+      toast.error(getErrorMessage(getApiErrorCode(error)));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -78,7 +139,8 @@ export function ActivityLevelStep() {
       </StepContent>
       <StepFooter >
         <ButtonApp
-          disabled={!selectedActivityLevel}
+          disabled={!selectedActivityLevel || isSubmitting || isGoogleLoading}
+          isLoading={isSubmitting || isGoogleLoading}
           size='icon'
           onPress={handleCheckAndNextStep}
         >
