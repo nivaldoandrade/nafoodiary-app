@@ -11,7 +11,7 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { toast } from 'sonner-native';
+import { toast } from '@/app/libs/sonner';
 
 export function useEditGoals() {
   const [footerHeight, setFooterHeight] = useState(0);
