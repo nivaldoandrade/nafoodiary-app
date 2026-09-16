@@ -12,14 +12,16 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 export function PlanSummaryModal() {
   const { isSignedUp } = useAuth();
-  const [visible, setVisible] = useState(isSignedUp);
+  const [dismissed, setDismissed] = useState(false);
+
+  const visible = isSignedUp && !dismissed;
 
   const { account } = useAccount();
 
   const currentGoal = goalInfoByValue[account!.profile.goal];
 
   function handleClose() {
-    setVisible(false);
+    setDismissed(true);
   }
 
   return (

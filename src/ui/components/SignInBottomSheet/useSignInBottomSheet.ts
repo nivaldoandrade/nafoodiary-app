@@ -40,9 +40,11 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     };
   }, []);
 
+  // eslint-disable-next-line react-hooks/refs
   const handleSubmit = RHFHandleSubmit(async (data) => {
     try {
       await signIn(data);
+      bottomSheetModalRef.current?.dismiss();
     } catch (error) {
       if (isAxiosError<ApiError>(error)) {
         const code = error.response?.data.error.code;
