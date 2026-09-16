@@ -53,7 +53,6 @@ export namespace AuthService {
     },
 
     response: {
-      isOnboarded: boolean;
       accessToken: string;
       refreshToken: string;
     }

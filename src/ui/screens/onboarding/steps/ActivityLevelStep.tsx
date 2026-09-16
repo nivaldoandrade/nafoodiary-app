@@ -30,8 +30,9 @@ export function ActivityLevelStep() {
   const selectedActivityLevel = watch('profile.activityLevel');
 
   async function handleGoogleOnSuccess(response: AuthService.SignInWithSocial['response']) {
-    if (response.isOnboarded) {
-      await signInWithSocial(response);
+    const isOnboarded = await signInWithSocial(response);
+
+    if (isOnboarded) {
       return;
     }
 

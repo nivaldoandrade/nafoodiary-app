@@ -40,8 +40,9 @@ export function CreateAccountStep() {
   const reauthAttemptedRef = useRef(false);
 
   async function handleGoogleOnSuccess(response: AuthService.SignInWithSocial['response']) {
-    if (response.isOnboarded) {
-      await signInWithSocial(response);
+    const isOnboarded = await signInWithSocial(response);
+
+    if (isOnboarded) {
       return;
     }
 

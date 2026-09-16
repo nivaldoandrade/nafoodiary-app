@@ -14,7 +14,7 @@ const DISCOVERY = {
 };
 
 interface IUseSocialAuthParams {
-  onSuccess: (response: AuthService.SignInWithSocial['response']) => Promise<void>;
+  onSuccess: (response: AuthService.SignInWithSocial['response']) => Promise<unknown>;
 }
 
 export function useSocialAuth({ onSuccess }: IUseSocialAuthParams) {

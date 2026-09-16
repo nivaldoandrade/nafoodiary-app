@@ -8,12 +8,21 @@ export class AccountsService extends Service {
   static async me(): Promise<AccountsService.Me> {
     const { data } = await this.client.get<AccountsService.MeResponse>('me');
 
+    if (!data.isOnboarded || !data.profile || !data.goal) {
+      return {
+        isOnboarded: false,
+        profile: null,
+        goal: null,
+      };
+    }
+
     return {
-      ...data,
+      isOnboarded: true,
       profile: {
         ...data.profile,
         birthDate: this.parseDateFromAPI(data.profile.birthDate),
       },
+      goal: data.goal,
     };
   }
 
@@ -40,6 +49,7 @@ export class AccountsService extends Service {
 export namespace AccountsService {
 
   export type MeResponse = {
+    isOnboarded: boolean;
     profile: {
       name: string;
       birthDate: string;
@@ -47,20 +57,28 @@ export namespace AccountsService {
       height: number;
       weight: number;
       goal: Goal;
-    };
+    } | null;
     goal: {
       calories: number;
       proteins: number;
       carbohydrates: number;
       fats: number;
-    };
+    } | null;
   };
 
-  export type Me = Omit<MeResponse, 'profile'> & {
-    profile: Omit<MeResponse['profile'], 'birthDate'> & {
-      birthDate: Date;
-    };
-  };
+  export type Me =
+    | {
+        isOnboarded: false;
+        profile: null;
+        goal: null;
+      }
+    | {
+        isOnboarded: true;
+        profile: Omit<NonNullable<MeResponse['profile']>, 'birthDate'> & {
+          birthDate: Date;
+        };
+        goal: NonNullable<MeResponse['goal']>;
+      };
 
   export type UpdateProfileParams = {
     name: string;

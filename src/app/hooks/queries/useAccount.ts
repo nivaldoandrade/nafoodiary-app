@@ -14,7 +14,7 @@ export function useAccount({ enabled = true }: IUseAccountParams = {}) {
   });
 
   return {
-    account: data ?? null,
+    account: data?.isOnboarded ? data : null,
     loadAccount: refetch,
   };
 };

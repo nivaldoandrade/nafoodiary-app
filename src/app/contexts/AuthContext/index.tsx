@@ -15,7 +15,7 @@ interface IAuthContext {
   signIn: (params: AuthService.SignIn['params']) => Promise<void>;
   signUp: (params: AuthService.SignUp['params']) => Promise<void>;
   signOut: () => Promise<void>;
-  signInWithSocial: (response: AuthService.SignInWithSocial['response']) => Promise<void>;
+  signInWithSocial: (response: AuthService.SignInWithSocial['response']) => Promise<boolean>;
   completeOnboarding: (profile: Omit<AccountsService.CompleteOnboardingParams, 'accessToken'>) => Promise<void>;
   completeSocialOnboarding: (response: AuthService.SignInWithSocial['response'], profile: Omit<AccountsService.CompleteOnboardingParams, 'accessToken'>) => Promise<void>;
 }
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: IAuthProvider) {
     setShouldShowOnboarding(false);
   }, []);
 
-  const setupAuth = useCallback(async (accessToken: string) => {
+  const setupAuth = useCallback(async (accessToken: string): Promise<boolean> => {
 
     Service.setAuthorizationToken(accessToken);
     Service.setupRefreshInterceptor(async () => {
@@ -67,21 +67,21 @@ export function AuthProvider({ children }: IAuthProvider) {
       }
     });
 
-    await loadAccount({ throwOnError: true });
+    const { data: account } = await loadAccount({ throwOnError: true });
     setIsSignedIn(true);
+
+    const isOnboarded = account?.isOnboarded ?? false;
+    setShouldShowOnboarding(!isOnboarded);
+
+    return isOnboarded;
   }, [loadAccount, signOut]);
 
   const signInWithSocial = useCallback(
-    async (response: AuthService.SignInWithSocial['response']) => {
-      const { isOnboarded, accessToken, refreshToken } = response;
+    async (response: AuthService.SignInWithSocial['response']): Promise<boolean> => {
+      const { accessToken, refreshToken } = response;
       await AuthTokenManager.save({ accessToken, refreshToken });
 
-      if (!isOnboarded) {
-        setShouldShowOnboarding(true);
-        return;
-      }
-
-      await setupAuth(response.accessToken);
+      return setupAuth(response.accessToken);
     }, [setupAuth]);
 
   const completeOnboarding = useCallback(async (profile: Omit<AccountsService.CompleteOnboardingParams, 'accessToken'>) => {
@@ -109,7 +109,6 @@ export function AuthProvider({ children }: IAuthProvider) {
     await AuthTokenManager.save(newTokens);
     await setupAuth(newTokens.accessToken);
 
-    setShouldShowOnboarding(false);
     setIsSignedUp(true);
   }, [setupAuth]);
 
