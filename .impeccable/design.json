@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-17T00:00:00Z",
+  "generatedAt": "2026-09-17T18:00:19Z",
   "title": "Design System: NaFoodiary",
   "extensions": {
     "colorMeta": {
@@ -22,6 +22,7 @@
       "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "#1e293b", "tonalRamp": ["#05080d", "#0e1522", "#1a2334", "#283448", "#36445c", "#45546e", "#64748b", "#a3aec2"] },
       "ink-strong": { "role": "neutral", "displayName": "Ink Strong", "canonical": "#09090b", "tonalRamp": ["#000000", "#050506", "#09090b", "#141418", "#1f1f24", "#2a2a30", "#4a4a52", "#80808b"] },
       "leaf-tint": { "role": "neutral", "displayName": "Leaf Tint", "canonical": "rgba(101, 163, 13, 0.1)", "tonalRamp": ["rgba(101,163,13,0.02)", "rgba(101,163,13,0.04)", "rgba(101,163,13,0.06)", "rgba(101,163,13,0.1)", "rgba(101,163,13,0.2)", "rgba(101,163,13,0.35)", "rgba(101,163,13,0.55)", "rgba(101,163,13,0.8)"] },
+      "leaf-hint": { "role": "neutral", "displayName": "Leaf Hint", "canonical": "rgba(101, 163, 13, 0.05)", "tonalRamp": ["rgba(101,163,13,0.01)", "rgba(101,163,13,0.02)", "rgba(101,163,13,0.03)", "rgba(101,163,13,0.05)", "rgba(101,163,13,0.1)", "rgba(101,163,13,0.2)", "rgba(101,163,13,0.35)", "rgba(101,163,13,0.6)"] },
       "cloud-wash": { "role": "neutral", "displayName": "Cloud Wash", "canonical": "rgba(255, 255, 255, 0.4)", "tonalRamp": ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.15)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.55)", "rgba(255,255,255,0.7)", "rgba(255,255,255,0.85)", "rgba(255,255,255,1)"] },
       "calorie-tomato": { "role": "data", "displayName": "Calorie Tomato", "canonical": "#e76e50", "tonalRamp": ["#3d1507", "#6e2610", "#98401c", "#c05a2c", "#d96c3e", "#e76e50", "#f2a184", "#fbd8c9"] },
       "protein-teal": { "role": "data", "displayName": "Protein Teal", "canonical": "#2a9d90", "tonalRamp": ["#07221f", "#0c3a35", "#11564f", "#16706a", "#1c8980", "#2a9d90", "#4fbdb0", "#a8e6df"] },
@@ -59,6 +60,14 @@
       "description": "The single tap-inviting action — spring lime, 52px tall, 12px corners.",
       "html": "<button class=\"ds-btn-primary\">Criar Conta</button>",
       "css": ".ds-btn-primary { background: #bef264; color: #18181b; font-family: 'Host Grotesk', sans-serif; font-size: 16px; font-weight: 600; border: none; border-radius: 12px; padding: 14px 24px; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; } .ds-btn-primary:hover { background: #a2e635; } .ds-btn-primary:focus-visible { outline: 2px solid #64a30d; outline-offset: 2px; } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Neutral Button",
+      "kind": "button",
+      "refersTo": "button-neutral",
+      "description": "Quiet lime-wash control for capture-modals and modal-close — the faintest step of the lime tint family.",
+      "html": "<button class=\"ds-btn-neutral\">Cancelar</button>",
+      "css": ".ds-btn-neutral { background: rgba(101,163,13,0.05); color: #18181b; font-family: 'Host Grotesk', sans-serif; font-size: 16px; font-weight: 600; border: none; border-radius: 12px; padding: 14px 24px; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.15s ease; } .ds-btn-neutral:hover { background: rgba(101,163,13,0.1); } .ds-btn-neutral:focus-visible { outline: 2px solid #64a30d; outline-offset: 2px; } .ds-btn-neutral:disabled { opacity: 0.5; cursor: not-allowed; }"
     },
     {
       "name": "Input Field",

@@ -20,6 +20,7 @@ colors:
   ink-soft: "#1e293b"
   ink-strong: "#09090b"
   leaf-tint: "rgba(101, 163, 13, 0.1)"
+  leaf-hint: "rgba(101, 163, 13, 0.05)"
   cloud-wash: "rgba(255, 255, 255, 0.4)"
   calorie-tomato: "#e76e50"
   protein-teal: "#2a9d90"
@@ -88,6 +89,12 @@ components:
     opacity: 0.5
   button-secondary:
     backgroundColor: "{colors.mist-300}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "14px 24px"
+    height: "52px"
+  button-neutral:
+    backgroundColor: "{colors.leaf-hint}"
     textColor: "{colors.ink}"
     rounded: "{rounded.md}"
     padding: "14px 24px"
@@ -176,6 +183,7 @@ Botanical, garden-fresh: the palette reads like clean produce on a white plate �
 - **Lime Bright** (`#e8fb86`): the atmospheric wash of the home screen and the selected day in the week calendar. Softer than spring lime, used for surfaces rather than actions.
 - **Lime Leaf** (`#a2e635`): press/interaction luster for spring-lime surfaces.
 - **Lime Fern** (`#64a30d`): state color — selected radio borders, progress fill, secondary green text links.
+- **Leaf Tint** (`rgba(101,163,13,0.1)`) and **Leaf Hint** (`rgba(101,163,13,0.05)`): the lime wash family — selections and tinted wells step from hint (neutral buttons over white) up to tint (selected tiles).
 - **Fern Deep** (`#1a2e05`) and **Fern Ink** (`#022c22`): the brand's dark greens — full-screen dark moments (plan summary, camera privacy badge, loader logo on cloud).
 
 ### Neutral
@@ -242,7 +250,7 @@ Soft and thoroughly rounded; nothing has a square corner. The form language is g
 ### Buttons
 - **Shape:** 12px corners, min-height 52px, 14px×24px padding; hero CTAs go full pill (50px radius).
 - **Primary:** spring lime background, ink text, icon content in a 8px gap. Disabled drops to 50% opacity.
-- **Secondary:** mist-300 background, ink text. **Ghost/Text:** transparent with a tinted text link. **Icon buttons:** 48×48 circle-ready square at 12px radius (FAB uses this with its own shadow; onboarding's arrow uses it flat).
+- **Secondary:** mist-300 background, ink text. **Neutral:** leaf-hint background, ink text — the quiet lime wash used for icon buttons inside capture modals and modal close. **Ghost/Text:** transparent with a tinted text link. **Icon buttons:** 48×48 circle-ready square at 12px radius (FAB uses this with its own shadow; onboarding's arrow uses it flat).
 - Everything is touch-friendly; there is no small tappable target in the system.
 
 ### Inputs / Fields
