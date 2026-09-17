@@ -34,6 +34,10 @@ yarn-error.*
 .env*.local
 .env
 
+# impeccable tooling & local config
+.opencode/
+.impeccable/*.local.json
+
 # typescript
 *.tsbuildinfo
 
