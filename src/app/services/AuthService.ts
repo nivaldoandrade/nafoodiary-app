@@ -41,6 +41,24 @@ export class AuthService extends Service {
 
     return data;
   }
+
+  static async forgotPassword(
+    params: AuthService.ForgotPassword['params'],
+  ): Promise<void> {
+    await this.client.post(
+      'auth/forgot-password',
+      params,
+    );
+  }
+
+  static async confirmationForgotPassword(
+    params: AuthService.ConfirmationForgotPassword['params'],
+  ): Promise<void> {
+    await this.client.post(
+      'auth/confirmation-forgot-password',
+      params,
+    );
+  }
 }
 
 export namespace AuthService {
@@ -84,6 +102,20 @@ export namespace AuthService {
     response: {
       accessToken: string;
       refreshToken: string;
+    }
+  }
+
+  export type ForgotPassword = {
+    params: {
+      email: string;
+    }
+  }
+
+  export type ConfirmationForgotPassword = {
+    params: {
+      email: string;
+      password: string;
+      confirmationCode: string;
     }
   }
 }
