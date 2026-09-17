@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T00:00:00Z",
+  "title": "Design System: NaFoodiary",
+  "extensions": {
+    "colorMeta": {
+      "spring-lime": { "role": "primary", "displayName": "Spring Lime", "canonical": "#bef264", "tonalRamp": ["#1a2e05", "#3f5c0a", "#5c8710", "#7cae18", "#9ccf2e", "#b6e84e", "#d7f78f", "#f3fed1"] },
+      "lime-bright": { "role": "primary", "displayName": "Lime Bright", "canonical": "#e8fb86", "tonalRamp": ["#1a2e05", "#36500a", "#557c10", "#74a617", "#8fc523", "#abd547", "#cbea77", "#eaf9be"] },
+      "lime-leaf": { "role": "primary", "displayName": "Lime Leaf", "canonical": "#a2e635", "tonalRamp": ["#172503", "#2c4408", "#44690e", "#5d9018", "#74b525", "#8ccf37", "#a9df6a", "#d3f2ab"] },
+      "lime-fern": { "role": "primary", "displayName": "Lime Fern", "canonical": "#64a30d", "tonalRamp": ["#102101", "#1f3c03", "#2f5a06", "#407a0a", "#51970f", "#64a30d", "#7fbf47", "#c5e9a1"] },
+      "fern-deep": { "role": "primary", "displayName": "Fern Deep", "canonical": "#1a2e05", "tonalRamp": ["#040c00", "#0a1c02", "#122b04", "#1a3e07", "#23520b", "#2d660f", "#4a8a2a", "#9fd07c"] },
+      "fern-ink": { "role": "primary", "displayName": "Fern Ink", "canonical": "#022c22", "tonalRamp": ["#011010", "#022c22", "#034e3a", "#056a4d", "#07855f", "#0f9b70", "#3cb98a", "#8fe0bd"] },
+      "cloud": { "role": "neutral", "displayName": "Cloud", "canonical": "#ffffff", "tonalRamp": ["#0a0a0a", "#2e2e2e", "#5c5c5c", "#8f8f8f", "#c4c4c4", "#e4e4e7", "#f4f4f5", "#ffffff"] },
+      "mist-100": { "role": "neutral", "displayName": "Mist", "canonical": "#fafafa", "tonalRamp": ["#0a0a0a", "#2c2c2e", "#5a5a5e", "#8a8a90", "#b9b9bf", "#d7d7db", "#ececee", "#fafafa"] },
+      "mist-200": { "role": "neutral", "displayName": "Mist Well", "canonical": "#f4f4f5", "tonalRamp": ["#0a0a0b", "#2b2b2e", "#58585d", "#86868c", "#b4b4ba", "#d3d3d7", "#e8e8ea", "#f4f4f5"] },
+      "mist-300": { "role": "neutral", "displayName": "Mist Tint", "canonical": "#f3f4f6", "tonalRamp": ["#0a0a0c", "#2a2b2e", "#57595f", "#84878f", "#b2b6bf", "#d2d6dc", "#e7e9ec", "#f3f4f6"] },
+      "fog-400": { "role": "neutral", "displayName": "Fog Border", "canonical": "#e4e4e7", "tonalRamp": ["#0d0d0e", "#2f2f33", "#5e5e64", "#8d8d95", "#bdbdc4", "#d6d6da", "#e4e4e7", "#f2f2f4"] },
+      "fog-500": { "role": "neutral", "displayName": "Fog Dusk", "canonical": "#d9d9d9", "tonalRamp": ["#0f0f0f", "#323232", "#616161", "#909090", "#bfbfbf", "#d6d6d6", "#e3e3e3", "#f2f2f2"] },
+      "fog-600": { "role": "neutral", "displayName": "Fog Gray", "canonical": "#a1a1aa", "tonalRamp": ["#0d0d10", "#2b2b30", "#54545b", "#7d7d86", "#a1a1aa", "#b5b5bc", "#cbcbd0", "#e2e2e5"] },
+      "fog-700": { "role": "neutral", "displayName": "Fog Slate", "canonical": "#71717a", "tonalRamp": ["#0b0b0d", "#26262a", "#47474d", "#68686f", "#71717a", "#8b8b93", "#adadb3", "#d0d0d4"] },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#18181b", "tonalRamp": ["#000000", "#09090b", "#18181b", "#2b2b30", "#3f3f46", "#52525b", "#6f6f77", "#9f9fa8"] },
+      "ink-soft": { "role": "neutral", "displayName": "Ink Soft", "canonical": "#1e293b", "tonalRamp": ["#05080d", "#0e1522", "#1a2334", "#283448", "#36445c", "#45546e", "#64748b", "#a3aec2"] },
+      "ink-strong": { "role": "neutral", "displayName": "Ink Strong", "canonical": "#09090b", "tonalRamp": ["#000000", "#050506", "#09090b", "#141418", "#1f1f24", "#2a2a30", "#4a4a52", "#80808b"] },
+      "leaf-tint": { "role": "neutral", "displayName": "Leaf Tint", "canonical": "rgba(101, 163, 13, 0.1)", "tonalRamp": ["rgba(101,163,13,0.02)", "rgba(101,163,13,0.04)", "rgba(101,163,13,0.06)", "rgba(101,163,13,0.1)", "rgba(101,163,13,0.2)", "rgba(101,163,13,0.35)", "rgba(101,163,13,0.55)", "rgba(101,163,13,0.8)"] },
+      "cloud-wash": { "role": "neutral", "displayName": "Cloud Wash", "canonical": "rgba(255, 255, 255, 0.4)", "tonalRamp": ["rgba(255,255,255,0.06)", "rgba(255,255,255,0.15)", "rgba(255,255,255,0.25)", "rgba(255,255,255,0.4)", "rgba(255,255,255,0.55)", "rgba(255,255,255,0.7)", "rgba(255,255,255,0.85)", "rgba(255,255,255,1)"] },
+      "calorie-tomato": { "role": "data", "displayName": "Calorie Tomato", "canonical": "#e76e50", "tonalRamp": ["#3d1507", "#6e2610", "#98401c", "#c05a2c", "#d96c3e", "#e76e50", "#f2a184", "#fbd8c9"] },
+      "protein-teal": { "role": "data", "displayName": "Protein Teal", "canonical": "#2a9d90", "tonalRamp": ["#07221f", "#0c3a35", "#11564f", "#16706a", "#1c8980", "#2a9d90", "#4fbdb0", "#a8e6df"] },
+      "carbs-honey": { "role": "data", "displayName": "Carbs Honey", "canonical": "#e8c468", "tonalRamp": ["#4a3200", "#6b4c0a", "#8f6a14", "#b78b24", "#d4a943", "#e8c468", "#eecf8b", "#f9eccd"] },
+      "fats-carrot": { "role": "data", "displayName": "Fats Carrot", "canonical": "#f4a462", "tonalRamp": ["#4a1e05", "#70300c", "#974818", "#bd6424", "#dc8340", "#f4a462", "#f7bd86", "#fddcc0"] },
+      "sprout-success": { "role": "data", "displayName": "Sprout Green", "canonical": "#10b981", "tonalRamp": ["#05331f", "#08623c", "#0a8a55", "#10b981", "#2ecc92", "#59dba7", "#8ae8c2", "#c8f6e4"] },
+      "danger-red": { "role": "data", "displayName": "Danger Red", "canonical": "#ef4444", "tonalRamp": ["#450a0a", "#7f1d1d", "#991b1b", "#b91c1c", "#dc2626", "#ef4444", "#f87171", "#fca5a5"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Welcome hero only — sets the one-line promise." },
+      "headline": { "displayName": "Headline", "purpose": "Onboarding step titles and plan-summary headlines, centered." },
+      "title": { "displayName": "Title", "purpose": "Sheet and screen titles in close-set 24px semi-bold." },
+      "subtitle": { "displayName": "Subtitle", "purpose": "Supporting step copy and meal names." },
+      "body": { "displayName": "Body", "purpose": "Default text — foods, descriptions, values." },
+      "label": { "displayName": "Label", "purpose": "Field labels and macro names." },
+      "caption": { "displayName": "Caption", "purpose": "Unit captions and quiet asides." }
+    },
+    "shadows": [
+      { "name": "fab", "value": "0 4px 5px rgba(0,0,0,0.3)", "purpose": "Floating + action button and other floating actions." },
+      { "name": "bottom-sheet", "value": "0 -5px 16px #000", "purpose": "Raised sheets lifted over the app (sign-in, create-meal)." },
+      { "name": "scrim", "value": "0 0 0 9999px rgba(0,0,0,0.4)", "purpose": "Dark translucent coverage behind a blurred panel (welcome CTA)." }
+    ],
+    "motion": [
+      { "name": "rainbow-sweep", "value": "stroke-dashoffset 1000ms ease-in-out", "purpose": "MacroRainbow arcs fill when the day resolves." },
+      { "name": "loader-fade-in", "value": "opacity 300ms", "purpose": "Meal-processing loader cross-fade in." },
+      { "name": "loader-fade-out", "value": "opacity 350ms", "purpose": "Meal-processing loader cross-fade out." },
+      { "name": "recording-pulse", "value": "ring border/scale ease-out loop", "purpose": "Concentric ring pulse while narrating a meal." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single tap-inviting action — spring lime, 52px tall, 12px corners.",
+      "html": "<button class=\"ds-btn-primary\">Criar Conta</button>",
+      "css": ".ds-btn-primary { background: #bef264; color: #18181b; font-family: 'Host Grotesk', sans-serif; font-size: 16px; font-weight: 600; border: none; border-radius: 12px; padding: 14px 24px; min-height: 52px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; } .ds-btn-primary:hover { background: #a2e635; } .ds-btn-primary:focus-visible { outline: 2px solid #64a30d; outline-offset: 2px; } .ds-btn-primary:active { transform: scale(0.98); } .ds-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }"
+    },
+    {
+      "name": "Input Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Cloud surface, fog border, ink focus — soft and friendly.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Email</span><input class=\"ds-input\" type=\"email\" placeholder=\"voce@exemplo.com\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; } .ds-label { font-family: 'Host Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: #18181b; } .ds-input { background: #fff; border: 1px solid #e4e4e7; border-radius: 10px; padding: 14px; min-height: 52px; font-family: 'Host Grotesk', sans-serif; font-size: 16px; color: #18181b; transition: border-color 0.15s ease; } .ds-input::placeholder { color: #a1a1aa; } .ds-input:hover { border-color: #d6d6da; } .ds-input:focus-visible { outline: none; border-color: #18181b; } .ds-input:disabled { opacity: 0.5; }"
+    },
+    {
+      "name": "Radio Selection Tile",
+      "kind": "chip",
+      "refersTo": "radio-item-selected",
+      "description": "Pick-one tile: bouncy rounded, leaf-tint fill and fern border when selected.",
+      "html": "<div class=\"ds-radio selected\"><span class=\"ds-radio-icon\">🥦</span><span class=\"ds-radio-label\">Perder peso</span></div>",
+      "css": ".ds-radio { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border: 1px solid #f3f4f6; border-radius: 16px; background: transparent; font-family: 'Host Grotesk', sans-serif; font-size: 16px; font-weight: 500; color: #18181b; cursor: pointer; transition: background 0.15s ease, border-color 0.15s ease; } .ds-radio .ds-radio-icon { width: 48px; height: 48px; border-radius: 12px; background: #f4f4f5; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: background 0.15s ease; } .ds-radio:hover { border-color: #d6d6da; } .ds-radio.selected { background: rgba(101, 163, 13, 0.1); border-color: #64a30d; } .ds-radio.selected .ds-radio-icon { background: rgba(255, 255, 255, 0.4); } .ds-radio:focus-visible { outline: 2px solid #64a30d; outline-offset: 2px; }"
+    },
+    {
+      "name": "Meal Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "A logged meal: cloud panel, fog border, emoji well, mist macro summary.",
+      "html": "<article class=\"ds-card\"><header class=\"ds-card-head\"><span class=\"ds-card-icon\">🍚</span><div><h3 class=\"ds-card-name\">Arroz e Ovos</h3><p class=\"ds-card-time\">12:30</p></div></header><div class=\"ds-card-macros\"><span>542 kcal</span><span>P 24g</span><span>C 68g</span><span>G 18g</span></div></article>",
+      "css": ".ds-card { background: #fff; border: 1px solid #e4e4e7; border-radius: 16px; padding: 8px; font-family: 'Host Grotesk', sans-serif; } .ds-card-head { display: flex; align-items: center; gap: 12px; padding: 12px 8px; } .ds-card-icon { width: 48px; height: 48px; border-radius: 24px; background: #f4f4f5; display: flex; align-items: center; justify-content: center; font-size: 24px; } .ds-card-name { font-size: 16px; font-weight: 500; color: #18181b; margin: 0; } .ds-card-time { font-size: 14px; color: #71717a; margin: 2px 0 0; } .ds-card-macros { display: flex; justify-content: space-between; gap: 16px; background: #fafafa; border-radius: 8px; padding: 16px; font-size: 14px; font-weight: 500; color: #18181b; }"
+    },
+    {
+      "name": "Privacy Chip",
+      "kind": "chip",
+      "refersTo": "radio-item",
+      "description": "Fern-ink pill with a hairline fern border — reassurance copy.",
+      "html": "<span class=\"ds-chip\">🔒 Só usada no momento da foto</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 6px; background: #022c22; border: 1px solid #64a30d; border-radius: 20px; padding: 6px 14px; font-family: 'Host Grotesk', sans-serif; font-size: 14px; font-weight: 500; color: #fff; }"
+    },
+    {
+      "name": "Floating Action Button",
+      "kind": "button",
+      "refersTo": "fab",
+      "description": "The lifted + — spring lime, round, soft shadow.",
+      "html": "<button class=\"ds-fab\" aria-label=\"Cadastrar refeição\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#18181b\" stroke-width=\"2.4\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg></button>",
+      "css": ".ds-fab { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: #bef264; border: none; border-radius: 12px; box-shadow: 0 4px 5px rgba(0,0,0,0.3); color: #18181b; cursor: pointer; transition: background 0.15s ease, transform 0.15s ease; } .ds-fab:hover { background: #a2e635; } .ds-fab:active { transform: translateY(1px); } .ds-fab:focus-visible { outline: 2px solid #64a30d; outline-offset: 2px; }"
+    },
+    {
+      "name": "Progress Bar",
+      "kind": "card",
+      "refersTo": "progress-fill",
+      "description": "4px track, mist well, fern fill — quiet daily progress.",
+      "html": "<div class=\"ds-progress\"><span class=\"ds-progress-fill\" style=\"width:64%\"></span></div>",
+      "css": ".ds-progress { height: 4px; border-radius: 999px; background: #f4f4f5; overflow: hidden; } .ds-progress-fill { display: block; height: 100%; border-radius: inherit; background: #64a30d; }"
+    },
+    {
+      "name": "MacroRainbow",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Signature: four concentric macro arcs in tomato/teal/honey/carrot.",
+      "html": "<svg class=\"ds-rainbow\" viewBox=\"0 0 400 206\"><path class=\"ds-arc\" d=\"M88 200 A112 112 0 0 1 312 200\" fill=\"none\" stroke=\"#e76e50\" stroke-width=\"12\" stroke-linecap=\"round\"/><path class=\"ds-arc\" d=\"M104 200 A96 96 0 0 1 296 200\" fill=\"none\" stroke=\"#2a9d90\" stroke-width=\"12\" stroke-linecap=\"round\"/><path class=\"ds-arc\" d=\"M120 200 A80 80 0 0 1 280 200\" fill=\"none\" stroke=\"#e8c468\" stroke-width=\"12\" stroke-linecap=\"round\"/><path class=\"ds-arc\" d=\"M136 200 A64 64 0 0 1 264 200\" fill=\"none\" stroke=\"#f4a462\" stroke-width=\"12\" stroke-linecap=\"round\"/></svg>",
+      "css": ".ds-rainbow { width: 100%; display: block; } .ds-arc { stroke-dasharray: 352 352; animation: ds-sweep 1s ease-in-out forwards; } @keyframes ds-sweep { from { stroke-dashoffset: 352; } to { stroke-dashoffset: 0; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Fresh Plate",
+    "overview": "NaFoodiary is a food diary that refuses to feel like medicine. It trades the clinical precision of calorie counters for the ease of a friendly meal table: airy, garden-fresh surfaces in cloud white and soft mist, energized by a single bright lime accent, with every corner gently rounded. Screens breathe — spacing is generous, nothing crowds, and one glance is enough to understand the day. The aesthetic philosophy is fresh-squeezed optimism: optimistic without shouting, friendly without silliness, reassuring in flawless Brazilian Portuguese.\n\nThe system is a study in rationed color. Most of the interface is quiet: white panels on misty grays separated by hairline borders, tonal wells instead of shadows. Color arrives deliberately — spring lime for the single moment of action, four macro hues only where nutrition data is shown, and deep fern ink for the moments of ceremony (offer-your-plan, capture-your-meal) where the app asks the user to pause and trust it. Depth comes from stillness and tonal layering, not elevation.",
+    "keyCharacteristics": ["Airy and optimistic: cloud-white panels over a lime-bright wash, generous spacing, nothing crowded.", "Soft geometry: every corner rounded (10–24px), pill hero CTAs, circular icon wells and recording rings.", "Tonal, not shadowy: depth from mist/fog wells and 1px borders; shadows only on floating actions.", "Reassuring, friendly br-PT voice throughout (\"Você pode inserir uma estimativa\", \"Só usada no momento da foto\").", "The MacroRainbow as signature: four colored arcs make daily progress legible at a glance."],
+    "rules": [
+      { "name": "The Fresh-Plate Rule", "body": "Spring lime is rationed. Page washes and selections use lime bright or leaf tint; full spring lime is reserved for the one element asking for a tap. Its rarity is the point.", "section": "colors" },
+      { "name": "The White-Panel Rule", "body": "Content lives on cloud. Mist and fog layers define containment; they never compete with content for attention.", "section": "colors" },
+      { "name": "The Macro-Rainbow Rule", "body": "The four macro hues exist to encode calories, protein, carbs, and fats — and nothing else. They must never decorate unrelated UI.", "section": "colors" },
+      { "name": "The One-Accent Rule", "body": "Within a paragraph, weight changes carry hierarchy; color highlights are allowed only for macro data and interactive links. Never colorize prose for emphasis.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Cards contain themselves with a hairline border and a tonal well — a shadow only appears for a floating action or a lifted sheet.", "section": "elevation" },
+      { "name": "The Scrim Rule", "body": "When a surface recedes under a scrim (welcome CTA), use a dark translucent layer (rgba(0,0,0,0.4)) plus backdrop blur — flat coverage, soft separation.", "section": "elevation" },
+      { "name": "The Nothing-Square Rule", "body": "Every interactive shape ends rounded. If you can't decide, 12px corners on a 48–52px control.", "section": "shapes" },
+      { "name": "The Circle Signature Rule", "body": "Circles mean \"me\" and \"capture\": avatars, recording rings, and release points stay perfectly round.", "section": "shapes" }
+    ],
+    "dos": ["Do give every screen air: 20–24px gutters and a 4/8/16/24/32px rhythm.", "Do reserve spring lime for the tap-inviting element, use lime bright/leaf tint for washes and selections.", "Do keep content on cloud and contain it with mist wells and hairline fog borders.", "Do keep touch targets at 48–52px minimum and round every corner (10px minimum).", "Do use the four macro hues only to encode calories / protein / carbs / fats.", "Do write copy that reassures and never judges (\"Você pode inserir uma estimativa\")."],
+    "donts": ["Don't introduce a second accent color; spring lime is the only voice.", "Don't square off corners or use shadows on resting cards.", "Don't decorate decorative UI with the macro palette.", "Don't use clinical or rigid language — this is \"controle sua dieta de forma simples\", not a hospital chart.", "Don't push content edge-to-edge; sheets and panels always keep their gutters."]
+  }
+}
