@@ -1,9 +1,11 @@
 import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { ApiError, getErrorMessage } from '@/app/errors/apiErrors';
+import { AuthStackNavigatorProps } from '@/app/navigation/AuthStack';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { signInSchema } from '@/ui/components/SignInBottomSheet/schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useNavigation } from '@react-navigation/native';
 import { isAxiosError } from 'axios';
 import { useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,12 +14,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface IUseSignInBottomSheet {
   ref: React.Ref<ISignInBottomSheet>;
+  initialEmail?: string;
 }
 
-export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
+export function useSignInBottomSheet({ ref, initialEmail }: IUseSignInBottomSheet) {
   const { bottom } = useSafeAreaInsets();
 
   const { signIn } = useAuth();
+  const navigation = useNavigation<AuthStackNavigatorProps>();
 
   const {
     control,
@@ -27,6 +31,10 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     formState: { isSubmitting, isValid },
   } = useForm({
     resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: initialEmail ?? '',
+      password: '',
+    },
   });
 
   const passwordInputRef = useRef<TextInput>(null);
@@ -39,6 +47,11 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
       },
     };
   }, []);
+
+  const handleForgotPasswordPress = () => {
+    bottomSheetModalRef.current?.dismiss();
+    navigation.navigate('ForgotPassword');
+  };
 
   // eslint-disable-next-line react-hooks/refs
   const handleSubmit = RHFHandleSubmit(async (data) => {
@@ -59,6 +72,7 @@ export function useSignInBottomSheet({ ref }: IUseSignInBottomSheet) {
     bottomSheetModalRef,
     passwordInputRef,
     handleSubmit,
+    handleForgotPasswordPress,
     control,
     isSubmitting,
     isValid,

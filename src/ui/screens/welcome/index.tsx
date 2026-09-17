@@ -1,6 +1,6 @@
 
 import { useAuth } from '@/app/contexts/AuthContext/useAuth';
-import type { AuthStackNavigatorProps } from '@/app/navigation/AuthStack';
+import type { AuthStackNavigatorProps, AuthStackScreenProps } from '@/app/navigation/AuthStack';
 import welcomeBg from '@/ui/assets/welcome-bg/welcome.png';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
@@ -9,7 +9,7 @@ import { SignInBottomSheet } from '@/ui/components/SignInBottomSheet';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/screens/welcome/styles';
 import { theme } from '@/ui/styles/theme';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
 import { useEffect, useRef } from 'react';
 import { ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
@@ -24,6 +24,7 @@ const blurIntensity = Platform.select({
 
 export function Welcome() {
   const navigation = useNavigation<AuthStackNavigatorProps>();
+  const route = useRoute<AuthStackScreenProps<'Welcome'>['route']>();
   const signInModalRef = useRef<ISignInBottomSheet>(null);
 
   const { shouldShowOnboarding } = useAuth();
@@ -33,6 +34,16 @@ export function Welcome() {
       navigation.navigate('Onboarding');
     }
   }, [shouldShowOnboarding, navigation]);
+
+  useEffect(() => {
+    const email = route.params?.prefillEmail;
+
+    if (!email) {
+      return;
+    }
+
+    signInModalRef.current?.open();
+  }, [route.params?.prefillEmail]);
 
   const handleSignInModalOpen = () => {
     signInModalRef.current?.open();
@@ -86,7 +97,9 @@ export function Welcome() {
         </SafeAreaView>
       </ImageBackground>
 
-      <SignInBottomSheet ref={signInModalRef} />
+      <SignInBottomSheet
+        ref={signInModalRef}
+        initialEmail={route.params?.prefillEmail} />
     </>
   );
 }

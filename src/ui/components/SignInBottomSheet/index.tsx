@@ -11,23 +11,28 @@ import { styles } from '@/ui/components/SignInBottomSheet/styles';
 import { useSignInBottomSheet } from '@/ui/components/SignInBottomSheet/useSignInBottomSheet';
 import { BottomSheetModal, BottomSheetTextInput, BottomSheetView } from '@gorhom/bottom-sheet';
 import { Controller } from 'react-hook-form';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 interface ISignInBottomSheetProps {
   ref: React.Ref<ISignInBottomSheet>;
+  initialEmail?: string;
 }
 
-export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
+export function SignInBottomSheet({
+  ref,
+  initialEmail,
+}: ISignInBottomSheetProps) {
   const {
     bottom,
     bottomSheetModalRef,
     passwordInputRef,
     handleSubmit,
+    handleForgotPasswordPress,
     control,
     isSubmitting,
     isValid,
     clearErrors,
-  } = useSignInBottomSheet({ ref });
+  } = useSignInBottomSheet({ ref, initialEmail });
 
   const { signInWithSocial } = useAuth();
   const { signInWithGoogle, isLoading: isGoogleLoading } = useSocialAuth({
@@ -120,13 +125,26 @@ export function SignInBottomSheet({ ref }: ISignInBottomSheetProps) {
               </FormGroup>
             )}
           />
-          <ButtonApp
-            isLoading={isSubmitting}
-            disabled={!isValid}
-            onPress={handleSubmit}
-          >
-            Entrar
-          </ButtonApp>
+          <View style={{ gap: 16 }}>
+            <ButtonApp
+              isLoading={isSubmitting}
+              disabled={!isValid}
+              onPress={handleSubmit}
+            >
+              Entrar
+            </ButtonApp>
+            <TouchableOpacity
+              accessibilityRole='link'
+              accessibilityLabel='Esqueceu sua senha'
+              disabled={isSubmitting}
+              onPress={handleForgotPasswordPress}
+              style={{ alignSelf: 'center', paddingVertical: 8 }}
+            >
+              <AppText size='sm' weight='medium'>
+                Esqueceu sua senha?
+              </AppText>
+            </TouchableOpacity>
+          </View>
         </View>
       </BottomSheetView>
     </BottomSheetModal>
