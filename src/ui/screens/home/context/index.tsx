@@ -1,6 +1,6 @@
 import { Meal } from '@/app/types/Meal';
 import type { CreateMealModalType } from '@/ui/components/CreateMealModals';
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 
 interface IHomeContextProps {
   meals: Meal[];
@@ -28,16 +28,26 @@ export function HomeProvider({
   onSelectDate,
 }: IHomeProvider) {
 
+  const value = useMemo(() => ({
+    meals,
+    isLoading,
+    selectedDate,
+    onNextDate,
+    onPrevDate,
+    onOpenCreateMealModal,
+    onSelectDate,
+  }), [
+    meals,
+    isLoading,
+    selectedDate,
+    onNextDate,
+    onPrevDate,
+    onOpenCreateMealModal,
+    onSelectDate,
+  ]);
+
   return (
-    <HomeContext.Provider value={{
-      meals,
-      isLoading,
-      selectedDate,
-      onNextDate,
-      onPrevDate,
-      onOpenCreateMealModal,
-      onSelectDate,
-    }}>
+    <HomeContext.Provider value={value}>
       {children}
     </HomeContext.Provider>
   );

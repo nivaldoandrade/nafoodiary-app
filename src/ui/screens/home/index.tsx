@@ -1,3 +1,4 @@
+import { Meal } from '@/app/types/Meal';
 import { CreateMealModals } from '@/ui/components/CreateMealModals';
 import { Fab } from '@/ui/screens/home/components/Fab';
 import { Header } from '@/ui/screens/home/components/Header';
@@ -14,7 +15,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback } from 'react';
-import { FlatList, Platform, RefreshControl, View } from 'react-native';
+import { FlatList, ListRenderItemInfo, Platform, RefreshControl, View } from 'react-native';
 
 export function Home() {
   const {
@@ -51,6 +52,11 @@ export function Home() {
     }, [activeCreateMealModal, showSplash]),
   );
 
+  const renderItem = useCallback(
+    ({ item: meal }: ListRenderItemInfo<Meal>) => <MealItem meal={meal} />,
+    [],
+  );
+
   return (
     <View style={[styles.container]}>
       <StatusBar style='dark' />
@@ -83,7 +89,7 @@ export function Home() {
           ListEmptyComponent={ListEmpty}
           ListHeaderComponent={Header}
           ItemSeparatorComponent={ItemSeparatorComponent}
-          renderItem={({ item: meal }) => <MealItem meal={meal} />}
+          renderItem={renderItem}
         />
         {meals.length > 0 && <Fab />}
       </HomeProvider>

@@ -29,12 +29,12 @@ export function useHome() {
     setCreateMealModalAnimationType('slide');
   }, [clearPendingCreateMealModalClose]);
 
-  function handleOpenCreateMealModal(type: Exclude<CreateMealModalType, null>) {
+  const handleOpenCreateMealModal = useCallback((type: Exclude<CreateMealModalType, null>) => {
     clearPendingCreateMealModalClose();
     setActiveCreateMealModal(type);
     setCreateMealModalAnimationType('slide');
     setIsCreateMealModalVisible(true);
-  }
+  }, [clearPendingCreateMealModalClose]);
 
   const handleRequestCloseCreateMealModal = useCallback((animationType: CreateMealModalAnimationType = 'slide') => {
     setCreateMealModalAnimationType(animationType);
@@ -57,33 +57,33 @@ export function useHome() {
 
   const { top, bottom } = useSafeAreaInsets();
 
-  function handleSelectDate(date: Date) {
+  const handleSelectDate = useCallback((date: Date) => {
     setSelectedDate(date);
-  }
+  }, []);
 
-  function handleNextDate() {
+  const handleNextDate = useCallback(() => {
     setSelectedDate(prevState => {
       const next = new Date(prevState);
       next.setDate(next.getDate() + 1);
       return next;
     });
-  }
+  }, []);
 
-  function handlePrevDate() {
+  const handlePrevDate = useCallback(() => {
     setSelectedDate(prevState => {
       const next = new Date(prevState);
       next.setDate(next.getDate() - 1);
       return next;
     });
-  }
+  }, []);
 
-  async function handleRefresh() {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
 
     await refetch();
 
     setRefreshing(false);
-  }
+  }, [refetch]);
 
   return {
     selectedDate,

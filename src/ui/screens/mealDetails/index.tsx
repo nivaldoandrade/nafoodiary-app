@@ -1,5 +1,6 @@
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
 import { AppStackScreenRouteProps } from '@/app/navigation/AppStack';
+import { Food } from '@/app/types/Food';
 import { AppText } from '@/ui/components/AppText';
 import { Skeleton } from '@/ui/components/Skeleton';
 import { Header } from '@/ui/screens/mealDetails/components/Header';
@@ -10,7 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useMemo } from 'react';
-import { FlatList, Platform, View } from 'react-native';
+import { FlatList, ListRenderItemInfo, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) {
@@ -73,6 +74,44 @@ export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) 
     }, []),
   );
 
+  const foodKeyExtractor = useCallback(
+    (item: Food, index: number) => `${item.name}-${item.quantity}-${index}`,
+    [],
+  );
+
+  const renderFoodItem = useCallback(
+    ({ item }: ListRenderItemInfo<Food>) => (
+      <View style={styles.foodContainer}>
+        <AppText>{item.quantity}</AppText>
+        <AppText style={{ textTransform: 'capitalize' }}>
+          {item.name}
+        </AppText>
+      </View>
+    ),
+    [],
+  );
+
+  const renderListEmpty = useCallback(
+    () => (
+      !isLoading
+        ? null
+        : (
+          <>
+            <View style={styles.foodContainer}>
+              <Skeleton width='100%' height={60} colorMode='light' />
+            </View>
+            <View style={styles.foodContainer}>
+              <Skeleton width='100%' height={60} colorMode='light' />
+            </View>
+            <View style={styles.foodContainer}>
+              <Skeleton width='100%' height={60} colorMode='light' />
+            </View>
+          </>
+        )
+    ),
+    [isLoading],
+  );
+
   return (
     <>
       <StatusBar animated style='light' />
@@ -92,34 +131,12 @@ export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) 
         </View>
         <FlatList
           data={meal?.foods ?? []}
+          keyExtractor={foodKeyExtractor}
           contentContainerStyle={{
             paddingBottom: Platform.OS === 'web' ? 34 : bottom,
           }}
-          ListEmptyComponent={() => (
-            !isLoading
-              ? null
-              : (
-                <>
-                  <View style={styles.foodContainer}>
-                    <Skeleton width='100%' height={60} colorMode='light' />
-                  </View>
-                  <View style={styles.foodContainer}>
-                    <Skeleton width='100%' height={60} colorMode='light' />
-                  </View>
-                  <View style={styles.foodContainer}>
-                    <Skeleton width='100%' height={60} colorMode='light' />
-                  </View>
-                </>
-              )
-          )}
-          renderItem={({ item }) => (
-            <View style={styles.foodContainer}>
-              <AppText>{item.quantity}</AppText>
-              <AppText style={{ textTransform: 'capitalize' }}>
-                {item.name}
-              </AppText>
-            </View>
-          )}
+          ListEmptyComponent={renderListEmpty}
+          renderItem={renderFoodItem}
         />
       </View>
     </>
