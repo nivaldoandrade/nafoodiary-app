@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "NaFoodiary",
+    "slug": "nafoodiary",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,6 +22,19 @@
       "package": "com.anonymous.app"
     },
     "web": {
+      "bundler": "metro",
+      "output": "single",
+      "name": "NaFoodiary",
+      "shortName": "NaFoodiary",
+      "lang": "pt-BR",
+      "description": "Controle sua dieta de forma simples.",
+      "themeColor": "#e8fb86",
+      "backgroundColor": "#ffffff",
+      "display": "standalone",
+      "orientation": "portrait",
+      "startUrl": "/",
+      "scope": "/",
+      "barStyle": "dark-content",
       "favicon": "./assets/favicon.png"
     },
     "plugins": [

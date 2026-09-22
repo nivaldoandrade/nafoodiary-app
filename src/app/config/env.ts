@@ -6,4 +6,8 @@ const envSchema = z.object({
   EXPO_PUBLIC_COGNITO_CLIENT_ID: z.string().min(1),
 });
 
-export const env = envSchema.parse(process.env);
+export const env = envSchema.parse({
+  EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL,
+  EXPO_PUBLIC_COGNITO_DOMAIN: process.env.EXPO_PUBLIC_COGNITO_DOMAIN,
+  EXPO_PUBLIC_COGNITO_CLIENT_ID: process.env.EXPO_PUBLIC_COGNITO_CLIENT_ID,
+});
