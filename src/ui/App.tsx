@@ -3,6 +3,7 @@ import { AuthProvider } from '@/app/contexts/AuthContext';
 import { queryClient } from '@/app/libs/queryClient';
 import { Toaster } from '@/app/libs/sonner';
 import { Navigation } from '@/app/navigation';
+import { DesktopGate } from '@/ui/components/DesktopGate';
 import {
   HostGrotesk_300Light,
   HostGrotesk_400Regular,
@@ -33,10 +34,12 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <KeyboardProvider statusBarTranslucent={true} navigationBarTranslucent={true}>
-        <GestureHandlerRootView>
+        <GestureHandlerRootView style={{ flex: 1 }}>
           <QueryClientProvider client={queryClient}>
             <AuthProvider>
-              <Navigation />
+              <DesktopGate>
+                <Navigation />
+              </DesktopGate>
             </AuthProvider>
           </QueryClientProvider>
           <Toaster position="bottom-center" />
