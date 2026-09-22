@@ -12,6 +12,7 @@ export const ErrorCode = {
   // HTTP
   BAD_REQUEST: 'BAD_REQUEST',
   INTERNAL_SERVER_ERROR: 'INTERNAL_SERVER_ERROR',
+  RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
 } as const;
 
 export type ErrorCode = ValueOf<typeof ErrorCode>;
@@ -32,10 +33,12 @@ export const ApiErrorMessages: Record<ErrorCode, string> = {
   RESOURCE_NOT_FOUND: 'Recurso não encontrado.',
   BAD_REQUEST: 'Requisição inválida.',
   INTERNAL_SERVER_ERROR: 'Erro interno. Tente novamente mais tarde.',
+  RATE_LIMIT_EXCEEDED: 'Aguarde alguns instantes e tente novamente.',
 } as const;
 
 export function getErrorMessage(code?: ErrorCode): string {
-  return code ? ApiErrorMessages[code] : 'Ocorreu um erro. Tente novamente.';
+  console.log(code);
+  return (code && ApiErrorMessages[code]) || 'Ocorreu um erro. Tente novamente.';
 }
 
 export function getApiErrorCode(error: unknown): ErrorCode | undefined {
