@@ -1,6 +1,7 @@
 import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
+import { toast } from '@/app/libs/sonner';
 import { ActionType } from '@/ui/components/AudioModal';
 import { CreateMealModalAnimationType } from '@/ui/components/CreateMealModals';
 import { useNavigation } from '@react-navigation/native';
@@ -35,7 +36,7 @@ export function useAudioModal({ visible, onRequestClose }: IUseAudioModalParams)
 
       const status = await AudioModule.requestRecordingPermissionsAsync();
       if (!status.granted) {
-        alert('Permission to access microphone was denied');
+        toast.error('Permissão para acessar o microfone foi negada');
       }
 
       setAudioModeAsync({
@@ -51,7 +52,7 @@ export function useAudioModal({ visible, onRequestClose }: IUseAudioModalParams)
     }
 
     if (meal.status === 'FAILED') {
-      alert('Ocorreu um erro ao tenta processar sua refeição.+1 Tente novamente!');
+      toast.error('Ocorreu um erro ao tentar processar sua refeição. Tente novamente!');
     }
 
     if (meal.status === 'SUCCESS') {
@@ -80,7 +81,7 @@ export function useAudioModal({ visible, onRequestClose }: IUseAudioModalParams)
           await audioRecorder.prepareToRecordAsync();
           audioRecorder.record();
         } catch {
-          alert('Permission to access microphone was denied');
+          toast.error('Permissão para acessar o microfone foi negada');
           return;
         }
       }
@@ -106,7 +107,7 @@ export function useAudioModal({ visible, onRequestClose }: IUseAudioModalParams)
       await createMeal(recordedUri);
     } catch (error) {
       console.error(error);
-      alert('Ocorreu um erro ao criar a sua refeição. Tente novamente!');
+      toast.error('Ocorreu um erro ao criar a sua refeição. Tente novamente!');
     }
   }
 

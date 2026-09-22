@@ -9,8 +9,8 @@ export const styles = StyleSheet.create({
 
   flatListContainer: {
     minHeight: '100%',
-    borderBottomLeftRadius: Platform.OS === 'web' ? '' : 16,
-    borderBottomRightRadius: Platform.OS === 'web' ? '' : 16,
+    borderBottomLeftRadius: Platform.OS === 'web' ? 0 : 16,
+    borderBottomRightRadius: Platform.OS === 'web' ? 0 : 16,
     backgroundColor: theme.colors.white,
   },
 });

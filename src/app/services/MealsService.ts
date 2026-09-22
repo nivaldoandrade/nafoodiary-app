@@ -6,8 +6,6 @@ export class MealsService extends Service {
 
   static async listByDay(date: string): Promise<MealsService.ListByDayResponse> {
 
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-
     const { data } = await this.client.get<MealsService.ListByDayResponse>(
       'meals',
       {

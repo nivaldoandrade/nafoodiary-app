@@ -1,5 +1,6 @@
 import { useCreateMeal } from '@/app/hooks/mutations/useCreateMeal';
 import { useGetMealById } from '@/app/hooks/queries/useGetMealById';
+import { toast } from '@/app/libs/sonner';
 import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import type { CreateMealModalAnimationType } from '@/ui/components/CreateMealModals';
 import { PhotoActionType } from '@/ui/components/PhotoModal';
@@ -32,7 +33,7 @@ export function usePhotoModal({ onRequestClose }: IUsePhotoModalParams) {
     }
 
     if (meal.status === 'FAILED') {
-      alert('Ocorreu um erro ao tenta processar sua refeição. Tente novamente!');
+      toast.error('Ocorreu um erro ao tentar processar sua refeição. Tente novamente!');
     }
 
     if (meal.status === 'SUCCESS') {
@@ -63,7 +64,7 @@ export function usePhotoModal({ onRequestClose }: IUsePhotoModalParams) {
       await createMeal(photoUri);
     } catch (error) {
       console.error(error);
-      alert('Ocorreu um erro ao criar a sua refeição. Tente novamente!');
+      toast.error('Ocorreu um erro ao criar a sua refeição. Tente novamente!');
     }
   }
 
