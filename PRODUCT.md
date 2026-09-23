@@ -53,7 +53,7 @@ Simple and friendly where nutrition trackers are rigid and clinical. The core me
 ## Evidence on Hand
 
 - Onboarding and welcome copy ("Controle sua dieta de forma simples"), onboarding step strings, empty-state copy.
-- Assets: welcome splash images (`src/ui/assets/welcome-bg/`), meal-processing animation (`chicken-leg.mp4`), app icon, splash icon.
+- Assets: meal-processing animation (`chicken-leg.mp4`), app icon, splash icon.
 - No real user data, testimonials, case studies, or press. Future work must not fabricate these.
 
 ## Product Principles
