@@ -3,7 +3,7 @@ import { styles } from '@/ui/screens/onboarding/components/Step/styles';
 import { theme } from '@/ui/styles/theme';
 import { ReactElement } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback, View, ViewProps } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 function Step({ style, ...props }: ViewProps) {
 

@@ -2,7 +2,7 @@ import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import { useListMealByDay } from '@/app/hooks/queries/useListMealByDay';
 import type { CreateMealModalAnimationType, CreateMealModalType } from '@/ui/components/CreateMealModals';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 const CREATE_MEAL_MODAL_EXIT_DURATION = 350;
 

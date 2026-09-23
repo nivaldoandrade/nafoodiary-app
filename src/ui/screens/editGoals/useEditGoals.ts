@@ -10,7 +10,7 @@ import * as SystemUI from 'expo-system-ui';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 import { toast } from '@/app/libs/sonner';
 
 export function useEditGoals() {

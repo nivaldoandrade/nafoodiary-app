@@ -3,6 +3,7 @@ import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 import { HeaderForgotAndResetPassword } from '@/ui/screens/forgotPassword/components/HeaderForgotAndResetPassword';
 import { styles } from '@/ui/screens/forgotPassword/resetPassword/styles';
 import { useResetPassword } from '@/ui/screens/forgotPassword/resetPassword/useResetPassword';
@@ -12,7 +13,6 @@ import { useRef } from 'react';
 import { Controller } from 'react-hook-form';
 import { ActivityIndicator, TextInput, TouchableOpacity, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function ResetPassword({ route }: AuthStackScreenProps<'ResetPassword'>) {
   const { email } = route.params;
@@ -36,7 +36,7 @@ export function ResetPassword({ route }: AuthStackScreenProps<'ResetPassword'>) 
 
   if (isSuccess) {
     return (
-      <View style={styles.successContainer}>
+      <View style={[styles.successContainer, { paddingTop: top, paddingBottom: bottom }]}>
         <AppText
           size='4xl'
           weight='semiBold'

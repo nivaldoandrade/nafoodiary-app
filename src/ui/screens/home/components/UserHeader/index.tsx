@@ -3,23 +3,23 @@ import { AppStackNavigatorProps } from '@/app/navigation/AppStack';
 import { AppText } from '@/ui/components/AppText';
 import { Avatar } from '@/ui/components/Avatar';
 import { ButtonApp } from '@/ui/components/Button';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 import { styles } from '@/ui/screens/home/components/UserHeader/styles';
 import { theme } from '@/ui/styles/theme';
 import { useNavigation } from '@react-navigation/native';
 import { TargetIcon } from 'lucide-react-native';
 import { Platform, TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function UserHeader() {
   const { navigate } = useNavigation<AppStackNavigatorProps>();
   const { top } = useSafeAreaInsets();
 
   const { account } = useAccount();
-
   return (
-    <View style={[styles.container, {
-      paddingTop: Platform.OS === 'android' ? top : 0,
-    }]}>
+    <View style={[
+      styles.container, {
+        paddingTop: Platform.OS === 'ios' ? 0 : top,
+      }]}>
       <TouchableOpacity
         style={styles.userInfo}
         onPress={() => navigate('Profile')}

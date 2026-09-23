@@ -8,7 +8,7 @@ import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { PlusIcon } from 'lucide-react-native';
 import { useRef } from 'react';
 import { Platform, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function Fab() {
   const { onOpenCreateMealModal } = useHomeContext();
@@ -31,7 +31,7 @@ export function Fab() {
         styles.container,
         {
           right: Platform.OS === 'web' ? 24 : 16,
-          bottom: Platform.OS === 'web' ? 32 : bottom,
+          bottom,
         },
       ]}
       >
@@ -46,7 +46,7 @@ export function Fab() {
       >
         <BottomSheetView style={[
           styles.bottomSheetContent,
-          { paddingBottom: Platform.OS === 'web' ? 32 : bottom },
+          { paddingBottom: bottom },
         ]}>
           <AppText size='xl' weight='semiBold' style={{ letterSpacing: -0.4 }}>
             Cadastre sua refeição

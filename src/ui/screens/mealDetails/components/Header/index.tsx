@@ -7,7 +7,7 @@ import { theme } from '@/ui/styles/theme';
 import { useNavigation } from '@react-navigation/native';
 import { ChevronLeftIcon } from 'lucide-react-native';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 interface IHeaderProps {
   totalCalories: number;

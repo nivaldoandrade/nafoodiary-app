@@ -5,7 +5,7 @@ import { theme } from '@/ui/styles/theme';
 import { ChevronLeftIcon } from 'lucide-react-native';
 import { useEffect, useMemo } from 'react';
 import { Animated, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function OnboardingHeader() {
   const { top } = useSafeAreaInsets();

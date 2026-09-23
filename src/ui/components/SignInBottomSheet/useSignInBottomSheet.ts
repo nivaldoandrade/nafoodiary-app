@@ -10,7 +10,7 @@ import { isAxiosError } from 'axios';
 import { useImperativeHandle, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { TextInput } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 interface IUseSignInBottomSheet {
   ref: React.Ref<ISignInBottomSheet>;

@@ -16,7 +16,7 @@ import { useRef, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { StyleSheet, TextInput, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function CreateAccountStep() {
   const [footerHeight, setFooterHeight] = useState(0);

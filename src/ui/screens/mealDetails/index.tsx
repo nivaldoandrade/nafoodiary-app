@@ -12,7 +12,7 @@ import { StatusBar } from 'expo-status-bar';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItemInfo, Platform, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) {
   const { mealId } = route.params;
@@ -133,7 +133,7 @@ export function MealDetails({ route }: AppStackScreenRouteProps<'MealDetails'>) 
           data={meal?.foods ?? []}
           keyExtractor={foodKeyExtractor}
           contentContainerStyle={{
-            paddingBottom: Platform.OS === 'web' ? 34 : bottom,
+            paddingBottom: bottom,
           }}
           ListEmptyComponent={renderListEmpty}
           renderItem={renderFoodItem}

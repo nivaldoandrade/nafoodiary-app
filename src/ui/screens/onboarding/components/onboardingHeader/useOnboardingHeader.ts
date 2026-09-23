@@ -1,7 +1,7 @@
 import { useOnboarding } from '@/ui/screens/onboarding/context/useOnboarding';
 import { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function useOnboardingHeader() {
   const { top } = useSafeAreaInsets();

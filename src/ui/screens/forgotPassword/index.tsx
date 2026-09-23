@@ -1,13 +1,13 @@
 import { ButtonApp } from '@/ui/components/Button';
 import { FormGroup } from '@/ui/components/FormGroup';
 import { InputApp } from '@/ui/components/Input';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 import { HeaderForgotAndResetPassword } from '@/ui/screens/forgotPassword/components/HeaderForgotAndResetPassword';
 import { styles } from '@/ui/screens/forgotPassword/styles';
 import { useForgotPassword } from '@/ui/screens/forgotPassword/useForgotPassword';
 import { Controller } from 'react-hook-form';
 import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function ForgotPassword() {
   const {
@@ -20,13 +20,13 @@ export function ForgotPassword() {
   const { top, bottom } = useSafeAreaInsets();
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
+    <View style={[styles.container, { paddingTop: top, paddingBottom: bottom }]}>
       <KeyboardAwareScrollView
         mode='layout'
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
-        <View style={[styles.sheet, { paddingBottom: bottom }]}>
+        <View style={styles.sheet}>
           <HeaderForgotAndResetPassword
             title='Esqueceu sua senha?'
             subtitle='Informe seu e-mail e enviaremos as instruções para redefinir sua senha.'

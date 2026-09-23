@@ -1,10 +1,11 @@
 import { ButtonApp } from '@/ui/components/Button';
 import { styles } from '@/ui/components/ModalWrapper/styles';
 import { theme } from '@/ui/styles/theme';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 import { StatusBar } from 'expo-status-bar';
 import { XIcon } from 'lucide-react-native';
 import { Modal, StyleProp, View, ViewStyle } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 interface IModalWrapperProps {
   children: React.ReactNode
@@ -23,6 +24,7 @@ export function ModalWrapper({
   animationType = 'slide',
   onDismiss,
 }: IModalWrapperProps) {
+  const { top, bottom } = useSafeAreaInsets();
 
   return (
     <Modal
@@ -36,9 +38,9 @@ export function ModalWrapper({
       <StatusBar style='light' />
       <View style={styles.container}>
         <SafeAreaProvider>
-          <SafeAreaView style={[styles.wrapper, style]}>
+          <View style={[styles.wrapper, { paddingTop: top, paddingBottom: bottom }, style]}>
             {children}
-          </SafeAreaView>
+          </View>
         </SafeAreaProvider>
       </View>
     </Modal>

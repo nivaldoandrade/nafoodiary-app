@@ -4,7 +4,7 @@ import { ButtonApp } from '@/ui/components/Button';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import DateTimePicker, { DateTimePickerChangeEvent } from '@react-native-community/datetimepicker';
 import { View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 interface IBirthDateBottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheetModal | null>;

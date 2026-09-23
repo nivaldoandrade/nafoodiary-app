@@ -74,8 +74,8 @@ export function Home() {
         <FlatList
           data={meals}
           keyExtractor={item => item.id}
-          contentInset={{ top: top }}
-          contentOffset={{ x: 0, y: -top }}
+          contentInset={Platform.OS === 'web' ? undefined : { top: top }}
+          contentOffset={Platform.OS === 'web' ? undefined : { x: 0, y: -top }}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
@@ -84,7 +84,7 @@ export function Home() {
             />
           }
           contentContainerStyle={[styles.flatListContainer, {
-            paddingBottom: Platform.OS === 'web' ? 32 : bottom,
+            paddingBottom: bottom,
           }]}
           ListEmptyComponent={ListEmpty}
           ListHeaderComponent={Header}

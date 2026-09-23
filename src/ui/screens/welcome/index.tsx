@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useEffect, useRef } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function Welcome() {
   const navigation = useNavigation<AuthStackNavigatorProps>();

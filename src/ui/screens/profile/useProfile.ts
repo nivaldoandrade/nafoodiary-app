@@ -11,7 +11,7 @@ import { isAxiosError } from 'axios';
 import * as SystemUI from 'expo-system-ui';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from '@/ui/hooks/useSafeAreaInsets';
 
 export function useProfile() {
   const [footerHeight, setFooterHeight] = useState(0);

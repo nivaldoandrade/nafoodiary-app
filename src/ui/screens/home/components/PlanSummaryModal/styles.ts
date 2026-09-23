@@ -1,5 +1,5 @@
 import { theme } from '@/ui/styles/theme';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,7 +10,6 @@ export const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingBottom: Platform.OS === 'web' ? 8 : 0,
   },
 
   content: {
