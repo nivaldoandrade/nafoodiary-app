@@ -1,5 +1,6 @@
 const colors = {
   white: '#fff',
+  'white/16': 'rgba(255, 255, 255, 0.16)',
   'white/40': 'rgba(255, 255, 255, .4)',
   lime: {
     400: '#e8fb86',
@@ -40,6 +41,12 @@ const colors = {
     800: '#09090b',
     900: '#000000',
   },
+  welcomeFallback: '#0f1c10',
+  welcomeGradient: {
+    colors: ['#0f1c10', '#1a2e1a', '#0d1a0d'] as const,
+    locations: [0, 0.45, 1] as const,
+  },
+  scrim: 'rgba(0, 0, 0, 0.3)',
 } as const;
 
 const fontFamily = {

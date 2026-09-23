@@ -1,25 +1,35 @@
+import { theme } from '@/ui/styles/theme';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    height: '100%',
+    backgroundColor: theme.colors.welcomeFallback,
+  },
+  background: {
+    flex: 1,
+  },
+  backgroundFallback: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: theme.colors.welcomeFallback,
   },
   content: {
-    backgroundColor: 'transparent',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: 16,
+    paddingVertical: 24,
+  },
+  buttonsContainer: {
+    width: '100%',
   },
   ctaContainer: {
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    overflow: 'hidden',
+    backgroundColor: theme.colors.scrim,
     marginHorizontal: 16,
     padding: 32,
     borderRadius: 20,
     gap: 24,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: theme.colors['white/16'],
   },
   heading: {
     textAlign: 'center',
@@ -27,13 +37,23 @@ export const styles = StyleSheet.create({
     lineHeight: 32,
   },
   ctaContent: {
-    gap: 16,
+    gap: 24,
     alignItems: 'center',
-    justifyContent: 'center',
+  },
+  primaryButtonWrapper: {
+    width: '100%',
+  },
+  primaryButton: {
+    borderRadius: 50,
   },
   signInContainer: {
     flexDirection: 'row',
-    gap: 2,
+    gap: 4,
+    alignItems: 'center',
   },
-
+  signInLink: {
+    minHeight: 48,
+    justifyContent: 'center',
+    paddingHorizontal: 4,
+  },
 });

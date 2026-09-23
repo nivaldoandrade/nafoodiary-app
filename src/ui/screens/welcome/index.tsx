@@ -1,7 +1,5 @@
-
 import { useAuth } from '@/app/contexts/AuthContext/useAuth';
 import type { AuthStackNavigatorProps, AuthStackScreenProps } from '@/app/navigation/AuthStack';
-import welcomeBg from '@/ui/assets/welcome-bg/welcome.png';
 import { AppText } from '@/ui/components/AppText';
 import { ButtonApp } from '@/ui/components/Button';
 import { Logo } from '@/ui/components/Logo';
@@ -9,25 +7,31 @@ import { SignInBottomSheet } from '@/ui/components/SignInBottomSheet';
 import { ISignInBottomSheet } from '@/ui/components/SignInBottomSheet/ISignInBottomSheet';
 import { styles } from '@/ui/screens/welcome/styles';
 import { theme } from '@/ui/styles/theme';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
-import { useEffect, useRef } from 'react';
-import { ImageBackground, Platform, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-
-const blurIntensity = Platform.select({
-  ios: 30,
-  android: 60,
-  web: 40,
-  default: 40,
-});
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as SystemUI from 'expo-system-ui';
+import { useCallback, useEffect, useRef } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export function Welcome() {
   const navigation = useNavigation<AuthStackNavigatorProps>();
   const route = useRoute<AuthStackScreenProps<'Welcome'>['route']>();
   const signInModalRef = useRef<ISignInBottomSheet>(null);
+  const insets = useSafeAreaInsets();
 
   const { shouldShowOnboarding } = useAuth();
+
+  useFocusEffect(
+    useCallback(() => {
+      SystemUI.setBackgroundColorAsync(theme.colors.welcomeFallback);
+
+      return () => {
+        SystemUI.setBackgroundColorAsync(null);
+      };
+    }, []),
+
+  );
 
   useEffect(() => {
     if (shouldShowOnboarding) {
@@ -51,19 +55,21 @@ export function Welcome() {
 
   return (
     <>
-      <ImageBackground
-        source={welcomeBg}
-        resizeMode='cover'
-        style={styles.container}
-      >
-        <SafeAreaView style={styles.content}>
-          <Logo width={186} height={60} />
-          <View>
-            <BlurView
-              intensity={blurIntensity}
-              tint='dark'
-              style={styles.ctaContainer}
-            >
+      <View style={styles.container}>
+        <View style={styles.backgroundFallback}>
+          <LinearGradient
+            colors={theme.colors.welcomeGradient.colors}
+            locations={theme.colors.welcomeGradient.locations}
+            style={styles.background}
+          />
+        </View>
+
+        <View style={styles.content}>
+          <View style={{ paddingTop: insets.top }}>
+            <Logo width={186} height={60} />
+          </View>
+          <View style={[styles.buttonsContainer, { paddingBottom: insets.bottom }]}>
+            <View style={styles.ctaContainer}>
               <AppText
                 size='4xl'
                 weight='medium'
@@ -73,10 +79,10 @@ export function Welcome() {
                 Controle sua dieta de forma simples
               </AppText>
               <View style={styles.ctaContent}>
-                <View style={{ width: '100%' }}>
+                <View style={styles.primaryButtonWrapper}>
                   <ButtonApp
                     onPress={() => navigation.navigate('Onboarding')}
-                    style={{ borderRadius: 50 }}
+                    style={styles.primaryButton}
                   >
                     Criar Conta
                   </ButtonApp>
@@ -92,10 +98,10 @@ export function Welcome() {
                   </TouchableOpacity>
                 </View>
               </View>
-            </BlurView>
+            </View>
           </View>
-        </SafeAreaView>
-      </ImageBackground>
+        </View>
+      </View>
 
       <SignInBottomSheet
         ref={signInModalRef}
