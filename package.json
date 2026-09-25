@@ -51,6 +51,7 @@
     "@typescript-eslint/parser": "^8.62.0",
     "eslint": "^9.0.0",
     "eslint-config-expo": "~57.0.2",
+    "patch-package": "^8.0.1",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.62.0"
   },
@@ -61,7 +62,8 @@
     "web": "expo start --web",
     "export:web": "expo export --platform web",
     "serve:web": "npx serve dist",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "postinstall": "patch-package"
   },
   "private": true
 }
