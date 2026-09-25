@@ -10,6 +10,13 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="NaFoodiary" />
+    <noscript>
+      <style>
+        #pwa-splash {
+          display: none;
+        }
+      </style>
+    </noscript>
     <!-- The `react-native-web` recommended style reset: https://necolas.github.io/react-native-web/docs/setup/#root-element -->
     <style id="expo-reset">
       /* These styles make the body full-height */
@@ -28,6 +35,29 @@
         flex: 1;
       }
     </style>
+    <style id="pwa-splash-css">
+      /* Splash de primeiro paint — paridade com a splash nativa (expo-splash-screen).
+         O id deste <style> NÃO pode ser "pwa-splash": getElementById retorna o
+         primeiro elemento com o id e o remove() do AuthContext precisa apagar o
+         <div id="pwa-splash">, não este CSS. */
+      #pwa-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 2147483647;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #d2f676;
+      }
+      #pwa-splash img {
+        /* Mesma caixa do splash nativo iOS (SplashScreen.storyboard: 100x100 pt). */
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -37,5 +67,9 @@
     </noscript>
     <!-- The root element for your Expo app. -->
     <div id="root"></div>
+    <!-- Splash de primeiro paint: some quando o AuthContext fica pronto (appIsReady). -->
+    <div id="pwa-splash" aria-hidden="true">
+      <img src="/splash-icon.png" alt="" draggable="false" />
+    </div>
   </body>
 </html>

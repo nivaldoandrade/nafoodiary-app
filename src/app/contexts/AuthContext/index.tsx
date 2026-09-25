@@ -7,6 +7,7 @@ import { AuthService } from '@/app/services/AuthService';
 import { Service } from '@/app/services/Service';
 import * as SplashScreen from 'expo-splash-screen';
 import { createContext, useCallback, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 interface IAuthContext {
   shouldShowOnboarding: boolean;
@@ -164,6 +165,9 @@ export function AuthProvider({ children }: IAuthProvider) {
   useEffect(() => {
     if (appIsReady) {
       SplashScreen.hideAsync();
+      if (Platform.OS === 'web' && typeof document !== 'undefined') {
+        document.getElementById('pwa-splash')?.remove();
+      }
     }
   }, [appIsReady]);
 
